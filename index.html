@@ -1081,11 +1081,55 @@
     * { transition: none !important; scroll-behavior: auto !important; }
   }
 
-  /* ---------- Responsiv ---------- */
-  @media (max-width: 560px) {
-    .layout { padding: 14px; gap: 14px; }
-    header.top { padding: 12px 14px; }
+  /* ---------- Responsiv (Handy) ---------- */
+  @media (max-width: 640px) {
+    .layout { padding: 12px; gap: 12px; }
+    body { padding-bottom: 0; }                 /* Fußzeile ist am Handy nicht fixiert */
+
+    /* Kopfzeile: kompakt, nicht klebend, klar gegliedert */
+    header.top { position: static; padding: 10px 12px; gap: 8px 10px; }
+    .top-spacer { display: none; }
+    .brand { order: 1; flex: 1 1 auto; }
+    .brand .name { font-size: 18px; }
+    .brand .sub { font-size: 10px; }
+    #themeBtn { order: 2; }
+    #themeBtn span { display: none; }           /* nur Sonne/Mond-Icon */
+    /* Typ-Filter als eine wischbare Zeile */
+    .filters { order: 3; flex: 1 1 100%; flex-wrap: nowrap; overflow-x: auto;
+               gap: 6px; padding-bottom: 3px; scrollbar-width: none; }
+    .filters::-webkit-scrollbar { display: none; }
+    .filter-label { margin-right: 6px; flex: none; }
+    .chip { flex: none; }
+    /* Aktions-Knöpfe in einer Reihe, gleichmäßig breit */
+    .lang-switch { order: 4; }
+    #newsBtn { order: 5; }
+    #refreshBtn { order: 6; }
+    #newsBtn, #refreshBtn { flex: 1 1 0; justify-content: center; }
+    .btn { font-size: 12px; padding: 8px 10px; }
+
+    /* Anbieter-Filter: kompaktes 2-Spalten-Raster kleiner Kacheln.
+       minmax(0,1fr) statt 1fr, sonst schrumpfen die Spalten nicht unter die
+       Inhaltsbreite (langer Name) und laufen über den Bildschirm. */
+    .all-bar { height: 40px; margin: 8px 0 14px; font-size: 13px; padding: 0 14px; }
+    .prov-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .prov-chip { height: 58px; padding: 8px 10px; gap: 8px; font-size: 13px; min-width: 0; }
+    .prov-chip .logo-chip { width: 32px; height: 32px; border-radius: 8px; flex: none; }
+    .prov-chip .logo-chip svg { width: 22px; height: 22px; }
+    .prov-chip .rank-badge { top: 6px; right: 8px; }
     .prov-chip small { display: none; }
+    .prov-chip .dg-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+
+    /* Ausgabe-Grids: eine Spalte, nie breiter als der Schirm */
+    .diagram-grid, .detail-grid { grid-template-columns: minmax(0, 1fr); }
+    .tree-cols { width: 100% !important; }
+    .branch { flex: 0 0 100%; width: 100%; }
+
+    /* Fußzeile: nicht fixiert, kompakt gestapelt */
+    footer.foot { position: static; padding: 16px 14px 24px; box-shadow: none; }
+    .foot-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .foot-left { flex-wrap: wrap; gap: 10px; }
+    .foot-links { gap: 12px 14px; }
+    .foot-links .foot-action { font-size: 12px; padding: 5px 12px; }
   }
   /* ---------- Modal / Maske (Modell-Detail) ---------- */
   .modal-overlay {
