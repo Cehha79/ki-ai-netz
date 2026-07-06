@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Datenschutz — KI/AI - Netz</title>
+<meta name="description" content="Datenschutzhinweise für die Seite KI/AI - Netz: cookieloser Besucherzähler (GoatCounter), Hosting über GitHub Pages, keine weiteren Tracker.">
+<script>
+  // Theme früh anwenden (gegen Flackern) — dieselbe Einstellung wie die Hauptseite
+  (function () {
+    try {
+      var t = localStorage.getItem("kiatlas-theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+  :root {
+    --bg: #d7dce5; --panel: #ffffff; --ink: #10141b; --ink-2: #10141b; --ink-3: #10141b;
+    --line: #c7cedb; --card-line: #8f9aab; --accent: #2f6df6; --accent-soft: #e2eafb;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  html[data-theme="dark"] {
+    --bg: #0d1017; --panel: #161b24; --ink: #e8ecf2; --ink-2: #a8b2c1; --ink-3: #6c7686;
+    --line: #262d38; --card-line: #333c49; --accent: #5b9dff; --accent-soft: #16233a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--ink); font-family: var(--sans);
+    line-height: 1.65; padding: 0 0 64px; -webkit-font-smoothing: antialiased;
+  }
+  .top {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 16px clamp(16px, 4vw, 40px);
+    background: var(--panel); border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .top .brand { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+  .top .brand span { color: var(--accent); }
+  .top-actions { display: inline-flex; gap: 10px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    font: inherit; font-size: 13px; font-weight: 500;
+    padding: 8px 14px; border: 1px solid var(--card-line); border-radius: 9px;
+    background: var(--panel); color: var(--ink); cursor: pointer; text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 40px clamp(16px, 4vw, 40px) 0; }
+  h1 { font-size: clamp(24px, 4vw, 32px); font-weight: 700; letter-spacing: -0.01em; margin-bottom: 10px; }
+  .lead { color: var(--ink-2); font-size: 15px; margin-bottom: 8px; }
+  .stand { color: var(--ink-3); font-family: var(--mono); font-size: 12px; margin-bottom: 28px; }
+  .note {
+    background: var(--panel); border: 1px solid var(--card-line);
+    border-left: 4px solid var(--accent); border-radius: 10px;
+    padding: 16px 18px; margin: 22px 0; color: var(--ink-2); font-size: 14px;
+  }
+  .note b, .note strong { color: var(--ink); }
+  h2 {
+    font-size: 18px; font-weight: 700; margin: 30px 0 10px;
+    padding-bottom: 7px; border-bottom: 1px solid var(--line); color: var(--ink);
+  }
+  h3 { font-size: 15px; font-weight: 650; margin: 18px 0 6px; color: var(--ink); }
+  p { color: var(--ink-2); font-size: 14.5px; margin: 8px 0; }
+  ul { margin: 8px 0 8px 22px; color: var(--ink-2); font-size: 14.5px; }
+  li { margin: 4px 0; }
+  a { color: var(--accent); }
+  code { font-family: var(--mono); font-size: 13px; background: var(--accent-soft); color: var(--accent); padding: 1px 6px; border-radius: 5px; }
+  .foot { max-width: 860px; margin: 40px auto 0; padding: 22px clamp(16px, 4vw, 40px) 0;
+    border-top: 1px solid var(--line); color: var(--ink-3); font-size: 12.5px; }
+  .foot a { color: var(--ink-2); }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">KI<span>/</span>AI - Netz</div>
+  <div class="top-actions">
+    <a class="btn" href="index.html">← Zur Übersicht</a>
+    <button class="btn" id="themeBtn" type="button" aria-label="Hell/Dunkel wechseln">Hell/Dunkel</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>Datenschutz</h1>
+  <p class="lead">Datenschutzhinweise für die Seite <strong>KI/AI - Netz</strong> (<code>cehha79.github.io/ki-ai-netz</code>), ein Projekt von Mika-Tec.</p>
+  <p class="stand">Stand: Juli 2026</p>
+
+  <div class="note">
+    <b>Kurz gesagt:</b> Diese Seite verwendet <b>keine Cookies</b> und keine Werbe- oder Profiling-Werkzeuge.
+    Zur einfachen Reichweitenmessung läuft ein <b>cookieloser Besucherzähler (GoatCounter)</b>, der
+    <b>keine personenbezogenen Profile</b> bildet. Personenbezogene Daten fallen darüber hinaus nur an,
+    wenn Sie uns aktiv per E-Mail kontaktieren.
+  </div>
+
+  <h2>1. Verantwortlicher</h2>
+  <p>Verantwortlich für diese Seite ist Mika-Tec (Hasan Tepegöz). Anschrift, Kontakt und die vollständigen
+    Pflichtangaben finden Sie im <a href="https://mika-tec.com/impressum.html" target="_blank" rel="noopener">Impressum</a>
+    sowie in der ausführlichen <a href="https://mika-tec.com/datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung von Mika-Tec</a>.</p>
+
+  <h2>2. Besucherzähler (GoatCounter)</h2>
+  <p>Zur Ermittlung der ungefähren Besucherzahl setzen wir <b>GoatCounter</b> (<a href="https://www.goatcounter.com" target="_blank" rel="noopener">goatcounter.com</a>)
+    ein — ein datensparsames, quelloffenes Analyse-Werkzeug. GoatCounter arbeitet <b>ohne Cookies</b> und
+    <b>ohne geräteübergreifende Wiedererkennung</b>.</p>
+  <h3>Was dabei erfasst wird</h3>
+  <ul>
+    <li>die aufgerufene Seite und die Verweis-Quelle (Referrer),</li>
+    <li>Browser- und Systemtyp sowie die Bildschirmgröße,</li>
+    <li>ein grobes Herkunftsland (aus der IP-Adresse abgeleitet).</li>
+  </ul>
+  <h3>Was ausdrücklich <em>nicht</em> passiert</h3>
+  <ul>
+    <li>Es werden <b>keine Cookies</b> gesetzt.</li>
+    <li>Die <b>IP-Adresse wird nicht gespeichert</b> — sie dient nur kurzzeitig zur groben Länderbestimmung und wird anschließend verworfen.</li>
+    <li>Es werden <b>keine personenbezogenen Nutzerprofile</b> gebildet und keine Daten an Werbenetzwerke weitergegeben.</li>
+  </ul>
+  <p><b>Rechtsgrundlage</b> ist unser berechtigtes Interesse an einer einfachen, datensparsamen
+    Reichweitenmessung (Art. 6 Abs. 1 lit. f DSGVO). Da keine personenbezogenen Daten dauerhaft
+    gespeichert werden, ist eine Einwilligung nicht erforderlich; ein Cookie-Banner entfällt.</p>
+
+  <h2>3. Hosting (GitHub Pages)</h2>
+  <p>Diese Seite wird über <b>GitHub Pages</b> (GitHub, Inc., USA) ausgeliefert. Beim Abruf der Seite
+    verarbeitet GitHub technisch notwendige Verbindungsdaten in Server-Logfiles (u. a. IP-Adresse,
+    Zeitpunkt, abgerufene Datei), um die Auslieferung und Sicherheit zu gewährleisten. Rechtsgrundlage
+    ist Art. 6 Abs. 1 lit. f DSGVO. Näheres regelt die Datenschutzerklärung von GitHub
+    (<a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub Privacy Statement</a>).</p>
+
+  <h2>4. Keine weiteren Tracker, keine externen Ressourcen</h2>
+  <p>Über den genannten Besucherzähler hinaus binden wir <b>keine</b> Analyse- oder Werbe-Dienste,
+    <b>keine</b> externen Schriften, Karten oder Content-Delivery-Netzwerke ein. Alle Gestaltungselemente
+    werden direkt mit der Seite ausgeliefert.</p>
+
+  <h2>5. Kontakt und Ihre Rechte</h2>
+  <p>Nehmen Sie per E-Mail Kontakt zu uns auf, verarbeiten wir Ihre Angaben ausschließlich zur Bearbeitung
+    Ihrer Anfrage. Ihnen stehen die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der
+    Verarbeitung, Datenübertragbarkeit und Widerspruch zu; außerdem ein Beschwerderecht bei einer
+    Aufsichtsbehörde. Die ausführliche Darstellung dieser Rechte finden Sie in der
+    <a href="https://mika-tec.com/datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung von Mika-Tec</a>.</p>
+
+  <div class="foot">
+    Diese Hinweise gelten für die Seite KI/AI - Netz. Für alle weiteren Angaben gilt die
+    <a href="https://mika-tec.com/datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung von Mika-Tec</a>.
+    · <a href="index.html">Zurück zur Übersicht</a>
+  </div>
+</main>
+
+<script>
+  (function () {
+    var btn = document.getElementById("themeBtn");
+    function cur() {
+      var a = document.documentElement.getAttribute("data-theme");
+      if (a) return a;
+      return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    btn.addEventListener("click", function () {
+      var next = cur() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try { localStorage.setItem("kiatlas-theme", next); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>
