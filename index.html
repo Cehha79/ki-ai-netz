@@ -1209,11 +1209,12 @@
   .rf-list { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 14px; }
   .rf-id {
     font-family: var(--mono); font-size: 11.5px; padding: 3px 8px; border-radius: 7px;
-    border: 1px solid var(--line); color: var(--ink-3); background: transparent;
+    border: 1px solid var(--card-line); color: var(--ink-2); background: transparent;
   }
-  .rf-id.known { opacity: 0.55; }
-  .rf-id.known::before { content: "✓ "; color: var(--accent); }
-  .rf-id.newish { color: var(--ink); border-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+  .rf-id.known { color: var(--ink-2); border-color: var(--line); }
+  .rf-id.known::before { content: "✓ "; color: #16a34a; font-weight: 700; }
+  html[data-theme="dark"] .rf-id.known::before { color: #4ade80; }
+  .rf-id.newish { color: var(--ink); border-color: var(--accent); background: var(--accent-soft); font-weight: 700; }
   .rf-err { padding: 12px 14px; font-size: 12.5px; color: var(--ink-3); font-family: var(--mono); }
   .rf-missing { padding: 0 14px 12px; font-size: 12px; color: var(--ink-2); }
   .rf-missing b { color: var(--ink); }
@@ -1489,9 +1490,10 @@
       news_empty: "Noch keine Einträge gepflegt.", news_source: "Quelle", news_stand: "Stand",
       news_incards: "in den Karten", news_pending: "noch nicht in Karten",
       news_planned_hint: "„Geplant“ beruht auf öffentlichen Ankündigungen und kann sich ändern. Grün = bereits in den Anbieter-Karten (alle Reiter).",
-      intro_p1: "Diese Seite bündelt die aktuellen Modelle der großen KI-Anbieter — von OpenAI, Google und Anthropic über Meta und xAI bis DeepSeek, Mistral und Qwen — geordnet nach Anbieter und nach Modelltyp (Text, Bild, Audio, Video, multimodal). Über die Filter in der Kopfzeile lässt sich die Ansicht auf einen einzelnen Anbieter oder einen Modelltyp eingrenzen, und für die Darstellung stehen drei Formen zur Wahl: das Raster (Anbieter → Modelle), die Baumstruktur und die Detailkarten.",
+      intro_title: "Überblick über die führenden KI-Anbieter und ihre Modelle",
+      intro_p1: "Diese Seite bündelt die aktuellen Modelle der großen KI-Anbieter — von OpenAI, Google und Anthropic über Meta und xAI bis DeepSeek, Mistral und Qwen — geordnet nach Anbieter und nach Modelltyp (Text, Bild, Audio, Video, multimodal). Über die Filter in der Kopfzeile lässt sich die Ansicht auf einen einzelnen Anbieter oder einen Modelltyp eingrenzen, und für die Darstellung stehen vier Ansichten zur Wahl: das Raster (Anbieter → Modelle), die Baumstruktur, die Detailkarten und die Gesamtliste mit Marktzahlen.",
       intro_p2: "Jede Modell-Kachel öffnet per Klick eine Detailansicht mit Beschreibung, Preis, Kontextfenster, Lizenz, Stärken und weiterführenden Links. Weiter unten führt eine Kurzliste 21 weitere bekannte Anbieter mit ihren Modellfamilien auf — ebenfalls anklickbar, mit Link zur offiziellen Seite.",
-      intro_p3: "Der Datenstand ist statisch und sorgfältig quellengeprüft. Preise werden nur dort genannt, wo es einen öffentlichen Token-Preis gibt — sonst steht bewusst ein ehrlicher Hinweis statt einer geschätzten Zahl. Der Button „Aktualisieren“ ist für einen späteren Live-Abruf über einen Proxy vorbereitet.",
+      intro_p3: "Der Datenstand ist statisch und sorgfältig quellengeprüft. Preise werden nur dort genannt, wo es einen öffentlichen Token-Preis gibt — sonst steht bewusst ein ehrlicher Hinweis statt einer geschätzten Zahl. Oben rechts gibt es zwei Knöpfe: „Neu & Geplant“ zeigt eine gepflegte Liste neuer, aktueller und angekündigter Modelle mit Quelle; „Alle Kataloge“ gleicht die Modelle anonym mit einem öffentlichen Katalog ab.",
       intro_meta_prefix: "Stand der Recherche: ",
       tab_grid: "Raster", tab_tree: "Baumstruktur", tab_cards: "Detailkarten", tab_market: "Gesamtliste",
       lg_text: "Sprache / Code", lg_image: "Bild", lg_audio: "Sprache / Ton", lg_video: "Video", lg_multi: "multimodal",
@@ -1542,9 +1544,9 @@
       news_incards: "in the cards", news_pending: "not yet in cards",
       news_planned_hint: "“Planned” is based on public announcements and may change. Green = already in the provider cards (all tabs).",
       intro_title: "Overview of the leading AI providers and their models",
-      intro_p1: "This page brings together the current models of the major AI providers — from OpenAI, Google and Anthropic through Meta and xAI to DeepSeek, Mistral and Qwen — organized by provider and by model type (text, image, audio, video, multimodal). The filters in the header let you narrow the view to a single provider or model type, and three display forms are available: the Grid (provider → models), the Tree and the Detail cards.",
+      intro_p1: "This page brings together the current models of the major AI providers — from OpenAI, Google and Anthropic through Meta and xAI to DeepSeek, Mistral and Qwen — organized by provider and by model type (text, image, audio, video, multimodal). The filters in the header let you narrow the view to a single provider or model type, and four views are available: the Grid (provider → models), the Tree, the Detail cards and the Full list with market figures.",
       intro_p2: "Each model tile opens a detail view on click, with description, price, context window, license, strengths and further links. Further down, a short list names 21 more well-known providers with their model families — also clickable, with a link to the official site.",
-      intro_p3: "The data is static and carefully source-checked. Prices are only shown where a public token price exists — otherwise an honest note appears instead of an estimated figure. The “Refresh” button is prepared for a later live retrieval via a proxy.",
+      intro_p3: "The data is static and carefully source-checked. Prices are only shown where a public token price exists — otherwise an honest note appears instead of an estimated figure. Top right there are two buttons: “New & planned” shows a curated list of new, current and announced models with sources; “All catalogs” compares the models anonymously against a public catalog.",
       intro_meta_prefix: "Research as of: ",
       tab_grid: "Grid", tab_tree: "Tree", tab_cards: "Detail cards", tab_market: "Full list",
       lg_text: "Language / Code", lg_image: "Image", lg_audio: "Speech / Sound", lg_video: "Video", lg_multi: "multimodal",
