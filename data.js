@@ -30,6 +30,94 @@ window.KI_ATLAS_META = {
   preishinweis: { de: "Preise in USD pro 1 Mio. Token (Eingabe / Ausgabe), sofern nicht anders angegeben.", en: "Prices in USD per 1 M tokens (input / output), unless stated otherwise." },
 };
 
+// Gepflegte, quellenbelegte Kurzliste für den Knopf „Aktualisieren":
+// kategorie ∈ neu | aktuell | geplant. Handverlesen, bewusst knapp.
+window.KI_ATLAS_NEU = [
+  // --- Neu erschienen ---
+  {
+    name: "GPT-5.5", anbieter: "OpenAI", kategorie: "neu", typ: "text", flagship: true,
+    stand: { de: "April 2026", en: "April 2026" },
+    info: { de: "OpenAIs allgemein verfügbares Flaggschiff, seit 23. April 2026 Standardmodell (Instant). Deckt viele Funktionen ab, die zunächst als GPT-6 erwartet wurden.", en: "OpenAI's generally available flagship, the default model (Instant) since 23 April 2026. Covers many features initially expected as GPT-6." },
+    quelleName: "currentaffair.today", quelleUrl: "https://www.currentaffair.today/blog/technology-13/4-ai-giants-launch-in-14-days-google-i-o-openai-gpt-5-5-anthropic-opus-4-8-microsoft-mai-who-wins-790"
+  },
+  {
+    name: "Gemini 3.5 Flash", anbieter: "Google DeepMind", kategorie: "neu", typ: "multi", flagship: true,
+    stand: { de: "Mai 2026", en: "May 2026" },
+    info: { de: "Auf der Google I/O am 19. Mai 2026 veröffentlicht und sofort verfügbar; schnelles, breit einsetzbares Modell nahe Pro-Niveau.", en: "Released at Google I/O on 19 May 2026 and available immediately; fast, broadly usable model close to Pro level." },
+    quelleName: "blog.google", quelleUrl: "https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-may-2026/"
+  },
+  {
+    name: "Claude Opus 4.8", anbieter: "Anthropic", kategorie: "neu", typ: "text",
+    stand: { de: "2026", en: "2026" },
+    info: { de: "Kürzlich veröffentlicht mit 88,6 % auf SWE-Bench Verified; dient bei Anthropic als Sicherheits-Routing-Basis für Fable 5.", en: "Recently released with 88.6% on SWE-Bench Verified; serves as the safety-routing base for Fable 5 at Anthropic." },
+    quelleName: "currentaffair.today", quelleUrl: "https://www.currentaffair.today/blog/technology-13/4-ai-giants-launch-in-14-days-google-i-o-openai-gpt-5-5-anthropic-opus-4-8-microsoft-mai-who-wins-790"
+  },
+  {
+    name: "MAI-Thinking-1", anbieter: "Microsoft", kategorie: "neu", typ: "text",
+    stand: { de: "2026", en: "2026" },
+    info: { de: "Microsofts erstes von Grund auf selbst trainiertes Reasoning-Modell.", en: "Microsoft's first reasoning model trained from scratch in-house." },
+    quelleName: "currentaffair.today", quelleUrl: "https://www.currentaffair.today/blog/technology-13/4-ai-giants-launch-in-14-days-google-i-o-openai-gpt-5-5-anthropic-opus-4-8-microsoft-mai-who-wins-790"
+  },
+
+  // --- Aktuelle Flaggschiffe ---
+  {
+    name: "Claude Fable 5", anbieter: "Anthropic", kategorie: "aktuell", typ: "text", flagship: true,
+    stand: { de: "Juli 2026", en: "July 2026" },
+    info: { de: "Fähigstes öffentliches Anthropic-Modell; Sicherheits-Routing auf Opus 4.8.", en: "Anthropic's most capable public model; safety routing onto Opus 4.8." },
+    quelleName: "claude.com", quelleUrl: "https://platform.claude.com/docs/en/about-claude/models/overview"
+  },
+  {
+    name: "Llama 4 (Scout / Maverick)", anbieter: "Meta", kategorie: "aktuell", typ: "multi", flagship: true,
+    stand: { de: "Juli 2026", en: "July 2026" },
+    info: { de: "Nativ multimodale Open-Weight-Linie von Meta.", en: "Meta's natively multimodal open-weight line." },
+    quelleName: "ai.meta.com", quelleUrl: "https://ai.meta.com/blog/llama-4-multimodal-intelligence/"
+  },
+  {
+    name: "Grok 4.3 beta", anbieter: "xAI", kategorie: "aktuell", typ: "multi", flagship: true,
+    stand: { de: "Juli 2026", en: "July 2026" },
+    info: { de: "Aktuelles Flaggschiff (Beta) mit Sprach-, Bild- und Videoverständnis.", en: "Current flagship (beta) with speech, image and video understanding." },
+    quelleName: "x.ai", quelleUrl: "https://x.ai/news"
+  },
+  {
+    name: "DeepSeek V4-Pro", anbieter: "DeepSeek", kategorie: "aktuell", typ: "text", flagship: true,
+    stand: { de: "Juli 2026", en: "July 2026" },
+    info: { de: "1,6T-MoE (49B aktiv), 1M-Kontext, offene Gewichte (MIT).", en: "1.6T MoE (49B active), 1M context, open weights (MIT)." },
+    quelleName: "api-docs.deepseek.com", quelleUrl: "https://api-docs.deepseek.com/"
+  },
+  {
+    name: "Mistral Medium 3.5", anbieter: "Mistral AI", kategorie: "aktuell", typ: "multi", flagship: true,
+    stand: { de: "Juli 2026", en: "July 2026" },
+    info: { de: "Erstes zusammengeführtes Flaggschiff (Instruct + Reasoning + Code).", en: "First merged flagship (instruct + reasoning + code)." },
+    quelleName: "docs.mistral.ai", quelleUrl: "https://docs.mistral.ai/models/overview"
+  },
+  {
+    name: "Qwen3.7-Max", anbieter: "Alibaba (Qwen)", kategorie: "aktuell", typ: "text", flagship: true,
+    stand: { de: "Juli 2026", en: "July 2026" },
+    info: { de: "Neues proprietäres Flaggschiff, 1M-Kontext, nur per API.", en: "New proprietary flagship, 1M context, API-only." },
+    quelleName: "alibabacloud.com", quelleUrl: "https://www.alibabacloud.com/help/en/model-studio/models"
+  },
+
+  // --- Angekündigt / geplant ---
+  {
+    name: "GPT-5.6 (Sol / Terra / Luna)", anbieter: "OpenAI", kategorie: "geplant", typ: "text",
+    stand: { de: "Juni 2026", en: "June 2026" },
+    info: { de: "Am 26. Juni 2026 als Vorschau gezeigt, zunächst auf rund 20 Organisationen beschränkt; breite Verfügbarkeit noch offen.", en: "Previewed on 26 June 2026, initially limited to about 20 organizations; broad availability still open." },
+    quelleName: "centerbit.co", quelleUrl: "https://centerbit.co/en/blog/ai-rumors-june-2026-gpt-5-6-gemini-3-5-pro-claude-mythos"
+  },
+  {
+    name: "Gemini 3.5 Pro", anbieter: "Google DeepMind", kategorie: "geplant", typ: "multi",
+    stand: { de: "Juli 2026", en: "July 2026" },
+    info: { de: "Auf der Google I/O angekündigt; für Juli 2026 zur allgemeinen Verfügbarkeit vorgesehen (von Juni verschoben), soll die Reasoning-Lücken von Flash schließen.", en: "Announced at Google I/O; slated for general availability in July 2026 (slipped from June), intended to close Flash's reasoning gaps." },
+    quelleName: "centerbit.co", quelleUrl: "https://centerbit.co/en/blog/ai-rumors-june-2026-gpt-5-6-gemini-3-5-pro-claude-mythos"
+  },
+  {
+    name: "Claude Mythos 1", anbieter: "Anthropic", kategorie: "geplant", typ: "text",
+    stand: { de: "2026", en: "2026" },
+    info: { de: "Angekündigt und auf lang laufende, agentische Unternehmensaufgaben optimiert; wechselt in die allgemeine Verfügbarkeit.", en: "Announced and optimized for long-running, agentic enterprise tasks; moving to general availability." },
+    quelleName: "centerbit.co", quelleUrl: "https://centerbit.co/en/blog/ai-rumors-june-2026-gpt-5-6-gemini-3-5-pro-claude-mythos"
+  },
+];
+
 window.KI_ATLAS_DATA = [
   {
     id: "openai",

@@ -1225,6 +1225,18 @@
   .rf-note b { color: var(--ink); }
   .rf-stamp { margin-top: 14px; font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
 
+  /* Aktualisieren: gepflegte Neu-/Aktuell-/Geplant-Liste */
+  .news-item {
+    border: 1px solid var(--line); border-left: 4px solid var(--nc, var(--accent));
+    border-radius: 12px; padding: 14px 16px; margin: 0 0 12px;
+  }
+  .news-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .news-name { font-weight: 700; font-size: 15.5px; color: var(--ink); }
+  .news-meta { font-size: 12px; color: var(--ink-3); margin-top: 3px; }
+  .news-info { font-size: 14px; color: var(--ink); line-height: 1.6; margin: 8px 0 0; text-align: justify; }
+  .news-src { margin-top: 8px; font-size: 12px; }
+  .news-src a { color: var(--accent); }
+
   /* Kacheln als klickbar kennzeichnen */
   .dg-model, .leaf, .detail { cursor: pointer; }
   .detail:hover {
@@ -1267,9 +1279,14 @@
     <button class="lang-btn" data-lang="en" type="button">EN</button>
   </div>
 
-  <button class="btn" id="refreshBtn" title="Modelle live mit den Anbieter-APIs abgleichen">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>
-    <span data-i18n="btn_refresh">Aktualisieren</span>
+  <button class="btn" id="newsBtn" title="Neue, aktuelle und geplante Modelle – gepflegte Liste">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.8L18.7 9l-4.8 1.9L12 15.7 10.1 10.9 5.3 9l4.8-1.2L12 3z"/><path d="M19 14v4M17 16h4M5 5v2M4 6h2"/></svg>
+    <span data-i18n="btn_updates">Aktualisieren</span>
+  </button>
+
+  <button class="btn" id="refreshBtn" title="Vollständiger Modell-Katalog aller Anbieter (öffentliche Quelle)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><rect x="3" y="15" width="7" height="5" rx="1"/><rect x="14" y="15" width="7" height="5" rx="1"/></svg>
+    <span data-i18n="btn_catalog">Alle Kataloge</span>
   </button>
 
   <button class="btn" id="themeBtn" aria-label="Zwischen hellem und dunklem Design wechseln">
@@ -1413,7 +1430,7 @@
 
 <!-- ?v= zwingt den Browser, die Daten neu zu laden (Cache-Brecher).
      Bei Datenänderungen die Versionsnummer hochzählen. -->
-<script src="data.js?v=9"></script>
+<script src="data.js?v=10"></script>
 <script>
 (function () {
   "use strict";
@@ -1444,7 +1461,7 @@
     de: {
       sub_stand: "Übersicht der Modelle · Stand ",
       filter_typ: "Typ", typ_all: "Alle", typ_text: "Text", typ_image: "Bild", typ_audio: "Audio", typ_video: "Video", typ_multi: "Multimodal",
-      btn_refresh: "Aktualisieren", theme_dark: "Dunkel", theme_light: "Hell", lang_label: "Sprache",
+      btn_refresh: "Aktualisieren", btn_catalog: "Alle Kataloge", btn_updates: "Aktualisieren", theme_dark: "Dunkel", theme_light: "Hell", lang_label: "Sprache",
       all_providers: "Alle Anbieter",
       rf_title: "Live-Abgleich der Modelle", rf_eyebrow: "Aktualisieren",
       rf_loading: "Frage die Anbieter-APIs ab …",
@@ -1459,7 +1476,11 @@
       rf_notconfigured_text: "Der Proxy-Code liegt bereit (Ordner proxy/). Nach dem Cloudflare-Deploy die Worker-URL in index.html bei PROXY_URL eintragen — dann holt dieser Knopf echte Live-Daten. Bis dahin bleibt data.js der geprüfte Stand.",
       rf_fail_title: "Live-Abruf fehlgeschlagen",
       rf_fail_text: "Der Proxy war nicht erreichbar. Prüfe die Worker-URL und ob der Cloudflare-Worker läuft.",
-      intro_title: "Überblick über die führenden KI-Anbieter und ihre Modelle",
+      news_eyebrow: "Aktualisierung", news_title: "Neu, aktuell & geplant",
+      news_sub: "Handverlesene, quellenbelegte Übersicht: kürzlich erschienene, aktuelle und angekündigte/geplante Modelle. Diese Liste wird gepflegt und ist bewusst kurz gehalten — jeder Eintrag mit Quelle.",
+      news_cat_neu: "Neu erschienen", news_cat_aktuell: "Aktuelle Flaggschiffe", news_cat_geplant: "Angekündigt / geplant",
+      news_empty: "Noch keine Einträge gepflegt.", news_source: "Quelle", news_stand: "Stand",
+      news_planned_hint: "„Geplant“ beruht auf öffentlichen Ankündigungen und kann sich ändern.",
       intro_p1: "Diese Seite bündelt die aktuellen Modelle der großen KI-Anbieter — von OpenAI, Google und Anthropic über Meta und xAI bis DeepSeek, Mistral und Qwen — geordnet nach Anbieter und nach Modelltyp (Text, Bild, Audio, Video, multimodal). Über die Filter in der Kopfzeile lässt sich die Ansicht auf einen einzelnen Anbieter oder einen Modelltyp eingrenzen, und für die Darstellung stehen drei Formen zur Wahl: das Raster (Anbieter → Modelle), die Baumstruktur und die Detailkarten.",
       intro_p2: "Jede Modell-Kachel öffnet per Klick eine Detailansicht mit Beschreibung, Preis, Kontextfenster, Lizenz, Stärken und weiterführenden Links. Weiter unten führt eine Kurzliste 21 weitere bekannte Anbieter mit ihren Modellfamilien auf — ebenfalls anklickbar, mit Link zur offiziellen Seite.",
       intro_p3: "Der Datenstand ist statisch und sorgfältig quellengeprüft. Preise werden nur dort genannt, wo es einen öffentlichen Token-Preis gibt — sonst steht bewusst ein ehrlicher Hinweis statt einer geschätzten Zahl. Der Button „Aktualisieren“ ist für einen späteren Live-Abruf über einen Proxy vorbereitet.",
@@ -1491,7 +1512,7 @@
     en: {
       sub_stand: "Overview of models · as of ",
       filter_typ: "Type", typ_all: "All", typ_text: "Text", typ_image: "Image", typ_audio: "Audio", typ_video: "Video", typ_multi: "Multimodal",
-      btn_refresh: "Refresh", theme_dark: "Dark", theme_light: "Light", lang_label: "Language",
+      btn_refresh: "Refresh", btn_catalog: "All catalogs", btn_updates: "Updates", theme_dark: "Dark", theme_light: "Light", lang_label: "Language",
       all_providers: "All providers",
       rf_title: "Live model check", rf_eyebrow: "Refresh",
       rf_loading: "Querying the provider APIs …",
@@ -1506,6 +1527,11 @@
       rf_notconfigured_text: "The proxy code is ready (folder proxy/). After deploying to Cloudflare, set the worker URL in index.html at PROXY_URL — then this button fetches real live data. Until then, data.js remains the verified state.",
       rf_fail_title: "Live retrieval failed",
       rf_fail_text: "The proxy could not be reached. Check the worker URL and whether the Cloudflare worker is running.",
+      news_eyebrow: "Updates", news_title: "New, current & planned",
+      news_sub: "A hand-picked, sourced overview: recently released, current and announced/planned models. This list is curated and deliberately concise — every entry with a source.",
+      news_cat_neu: "Newly released", news_cat_aktuell: "Current flagships", news_cat_geplant: "Announced / planned",
+      news_empty: "No entries curated yet.", news_source: "Source", news_stand: "As of",
+      news_planned_hint: "“Planned” is based on public announcements and may change.",
       intro_title: "Overview of the leading AI providers and their models",
       intro_p1: "This page brings together the current models of the major AI providers — from OpenAI, Google and Anthropic through Meta and xAI to DeepSeek, Mistral and Qwen — organized by provider and by model type (text, image, audio, video, multimodal). The filters in the header let you narrow the view to a single provider or model type, and three display forms are available: the Grid (provider → models), the Tree and the Detail cards.",
       intro_p2: "Each model tile opens a detail view on click, with description, price, context window, license, strengths and further links. Further down, a short list names 21 more well-known providers with their model families — also clickable, with a link to the official site.",
@@ -2315,6 +2341,68 @@
       .then(function (j) { rfRenderReport(body, j); })
       .catch(function () { body.innerHTML = ""; rfNote(body, "rf_fail_title", "rf_fail_text"); });
   });
+
+  /* ---------- Aktualisieren: gepflegte Neu-/Aktuell-/Geplant-Liste ----------
+     Quelle ist window.KI_ATLAS_NEU (in data.js), handverlesen und belegt. */
+  function provColorByName(name) {
+    for (var i = 0; i < data.length; i++) { if (data[i].name === name) return data[i].farbe; }
+    return "var(--accent)";
+  }
+
+  function renderNews() {
+    lastFocused = document.activeElement;
+    var overlay = document.getElementById("modalOverlay");
+    overlay.style.setProperty("--pc", "var(--accent)");
+    document.getElementById("modalDot").style.background = "var(--accent)";
+    document.getElementById("modalProvider").textContent = t("news_eyebrow");
+    document.getElementById("modalTitle").textContent = t("news_title");
+    document.getElementById("modalBadges").innerHTML = "";
+    var body = document.getElementById("modalBody");
+    body.innerHTML = "";
+    body.appendChild(el("p", "rf-sub", esc(t("news_sub"))));
+
+    var items = window.KI_ATLAS_NEU || [];
+    if (!items.length) {
+      body.appendChild(el("div", "rf-note", esc(t("news_empty"))));
+    } else {
+      var cats = [["neu", "news_cat_neu"], ["aktuell", "news_cat_aktuell"], ["geplant", "news_cat_geplant"]];
+      cats.forEach(function (c) {
+        var group = items.filter(function (x) { return x.kategorie === c[0]; });
+        if (!group.length) return;
+        body.appendChild(el("div", "modal-section-title", t(c[1])));
+        group.forEach(function (x) {
+          var card = el("div", "news-item");
+          card.style.setProperty("--nc", provColorByName(x.anbieter));
+          var head = el("div", "news-head");
+          head.appendChild(el("span", "news-name", esc((x.flagship ? "★ " : "") + x.name)));
+          if (x.typ) head.appendChild(el("span", "type-dot type-" + x.typ, typeLabel(x.typ) || ""));
+          card.appendChild(head);
+          var meta = x.anbieter + (L(x.stand) ? " · " + t("news_stand") + " " + L(x.stand) : "");
+          card.appendChild(el("div", "news-meta", esc(meta)));
+          if (L(x.info)) card.appendChild(el("p", "news-info", esc(L(x.info))));
+          if (x.quelleUrl) {
+            var src = el("div", "news-src");
+            var a = document.createElement("a");
+            a.href = x.quelleUrl; a.target = "_blank"; a.rel = "noopener";
+            a.textContent = t("news_source") + ": " + (x.quelleName || x.quelleUrl);
+            src.appendChild(a);
+            card.appendChild(src);
+          }
+          body.appendChild(card);
+        });
+      });
+      if (items.some(function (x) { return x.kategorie === "geplant"; })) {
+        body.appendChild(el("div", "price-hint", t("news_planned_hint")));
+      }
+    }
+
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    document.getElementById("modalClose").focus();
+  }
+
+  document.getElementById("newsBtn").addEventListener("click", renderNews);
 
   /* ---------- Weitere Anbieter (Kurzliste) — bei Sprachwechsel neu ---------- */
   function renderMore() {
