@@ -82,7 +82,13 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+    /* verhindert, dass iOS Safari bei Querlauf die Schrift automatisch vergrößert */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    overflow-x: hidden;   /* kein seitliches Verrutschen der ganzen Seite */
+  }
   body {
     margin: 0;
     font-family: var(--sans);
@@ -1130,6 +1136,19 @@
     .foot-left { flex-wrap: wrap; gap: 10px; }
     .foot-links { gap: 12px 14px; }
     .foot-links .foot-action { font-size: 12px; padding: 5px 12px; }
+
+    /* Breite Ansichten (Baum, Tabelle) scrollen in sich — nicht die Seite */
+    .view-panel { min-height: 0; padding-top: 16px; overflow-x: auto; }
+    .market-scroll { max-width: 100%; }
+
+    /* Schrift & Kästen kompakter, mehr Platz für den Inhalt */
+    .intro-card { padding: 16px 16px; margin-bottom: 14px; }
+    .intro-card h2 { font-size: 16px; }
+    .intro-card p { font-size: 13.5px; line-height: 1.55; text-align: left; }
+    .intro-meta { font-size: 10px; }
+    .legend { padding: 12px 14px; font-size: 12px; gap: 10px 14px; }
+    .view-caption .vc-title { font-size: 14.5px; }
+    .view-caption .vc-sub { display: none; }   /* Untertitel am Handy ausblenden */
   }
   /* ---------- Modal / Maske (Modell-Detail) ---------- */
   .modal-overlay {
@@ -1969,7 +1988,7 @@
         d.appendChild(top);
         if (L(m.note)) d.appendChild(el("span", "d-note", esc(L(m.note))));
         var facts = el("div", "d-facts");
-        [["Preis", m.preis], ["Kontext", m.kontext], ["Lizenz", m.lizenz]].forEach(function (f) {
+        [[t("fact_preis"), L(m.preis)], [t("fact_kontext"), L(m.kontext)], [t("fact_lizenz"), L(m.lizenz)]].forEach(function (f) {
           if (!f[1] || f[1] === "—") return;
           var row = el("div", "d-fact");
           row.appendChild(el("span", "d-fact-k", esc(f[0])));
@@ -2028,11 +2047,11 @@
         top.appendChild(el("span", "status st-" + it.m.status, STATUS_LABEL[it.m.status] || ""));
         d.appendChild(top);
         d.appendChild(el("span", "d-prov", esc(it.p.name)));
-        if (it.m.note) d.appendChild(el("span", "d-note", esc(it.m.note)));
+        if (L(it.m.note)) d.appendChild(el("span", "d-note", esc(L(it.m.note))));
 
         // Kurzfakten (Preis, Kontext) — volle Angaben in der Detail-Maske
         var facts = el("div", "d-facts");
-        [["Preis", it.m.preis], ["Kontext", it.m.kontext]].forEach(function (f) {
+        [[t("fact_preis"), L(it.m.preis)], [t("fact_kontext"), L(it.m.kontext)]].forEach(function (f) {
           if (!f[1] || f[1] === "—") return;
           var row = el("div", "d-fact");
           row.appendChild(el("span", "d-fact-k", esc(f[0])));
