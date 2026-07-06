@@ -64,9 +64,10 @@ kein API-Schlüssel nötig. Die Katalog-Adresse steht in der Konstante `PROXY_UR
 ## Datenschutz & Besucherzähler
 
 Ein **cookieloser Besucherzähler (GoatCounter)** misst die ungefähre Reichweite, ohne Profile
-zu bilden. Details, die USA-Datenübermittlung (GitHub Pages, OpenRouter) und die Betroffenenrechte
-stehen in der eigenen, zweisprachigen `datenschutz.html`. Keine Werbe- oder Profiling-Werkzeuge,
-keine Cookies.
+zu bilden. Die Zahl wird **nicht auf der Seite angezeigt** (GoatCounter cacht die öffentliche
+Zahl stundenlang) — die Auswertung läuft im privaten GoatCounter-Dashboard. Details, die
+USA-Datenübermittlung (GitHub Pages, OpenRouter) und die Betroffenenrechte stehen in der eigenen,
+zweisprachigen `datenschutz.html`. Keine Werbe- oder Profiling-Werkzeuge, keine Cookies.
 
 ## Merkmale
 
