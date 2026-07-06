@@ -4,14 +4,15 @@
 ![HTML5](https://img.shields.io/badge/HTML5-e34f26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572b6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-f7df1e?logo=javascript&logoColor=black)
+![Sprachen](https://img.shields.io/badge/Sprachen-DE%20%C2%B7%20EN-2f6df6)
 ![Deploy](https://img.shields.io/badge/Deploy-GitHub%20Pages-222)
 ![Build](https://img.shields.io/badge/Build-none-3fb950)
 ![Dependencies](https://img.shields.io/badge/Dependencies-0-3fb950)
 ![Offline](https://img.shields.io/badge/Offline-per%20Doppelklick-3fb950)
 
 Eine quellengeprüfte Übersicht der großen KI-Anbieter und ihrer Modelle — sortiert
-nach Anbieter und Modelltyp, mit Nutzer-, Umsatz- und Bewertungszahlen. Ein Projekt
-von **Mika-Tec** (Hasan Tepegöz).
+nach Anbieter und Modelltyp, mit Nutzer-, Umsatz- und Bewertungszahlen, **zweisprachig
+(Deutsch / Englisch)**. Ein Projekt von **Mika-Tec** (Hasan Tepegöz).
 
 > Statische, **abhängigkeitsfreie Einzelseite** in Vanilla HTML/CSS/JavaScript —
 > kein Build, kein Framework, kein Server-Backend. Läuft offline durch Doppelklick
@@ -21,10 +22,10 @@ von **Mika-Tec** (Hasan Tepegöz).
 
 Die Seite bündelt die aktuellen Modelle der acht großen KI-Anbieter (OpenAI, Google,
 Anthropic, Meta, xAI, DeepSeek, Mistral, Alibaba/Qwen) und listet 21 weitere bekannte
-Anbieter. Sämtliche Interaktivität — Filter, Ansichtswechsel, Detailmasken, Hell/Dunkel —
-läuft **client-seitig in Vanilla JavaScript**. Es gibt keine Datenbank, kein CMS und
-keine externen Laufzeit-Abhängigkeiten; die Daten liegen als geprüfter, statischer Stand
-in einer einzigen Datei (`data.js`).
+Anbieter. Sämtliche Interaktivität — Filter, Ansichtswechsel, Detailmasken, Sprache,
+Hell/Dunkel — läuft **client-seitig in Vanilla JavaScript**. Es gibt keine Datenbank,
+kein CMS und keine externen Laufzeit-Abhängigkeiten; die Daten liegen als geprüfter,
+statischer Stand in einer einzigen Datei (`data.js`).
 
 ## Ansichten & Funktionen
 
@@ -37,17 +38,48 @@ in einer einzigen Datei (`data.js`).
   - **Gesamtliste** — Tabelle mit Nutzerzahlen, Umsatz/ARR, Bewertung, Gründung und Quelle
 - **Klickbare Modell-Kacheln** öffnen eine Detail-Maske (Beschreibung, Preis, Kontextfenster,
   Lizenz, Stärken, Einsatz, Links). Schließen per X, Klick außerhalb oder Escape.
-- **Typ-Filter** (Text · Bild · Audio · Video · Multimodal) und **Hell/Dunkel-Umschalter**
-  (Auswahl wird in `localStorage` gemerkt).
+- **Typ-Filter** (Text · Bild · Audio · Video · Multimodal), **Sprachumschalter (DE/EN)** und
+  **Hell/Dunkel-Umschalter** — Auswahl wird in `localStorage` gemerkt.
 - **Kurzliste weiterer Anbieter** — anklickbar, mit Kurzinfo und Link zur offiziellen Seite.
+- Eigene **Datenschutzseite** (`datenschutz.html`, DE/EN) für den cookielosen Besucherzähler.
+
+## Modell-Aktualität — zwei Kopf-Knöpfe
+
+Beide öffnen dasselbe Modal-Overlay und lassen `data.js` unangetastet (nichts wird
+automatisch überschrieben):
+
+- **„Neu & Geplant"** (`#newsBtn`, `renderNews`) — eine **handverlesene, quellenbelegte**
+  Liste aus `KI_ATLAS_NEU`, gruppiert nach *neu erschienen · aktuelle Flaggschiffe ·
+  angekündigt/geplant*, zweisprachig, jeder Eintrag mit Quelle. Ein **grünes Badge** zeigt,
+  welche Einträge bereits in den Anbieter-Karten stehen.
+- **„Alle Kataloge"** (`#refreshBtn`, `rfRenderReport`) — holt **anonym** den öffentlichen
+  Modellkatalog von **[OpenRouter](https://openrouter.ai)** (kein API-Schlüssel, kein Konto)
+  und gleicht die Modell-Kennungen per Teilstring mit `data.js` ab: bekannte mit Häkchen,
+  mögliche neue hervorgehoben. Reine Bild-/Audio-/Video-Anbieter und Apple sind im Katalog
+  nicht enthalten (ehrlicher Hinweis).
+
+Der Abruf läuft standardmäßig **direkt** aus dem Browser (OpenRouter erlaubt CORS). Der Ordner
+`proxy/` enthält optional einen **Cloudflare Worker**, der denselben Katalog serverseitig holt —
+für eine sauberere Datenschutz-Linie (Besucher-Browser kontaktiert dann nur den eigenen Worker).
+Ein-/ausgeschaltet wird das über die Konstante `PROXY_URL` in `index.html`.
+
+## Datenschutz & Besucherzähler
+
+Ein **cookieloser Besucherzähler (GoatCounter)** misst die ungefähre Reichweite, ohne Profile
+zu bilden. Details, die USA-Datenübermittlung (GitHub Pages, OpenRouter) und die Betroffenenrechte
+stehen in der eigenen, zweisprachigen `datenschutz.html`. Keine Werbe- oder Profiling-Werkzeuge,
+keine Cookies.
 
 ## Merkmale
 
 - **Zero-Dependency & build-less** — kein npm, kein Bundler, kein Transpiler; direkt auslieferbar.
+- **Zweisprachig (DE/EN)** — UI-Texte über ein `I18N`-Wörterbuch, Datenfelder als `{ de, en }`;
+  Umschaltung ohne Neuladen, Sprache in `localStorage` gemerkt.
 - **Daten von Darstellung getrennt** — `data.js` (geprüfte Daten) und `index.html` (Anzeige/Logik).
 - **Sicheres Rendering** — alle dynamischen Inhalte laufen über `esc()` bzw. `textContent`; keine
   ungeprüfte HTML-Interpolation von Datenwerten.
-- **Datensparsam** — keine Cookies, kein Tracking-Profil, keine externen Schriften oder CDNs.
+- **Datensparsam** — keine Cookies und kein Tracking-Profil; einziger Zähler ist das cookielose
+  GoatCounter, externe Abrufe (OpenRouter) nur auf ausdrücklichen Klick.
 - **Cache-Busting** — `data.js` wird versioniert eingebunden (`data.js?v=N`); bei Datenänderung
   wird die Version erhöht.
 - **Barrierearm** — ARIA-Rollen für Tabs und Dialog, Tastatur-Bedienung (Enter/Escape), sichtbarer Fokus.
@@ -58,7 +90,9 @@ Preise stehen nur dort, wo es einen **öffentlichen Token-Preis** gibt (quelleng
 offiziellen Anbieterseiten). Bei Bild-/Audio-/Video-Modellen (andere Abrechnung), Open-Weight-Modellen
 und noch nicht veröffentlichten Modellen steht bewusst ein **ehrlicher Hinweis statt einer erfundenen
 Zahl**. In der Gesamtliste sind Nutzer-/Umsatzzahlen Schätzungen bzw. Run-Rate (ARR) und nicht direkt
-vergleichbar (WAU vs. MAU); leere Felder bleiben „—", jede Zeile nennt ihre Quelle.
+vergleichbar (WAU vs. MAU); leere Felder bleiben „—", jede Zeile nennt ihre Quelle. Die Liste
+„Neu & Geplant" ist handverlesen und quellenbelegt; „geplant" beruht auf öffentlichen Ankündigungen
+und kann sich ändern.
 
 **Datenstand:** Modelle 4. Juli 2026 · Marktzahlen Juli 2026.
 
@@ -66,34 +100,39 @@ vergleichbar (WAU vs. MAU); leere Felder bleiben „—", jede Zeile nennt ihre 
 
 | Ebene        | Umsetzung |
 |--------------|-----------|
-| Markup       | HTML5, semantisch, eine Einzelseite |
+| Markup       | HTML5, semantisch, eine Einzelseite (+ `datenschutz.html`) |
 | Styling      | CSS3 — Custom Properties, Grid, Flexbox, `color-mix()`, `clamp()`, Media Queries |
-| Interaktion  | Vanilla JavaScript (eine IIFE), `localStorage` (Theme/Ansicht), Modal-Steuerung |
-| Daten        | `data.js` — drei Globals (`KI_ATLAS_DATA`, `KI_ATLAS_WEITERE`, `KI_ATLAS_MARKT`) |
+| Interaktion  | Vanilla JavaScript (eine IIFE), `localStorage` (Sprache/Theme/Ansicht), Modal-Steuerung, `fetch` (OpenRouter) |
+| Daten        | `data.js` — Globals `KI_ATLAS_META`, `KI_ATLAS_DATA`, `KI_ATLAS_WEITERE`, `KI_ATLAS_MARKT`, `KI_ATLAS_NEU` |
+| Proxy (opt.) | `proxy/` — Cloudflare Worker holt den öffentlichen OpenRouter-Katalog (kein Schlüssel) |
 | Hosting      | GitHub Pages, Auslieferung aus dem Repo-Root |
 
 ## Projektstruktur
 
 ```text
 ki-ai-netz/
-├── index.html   ← die Seite: Struktur, CSS und gesamte Render-Logik
-├── data.js      ← die geprüften Daten (Anbieter, Modelle, Marktzahlen)
-├── README.md    ← diese Datei
+├── index.html        ← die Seite: Struktur, CSS und gesamte Render-Logik
+├── data.js           ← die geprüften Daten (Anbieter, Modelle, Marktzahlen, Neu-Liste)
+├── datenschutz.html  ← eigene, zweisprachige Datenschutzseite
+├── proxy/            ← optionaler Cloudflare Worker (OpenRouter-Katalog, schlüssellos)
+├── README.md         ← diese Datei
 ├── .gitignore
-└── .nojekyll    ← GitHub Pages liefert statische Dateien direkt aus
+└── .nojekyll         ← GitHub Pages liefert statische Dateien direkt aus
 ```
 
 ## Architektur
 
-Nur zwei relevante Dateien, bewusst getrennt nach **Daten** und **Darstellung**:
+Kern sind zwei Dateien, bewusst getrennt nach **Daten** und **Darstellung**:
 
-- **`data.js`** setzt drei Globals: `KI_ATLAS_DATA` (die acht großen Anbieter mit Modellen),
-  `KI_ATLAS_WEITERE` (Kurzliste weiterer Anbieter) und `KI_ATLAS_MARKT` (Marktzahlen der
-  Gesamtliste). `data.js` muss **im selben Ordner** neben `index.html` liegen.
-- **`index.html`** enthält Struktur, CSS und die Render-Logik in einer IIFE. Zustand sind
-  nur zwei Variablen (aktiver Typ- und Anbieter-Filter) plus die aktive Ansicht; jede
-  Filter-/Ansicht-Änderung ruft schlicht neu. Ansichten liegen in einer `VIEWS`-Map
-  (Raster, Baum, Detailkarten, Gesamtliste).
+- **`data.js`** setzt fünf Globals: `KI_ATLAS_META` (Stand/Hinweise), `KI_ATLAS_DATA` (die acht
+  großen Anbieter mit Modellen), `KI_ATLAS_WEITERE` (Kurzliste weiterer Anbieter), `KI_ATLAS_MARKT`
+  (Marktzahlen der Gesamtliste) und `KI_ATLAS_NEU` (handverlesene Neu-/Aktuell-/Geplant-Liste mit
+  Quellen). Übersetzbare Felder liegen als `{ de, en }`. `data.js` muss **im selben Ordner** neben
+  `index.html` liegen.
+- **`index.html`** enthält Struktur, CSS und die Render-Logik in einer IIFE. Zustand sind nur zwei
+  Variablen (aktiver Typ- und Anbieter-Filter) plus aktive Ansicht und Sprache; jede Änderung ruft
+  schlicht neu. Ansichten liegen in einer `VIEWS`-Map (Raster, Baum, Detailkarten, Gesamtliste);
+  die zwei Kopf-Knöpfe nutzen `renderNews` bzw. `rfRenderReport`.
 
 ## Lokale Nutzung
 
@@ -112,15 +151,12 @@ im `<script src="data.js?v=N">` erhöhen, sonst zeigt der Browser einen alten St
 ## Deployment
 
 Auslieferung über **GitHub Pages** aus dem Repo-Root (`main`). Ein `.nojekyll` sorgt dafür,
-dass die statischen Dateien direkt ausgeliefert werden.
+dass die statischen Dateien direkt ausgeliefert werden. GitHub cacht die Seiten rund 10 Minuten;
+nach einem Push ggf. hart neu laden (Safari: `Cmd + Option + R`).
 
-## Live-Daten (geplant)
-
-Der **Aktualisieren-Knopf** ist im Frontend vorbereitet, liefert aber noch keine Live-Daten:
-Eine reine Webseite darf die Modell-Endpunkte der Anbieter nicht direkt aus dem Browser
-abfragen (CORS; API-Schlüssel dürfen nicht im Seitencode stehen). Geplant ist ein kleiner
-**Serverless-Proxy**, der die Schlüssel sicher hält und zur Laufzeit die Daten aktualisiert;
-`data.js` bleibt der geprüfte statische Rückfall-Stand.
+Der optionale Katalog-Proxy wird separat als **Cloudflare Worker** betrieben (Anleitung in
+`proxy/README.md`) — er ist für den Live-Abgleich **nicht zwingend** nötig, da OpenRouter den
+direkten Abruf aus dem Browser erlaubt.
 
 ---
 
