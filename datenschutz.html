@@ -7,11 +7,15 @@
 <title>Datenschutz — KI/AI - Netz</title>
 <meta name="description" content="Datenschutzhinweise für die Seite KI/AI - Netz: cookieloser Besucherzähler (GoatCounter), Hosting über GitHub Pages, keine weiteren Tracker.">
 <script>
-  // Theme früh anwenden (gegen Flackern) — dieselbe Einstellung wie die Hauptseite
+  // Theme und Sprache früh anwenden (gegen Flackern) — dieselben Einstellungen wie die Hauptseite
   (function () {
     try {
       var t = localStorage.getItem("kiatlas-theme");
       if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+    try {
+      var l = localStorage.getItem("kiatlas-lang");
+      document.documentElement.setAttribute("lang", l === "en" ? "en" : "de");
     } catch (e) {}
   })();
 </script>
@@ -29,48 +33,63 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     background: var(--bg); color: var(--ink); font-family: var(--sans);
-    line-height: 1.65; padding: 0 0 64px; -webkit-font-smoothing: antialiased;
+    line-height: 1.7; padding: 0 0 80px; -webkit-font-smoothing: antialiased;
   }
   .top {
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    padding: 16px clamp(16px, 4vw, 40px);
+    padding: 18px clamp(20px, 5vw, 56px);
     background: var(--panel); border-bottom: 1px solid var(--line);
     position: sticky; top: 0; z-index: 10;
   }
-  .top .brand { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+  .top .brand { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
   .top .brand span { color: var(--accent); }
-  .top-actions { display: inline-flex; gap: 10px; }
+  .top-actions { display: inline-flex; align-items: center; gap: 12px; }
+  /* Sprachumschalter — gleiche Optik wie auf der Hauptseite */
+  .lang-switch {
+    display: inline-flex; border: 1px solid var(--card-line); border-radius: 9px;
+    overflow: hidden; background: var(--panel);
+  }
+  .lang-btn {
+    font: inherit; font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+    padding: 8px 13px; border: 0; background: transparent; color: var(--ink-3);
+    cursor: pointer; transition: background 0.15s, color 0.15s;
+  }
+  .lang-btn + .lang-btn { border-left: 1px solid var(--card-line); }
+  .lang-btn.active { background: var(--accent); color: #fff; }
   .btn {
     display: inline-flex; align-items: center; gap: 7px;
-    font: inherit; font-size: 13px; font-weight: 500;
-    padding: 8px 14px; border: 1px solid var(--card-line); border-radius: 9px;
+    font: inherit; font-size: 14px; font-weight: 500;
+    padding: 9px 16px; border: 1px solid var(--card-line); border-radius: 9px;
     background: var(--panel); color: var(--ink); cursor: pointer; text-decoration: none;
     transition: border-color 0.15s, color 0.15s;
   }
   .btn:hover { border-color: var(--accent); color: var(--accent); }
-  .wrap { max-width: 860px; margin: 0 auto; padding: 40px clamp(16px, 4vw, 40px) 0; }
-  h1 { font-size: clamp(24px, 4vw, 32px); font-weight: 700; letter-spacing: -0.01em; margin-bottom: 10px; }
-  .lead { color: var(--ink-2); font-size: 15px; margin-bottom: 8px; }
-  .stand { color: var(--ink-3); font-family: var(--mono); font-size: 12px; margin-bottom: 28px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 52px clamp(20px, 5vw, 56px) 0; }
+  h1 { font-size: clamp(30px, 5vw, 42px); font-weight: 700; letter-spacing: -0.015em; margin-bottom: 14px; }
+  .lead { color: var(--ink-2); font-size: 17px; margin-bottom: 10px; max-width: 900px; }
+  .stand { color: var(--ink-3); font-family: var(--mono); font-size: 13px; margin-bottom: 34px; }
   .note {
     background: var(--panel); border: 1px solid var(--card-line);
-    border-left: 4px solid var(--accent); border-radius: 10px;
-    padding: 16px 18px; margin: 22px 0; color: var(--ink-2); font-size: 14px;
+    border-left: 4px solid var(--accent); border-radius: 12px;
+    padding: 20px 24px; margin: 28px 0; color: var(--ink-2); font-size: 15.5px;
   }
   .note b, .note strong { color: var(--ink); }
   h2 {
-    font-size: 18px; font-weight: 700; margin: 30px 0 10px;
-    padding-bottom: 7px; border-bottom: 1px solid var(--line); color: var(--ink);
+    font-size: 21px; font-weight: 700; margin: 40px 0 12px;
+    padding-bottom: 9px; border-bottom: 1px solid var(--line); color: var(--ink);
   }
-  h3 { font-size: 15px; font-weight: 650; margin: 18px 0 6px; color: var(--ink); }
-  p { color: var(--ink-2); font-size: 14.5px; margin: 8px 0; }
-  ul { margin: 8px 0 8px 22px; color: var(--ink-2); font-size: 14.5px; }
-  li { margin: 4px 0; }
+  h3 { font-size: 16.5px; font-weight: 650; margin: 22px 0 7px; color: var(--ink); }
+  p { color: var(--ink-2); font-size: 16px; margin: 10px 0; }
+  ul { margin: 10px 0 10px 26px; color: var(--ink-2); font-size: 16px; }
+  li { margin: 6px 0; }
   a { color: var(--accent); }
-  code { font-family: var(--mono); font-size: 13px; background: var(--accent-soft); color: var(--accent); padding: 1px 6px; border-radius: 5px; }
-  .foot { max-width: 860px; margin: 40px auto 0; padding: 22px clamp(16px, 4vw, 40px) 0;
-    border-top: 1px solid var(--line); color: var(--ink-3); font-size: 12.5px; }
+  code { font-family: var(--mono); font-size: 14px; background: var(--accent-soft); color: var(--accent); padding: 1px 7px; border-radius: 5px; }
+  .foot { max-width: 1180px; margin: 52px auto 0; padding: 26px clamp(20px, 5vw, 56px) 0;
+    border-top: 1px solid var(--line); color: var(--ink-3); font-size: 13.5px; }
   .foot a { color: var(--ink-2); }
+  /* Sprach-Sichtbarkeit: nur die aktive Sprache zeigen */
+  html[lang="de"] [data-lang-block="en"] { display: none; }
+  html[lang="en"] [data-lang-block="de"] { display: none; }
 </style>
 </head>
 <body>
@@ -78,12 +97,17 @@
 <header class="top">
   <div class="brand">KI<span>/</span>AI - Netz</div>
   <div class="top-actions">
-    <a class="btn" href="index.html">← Zur Übersicht</a>
+    <div class="lang-switch" role="group" aria-label="Sprache / Language">
+      <button class="lang-btn" data-lang="de" type="button">DE</button>
+      <button class="lang-btn" data-lang="en" type="button">EN</button>
+    </div>
+    <a class="btn" href="index.html" data-back>← Zur Übersicht</a>
     <button class="btn" id="themeBtn" type="button" aria-label="Hell/Dunkel wechseln">Hell/Dunkel</button>
   </div>
 </header>
 
-<main class="wrap">
+<!-- ===================== DEUTSCH ===================== -->
+<main class="wrap" data-lang-block="de">
   <h1>Datenschutz</h1>
   <p class="lead">Datenschutzhinweise für die Seite <strong>KI/AI - Netz</strong> (<code>cehha79.github.io/ki-ai-netz</code>), ein Projekt von Mika-Tec.</p>
   <p class="stand">Stand: Juli 2026</p>
@@ -146,8 +170,100 @@
   </div>
 </main>
 
+<!-- ===================== ENGLISH ===================== -->
+<main class="wrap" data-lang-block="en">
+  <h1>Privacy</h1>
+  <p class="lead">Privacy notice for the site <strong>KI/AI - Netz</strong> (<code>cehha79.github.io/ki-ai-netz</code>), a project by Mika-Tec.</p>
+  <p class="stand">Last updated: July 2026</p>
+
+  <div class="note">
+    <b>In short:</b> This site uses <b>no cookies</b> and no advertising or profiling tools.
+    For basic traffic measurement it runs a <b>cookieless visitor counter (GoatCounter)</b> that
+    builds <b>no personal profiles</b>. Beyond that, personal data is only processed if you
+    actively contact us by e-mail.
+  </div>
+
+  <h2>1. Controller</h2>
+  <p>The controller for this site is Mika-Tec (Hasan Tepegöz). Address, contact details and the complete
+    legal information can be found in the <a href="https://mika-tec.com/impressum.html" target="_blank" rel="noopener">imprint</a>
+    and in the detailed <a href="https://mika-tec.com/datenschutz.html" target="_blank" rel="noopener">Mika-Tec privacy policy</a>.</p>
+
+  <h2>2. Visitor counter (GoatCounter)</h2>
+  <p>To estimate the approximate number of visitors we use <b>GoatCounter</b> (<a href="https://www.goatcounter.com" target="_blank" rel="noopener">goatcounter.com</a>)
+    — a data-minimising, open-source analytics tool. GoatCounter works <b>without cookies</b> and
+    <b>without cross-device recognition</b>.</p>
+  <h3>What is recorded</h3>
+  <ul>
+    <li>the page visited and the referring source (referrer),</li>
+    <li>browser and system type as well as screen size,</li>
+    <li>an approximate country of origin (derived from the IP address).</li>
+  </ul>
+  <h3>What explicitly does <em>not</em> happen</h3>
+  <ul>
+    <li><b>No cookies</b> are set.</li>
+    <li>The <b>IP address is not stored</b> — it is used only briefly to determine the approximate country and is then discarded.</li>
+    <li><b>No personal user profiles</b> are built and no data is passed on to advertising networks.</li>
+  </ul>
+  <p>The <b>legal basis</b> is our legitimate interest in simple, data-minimising traffic measurement
+    (Art. 6(1)(f) GDPR). As no personal data is stored permanently, no consent is required and a
+    cookie banner is not needed.</p>
+
+  <h2>3. Hosting (GitHub Pages)</h2>
+  <p>This site is served via <b>GitHub Pages</b> (GitHub, Inc., USA). When the page is accessed, GitHub
+    processes technically necessary connection data in server log files (including IP address, timestamp,
+    requested file) to ensure delivery and security. The legal basis is Art. 6(1)(f) GDPR. Further details
+    are set out in GitHub's privacy statement
+    (<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub Privacy Statement</a>).</p>
+
+  <h2>4. No further trackers, no external resources</h2>
+  <p>Beyond the visitor counter mentioned above, we embed <b>no</b> analytics or advertising services,
+    <b>no</b> external fonts, maps or content delivery networks. All design elements are delivered
+    directly with the page.</p>
+
+  <h2>5. Contact and your rights</h2>
+  <p>If you contact us by e-mail, we process your details solely to handle your enquiry. You have the
+    rights to access, rectification, erasure, restriction of processing, data portability and objection,
+    as well as the right to lodge a complaint with a supervisory authority. A detailed description of
+    these rights can be found in the
+    <a href="https://mika-tec.com/datenschutz.html" target="_blank" rel="noopener">Mika-Tec privacy policy</a>.</p>
+
+  <div class="foot">
+    This notice applies to the KI/AI - Netz site. For all further information, the
+    <a href="https://mika-tec.com/datenschutz.html" target="_blank" rel="noopener">Mika-Tec privacy policy</a> applies.
+    · <a href="index.html">Back to the overview</a>
+  </div>
+</main>
+
 <script>
   (function () {
+    // Sprache
+    function curLang() {
+      try {
+        var l = localStorage.getItem("kiatlas-lang");
+        return l === "en" ? "en" : "de";
+      } catch (e) { return "de"; }
+    }
+    var backLink = document.querySelector("[data-back]");
+    function applyLang(lang) {
+      document.documentElement.setAttribute("lang", lang);
+      document.title = (lang === "en" ? "Privacy" : "Datenschutz") + " — KI/AI - Netz";
+      if (backLink) backLink.textContent = lang === "en" ? "← Back to overview" : "← Zur Übersicht";
+      var btns = document.querySelectorAll(".lang-btn");
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.toggle("active", btns[i].getAttribute("data-lang") === lang);
+      }
+    }
+    var langBtns = document.querySelectorAll(".lang-btn");
+    for (var i = 0; i < langBtns.length; i++) {
+      langBtns[i].addEventListener("click", function () {
+        var lang = this.getAttribute("data-lang");
+        try { localStorage.setItem("kiatlas-lang", lang); } catch (e) {}
+        applyLang(lang);
+      });
+    }
+    applyLang(curLang());
+
+    // Theme
     var btn = document.getElementById("themeBtn");
     function cur() {
       var a = document.documentElement.getAttribute("data-theme");
