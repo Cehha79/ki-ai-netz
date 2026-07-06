@@ -58,6 +58,12 @@ window.KI_ATLAS_NEU = [
     info: { de: "Microsofts erstes von Grund auf selbst trainiertes Reasoning-Modell.", en: "Microsoft's first reasoning model trained from scratch in-house." },
     quelleName: "currentaffair.today", quelleUrl: "https://www.currentaffair.today/blog/technology-13/4-ai-giants-launch-in-14-days-google-i-o-openai-gpt-5-5-anthropic-opus-4-8-microsoft-mai-who-wins-790"
   },
+  {
+    name: "Mistral Large 3", anbieter: "Mistral AI", kategorie: "neu", typ: "multi",
+    stand: { de: "Juli 2026", en: "July 2026" },
+    info: { de: "Neues Open-Weight-Flaggschiff (Apache 2.0), Sparse-MoE mit 41 Mrd. aktiven / 675 Mrd. Gesamtparametern; erstes MoE seit Mixtral, mit Bildverständnis.", en: "New open-weight flagship (Apache 2.0), sparse MoE with 41B active / 675B total parameters; first MoE since Mixtral, with image understanding." },
+    quelleName: "mistral.ai", quelleUrl: "https://mistral.ai/news/mistral-3/"
+  },
 
   // --- Aktuelle Flaggschiffe ---
   {
@@ -115,6 +121,18 @@ window.KI_ATLAS_NEU = [
     stand: { de: "2026", en: "2026" },
     info: { de: "Angekündigt und auf lang laufende, agentische Unternehmensaufgaben optimiert; wechselt in die allgemeine Verfügbarkeit.", en: "Announced and optimized for long-running, agentic enterprise tasks; moving to general availability." },
     quelleName: "centerbit.co", quelleUrl: "https://centerbit.co/en/blog/ai-rumors-june-2026-gpt-5-6-gemini-3-5-pro-claude-mythos"
+  },
+  {
+    name: "Grok 5", anbieter: "xAI", kategorie: "geplant", typ: "multi",
+    stand: { de: "erwartet 2026", en: "expected 2026" },
+    info: { de: "Angekündigtes nächstes Flaggschiff (~6 Bio. Parameter, MoE), trainiert auf xAIs Colossus-2-Cluster; Termin von Q2 2026 verschoben, offiziell noch offen.", en: "Announced next flagship (~6T parameters, MoE), trained on xAI's Colossus 2 cluster; timing slipped from Q2 2026, still officially open." },
+    quelleName: "felloai.com", quelleUrl: "https://felloai.com/all-we-know-so-far-about-grok-5/"
+  },
+  {
+    name: "DeepSeek R2", anbieter: "DeepSeek", kategorie: "geplant", typ: "text",
+    stand: { de: "unbestätigt", en: "unconfirmed" },
+    info: { de: "Erwarteter Reasoning-Nachfolger; bislang kein bestätigter Termin — Berichten zufolge wegen Leistungs- und Chip-Problemen verzögert. Ausgeliefert wurde stattdessen V4.", en: "Expected reasoning successor; no confirmed date so far — reportedly delayed by performance and chip issues. V4 shipped instead." },
+    quelleName: "chat-deep.ai", quelleUrl: "https://chat-deep.ai/guide/deepseek-roadmap-rumors/"
   },
 ];
 

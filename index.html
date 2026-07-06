@@ -1281,7 +1281,7 @@
 
   <button class="btn" id="newsBtn" title="Neue, aktuelle und geplante Modelle – gepflegte Liste">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.8L18.7 9l-4.8 1.9L12 15.7 10.1 10.9 5.3 9l4.8-1.2L12 3z"/><path d="M19 14v4M17 16h4M5 5v2M4 6h2"/></svg>
-    <span data-i18n="btn_updates">Aktualisieren</span>
+    <span data-i18n="btn_updates">Neu &amp; Geplant</span>
   </button>
 
   <button class="btn" id="refreshBtn" title="Vollständiger Modell-Katalog aller Anbieter (öffentliche Quelle)">
@@ -1430,7 +1430,7 @@
 
 <!-- ?v= zwingt den Browser, die Daten neu zu laden (Cache-Brecher).
      Bei Datenänderungen die Versionsnummer hochzählen. -->
-<script src="data.js?v=10"></script>
+<script src="data.js?v=11"></script>
 <script>
 (function () {
   "use strict";
@@ -1461,7 +1461,7 @@
     de: {
       sub_stand: "Übersicht der Modelle · Stand ",
       filter_typ: "Typ", typ_all: "Alle", typ_text: "Text", typ_image: "Bild", typ_audio: "Audio", typ_video: "Video", typ_multi: "Multimodal",
-      btn_refresh: "Aktualisieren", btn_catalog: "Alle Kataloge", btn_updates: "Aktualisieren", theme_dark: "Dunkel", theme_light: "Hell", lang_label: "Sprache",
+      btn_refresh: "Aktualisieren", btn_catalog: "Alle Kataloge", btn_updates: "Neu & Geplant", theme_dark: "Dunkel", theme_light: "Hell", lang_label: "Sprache",
       all_providers: "Alle Anbieter",
       rf_title: "Live-Abgleich der Modelle", rf_eyebrow: "Aktualisieren",
       rf_loading: "Frage die Anbieter-APIs ab …",
@@ -1476,7 +1476,7 @@
       rf_notconfigured_text: "Der Proxy-Code liegt bereit (Ordner proxy/). Nach dem Cloudflare-Deploy die Worker-URL in index.html bei PROXY_URL eintragen — dann holt dieser Knopf echte Live-Daten. Bis dahin bleibt data.js der geprüfte Stand.",
       rf_fail_title: "Live-Abruf fehlgeschlagen",
       rf_fail_text: "Der Proxy war nicht erreichbar. Prüfe die Worker-URL und ob der Cloudflare-Worker läuft.",
-      news_eyebrow: "Aktualisierung", news_title: "Neu, aktuell & geplant",
+      news_eyebrow: "Neu & Geplant", news_title: "Neu, aktuell & geplant",
       news_sub: "Handverlesene, quellenbelegte Übersicht: kürzlich erschienene, aktuelle und angekündigte/geplante Modelle. Diese Liste wird gepflegt und ist bewusst kurz gehalten — jeder Eintrag mit Quelle.",
       news_cat_neu: "Neu erschienen", news_cat_aktuell: "Aktuelle Flaggschiffe", news_cat_geplant: "Angekündigt / geplant",
       news_empty: "Noch keine Einträge gepflegt.", news_source: "Quelle", news_stand: "Stand",
@@ -1512,7 +1512,7 @@
     en: {
       sub_stand: "Overview of models · as of ",
       filter_typ: "Type", typ_all: "All", typ_text: "Text", typ_image: "Image", typ_audio: "Audio", typ_video: "Video", typ_multi: "Multimodal",
-      btn_refresh: "Refresh", btn_catalog: "All catalogs", btn_updates: "Updates", theme_dark: "Dark", theme_light: "Light", lang_label: "Language",
+      btn_refresh: "Refresh", btn_catalog: "All catalogs", btn_updates: "New & planned", theme_dark: "Dark", theme_light: "Light", lang_label: "Language",
       all_providers: "All providers",
       rf_title: "Live model check", rf_eyebrow: "Refresh",
       rf_loading: "Querying the provider APIs …",
@@ -1527,7 +1527,7 @@
       rf_notconfigured_text: "The proxy code is ready (folder proxy/). After deploying to Cloudflare, set the worker URL in index.html at PROXY_URL — then this button fetches real live data. Until then, data.js remains the verified state.",
       rf_fail_title: "Live retrieval failed",
       rf_fail_text: "The proxy could not be reached. Check the worker URL and whether the Cloudflare worker is running.",
-      news_eyebrow: "Updates", news_title: "New, current & planned",
+      news_eyebrow: "New & planned", news_title: "New, current & planned",
       news_sub: "A hand-picked, sourced overview: recently released, current and announced/planned models. This list is curated and deliberately concise — every entry with a source.",
       news_cat_neu: "Newly released", news_cat_aktuell: "Current flagships", news_cat_geplant: "Announced / planned",
       news_empty: "No entries curated yet.", news_source: "Source", news_stand: "As of",
