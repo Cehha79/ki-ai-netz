@@ -58,10 +58,8 @@ automatisch überschrieben):
   mögliche neue hervorgehoben. Reine Bild-/Audio-/Video-Anbieter und Apple sind im Katalog
   nicht enthalten (ehrlicher Hinweis).
 
-Der Abruf läuft standardmäßig **direkt** aus dem Browser (OpenRouter erlaubt CORS). Der Ordner
-`proxy/` enthält optional einen **Cloudflare Worker**, der denselben Katalog serverseitig holt —
-für eine sauberere Datenschutz-Linie (Besucher-Browser kontaktiert dann nur den eigenen Worker).
-Ein-/ausgeschaltet wird das über die Konstante `PROXY_URL` in `index.html`.
+Der Abruf läuft **direkt** aus dem Browser (OpenRouter erlaubt CORS) — kein eigener Server und
+kein API-Schlüssel nötig. Die Katalog-Adresse steht in der Konstante `PROXY_URL` in `index.html`.
 
 ## Datenschutz & Besucherzähler
 
@@ -104,7 +102,7 @@ und kann sich ändern.
 | Styling      | CSS3 — Custom Properties, Grid, Flexbox, `color-mix()`, `clamp()`, Media Queries |
 | Interaktion  | Vanilla JavaScript (eine IIFE), `localStorage` (Sprache/Theme/Ansicht), Modal-Steuerung, `fetch` (OpenRouter) |
 | Daten        | `data.js` — Globals `KI_ATLAS_META`, `KI_ATLAS_DATA`, `KI_ATLAS_WEITERE`, `KI_ATLAS_MARKT`, `KI_ATLAS_NEU` |
-| Proxy (opt.) | `proxy/` — Cloudflare Worker holt den öffentlichen OpenRouter-Katalog (kein Schlüssel) |
+| Live-Abgleich| Direktabruf des öffentlichen OpenRouter-Katalogs (kein Schlüssel, kein Konto) |
 | Hosting      | GitHub Pages, Auslieferung aus dem Repo-Root |
 
 ## Projektstruktur
@@ -114,7 +112,6 @@ ki-ai-netz/
 ├── index.html        ← die Seite: Struktur, CSS und gesamte Render-Logik
 ├── data.js           ← die geprüften Daten (Anbieter, Modelle, Marktzahlen, Neu-Liste)
 ├── datenschutz.html  ← eigene, zweisprachige Datenschutzseite
-├── proxy/            ← optionaler Cloudflare Worker (OpenRouter-Katalog, schlüssellos)
 ├── README.md         ← diese Datei
 ├── .gitignore
 └── .nojekyll         ← GitHub Pages liefert statische Dateien direkt aus
@@ -153,10 +150,6 @@ im `<script src="data.js?v=N">` erhöhen, sonst zeigt der Browser einen alten St
 Auslieferung über **GitHub Pages** aus dem Repo-Root (`main`). Ein `.nojekyll` sorgt dafür,
 dass die statischen Dateien direkt ausgeliefert werden. GitHub cacht die Seiten rund 10 Minuten;
 nach einem Push ggf. hart neu laden (Safari: `Cmd + Option + R`).
-
-Der optionale Katalog-Proxy wird separat als **Cloudflare Worker** betrieben (Anleitung in
-`proxy/README.md`) — er ist für den Live-Abgleich **nicht zwingend** nötig, da OpenRouter den
-direkten Abruf aus dem Browser erlaubt.
 
 ---
 

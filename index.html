@@ -1564,7 +1564,7 @@
       rf_nolive_title: "Nicht im Katalog (bitte manuell prüfen)",
       rf_nolive_text: "Reine Bild-, Audio- und Video-Anbieter (Midjourney, Runway, ElevenLabs, Stability, Luma, Suno, Black Forest Labs) sowie Apple sind im OpenRouter-Katalog nicht enthalten. Neuheiten dort bitte über die Anbieter-Links in den Karten prüfen.",
       rf_notconfigured_title: "Live-Abruf noch nicht verbunden",
-      rf_notconfigured_text: "Der Proxy-Code liegt bereit (Ordner proxy/). Nach dem Cloudflare-Deploy die Worker-URL in index.html bei PROXY_URL eintragen — dann holt dieser Knopf echte Live-Daten. Bis dahin bleibt data.js der geprüfte Stand.",
+      rf_notconfigured_text: "Der Live-Abruf ist nicht konfiguriert (PROXY_URL ist leer). data.js bleibt der geprüfte Stand.",
       rf_fail_title: "Live-Abruf fehlgeschlagen",
       rf_fail_text: "Der Proxy war nicht erreichbar. Prüfe die Worker-URL und ob der Cloudflare-Worker läuft.",
       news_eyebrow: "Neu & Geplant", news_title: "Neu, aktuell & geplant",
@@ -1617,7 +1617,7 @@
       rf_nolive_title: "Not in the catalog (please check manually)",
       rf_nolive_text: "Pure image, audio and video providers (Midjourney, Runway, ElevenLabs, Stability, Luma, Suno, Black Forest Labs) and Apple are not in the OpenRouter catalog. Please check for news there via the provider links in the cards.",
       rf_notconfigured_title: "Live retrieval not connected yet",
-      rf_notconfigured_text: "The proxy code is ready (folder proxy/). After deploying to Cloudflare, set the worker URL in index.html at PROXY_URL — then this button fetches real live data. Until then, data.js remains the verified state.",
+      rf_notconfigured_text: "Live retrieval is not configured (PROXY_URL is empty). data.js remains the verified state.",
       rf_fail_title: "Live retrieval failed",
       rf_fail_text: "The proxy could not be reached. Check the worker URL and whether the Cloudflare worker is running.",
       news_eyebrow: "New & planned", news_title: "New, current & planned",
@@ -2269,14 +2269,10 @@
     applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
   });
 
-  /* ---------- Aktualisieren: Live-Abgleich der Modelle (Schritt 2) ----------
+  /* ---------- Aktualisieren: Live-Abgleich der Modelle ----------
      Holt den öffentlichen OpenRouter-Katalog (anonym, ohne Schlüssel, ohne
-     Konto) und gleicht die Modell-Kennungen mit data.js ab. data.js bleibt der
-     geprüfte Stand — nichts wird automatisch überschrieben.
-     Direktabruf (funktioniert sofort). Für eine sauberere Datenschutz-Linie
-     kann hier stattdessen der eigene Worker eingetragen werden, der denselben
-     Katalog serverseitig holt (siehe proxy/):
-       "https://ki-ai-netz-proxy.calm-block-d696.workers.dev"  */
+     Konto) direkt aus dem Browser und gleicht die Modell-Kennungen mit data.js
+     ab. data.js bleibt der geprüfte Stand — nichts wird automatisch überschrieben. */
   var PROXY_URL = "https://openrouter.ai/api/v1/models";
 
   // OpenRouter-Präfix -> Anbieter-id in data.js (Hauptanbieter)
