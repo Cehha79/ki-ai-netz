@@ -1190,6 +1190,41 @@
   }
   .price-hint { font-size: 11px; color: var(--ink-3); margin-top: 10px; }
 
+  /* Live-Abgleich (Aktualisieren) — nutzt dasselbe Modal-Overlay */
+  .rf-sub { font-size: 13px; color: var(--ink-2); line-height: 1.6; margin: 0 0 18px; }
+  .rf-prov { margin: 0 0 16px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .rf-prov-head {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 11px 14px; background: var(--panel-2, var(--bg)); border-bottom: 1px solid var(--line);
+  }
+  .rf-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .rf-name { font-weight: 700; font-size: 14.5px; color: var(--ink); }
+  .rf-counts { font-size: 12px; color: var(--ink-3); font-family: var(--mono); margin-left: auto; }
+  .rf-badge {
+    font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent);
+  }
+  .rf-badge.warn { background: rgba(245,158,11,0.15); color: #b45309; }
+  html[data-theme="dark"] .rf-badge.warn { color: #fbbf24; }
+  .rf-list { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 14px; }
+  .rf-id {
+    font-family: var(--mono); font-size: 11.5px; padding: 3px 8px; border-radius: 7px;
+    border: 1px solid var(--line); color: var(--ink-3); background: transparent;
+  }
+  .rf-id.known { opacity: 0.55; }
+  .rf-id.known::before { content: "✓ "; color: var(--accent); }
+  .rf-id.newish { color: var(--ink); border-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+  .rf-err { padding: 12px 14px; font-size: 12.5px; color: var(--ink-3); font-family: var(--mono); }
+  .rf-missing { padding: 0 14px 12px; font-size: 12px; color: var(--ink-2); }
+  .rf-missing b { color: var(--ink); }
+  .rf-note {
+    margin-top: 6px; padding: 14px 16px; border-radius: 12px;
+    border: 1px solid var(--card-line); border-left: 4px solid var(--ink-3);
+    background: var(--panel); font-size: 13px; color: var(--ink-2); line-height: 1.6;
+  }
+  .rf-note b { color: var(--ink); }
+  .rf-stamp { margin-top: 14px; font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
+
   /* Kacheln als klickbar kennzeichnen */
   .dg-model, .leaf, .detail { cursor: pointer; }
   .detail:hover {
@@ -1232,7 +1267,7 @@
     <button class="lang-btn" data-lang="en" type="button">EN</button>
   </div>
 
-  <button class="btn" id="refreshBtn" title="Live-Abruf folgt in Schritt 2 (Proxy)">
+  <button class="btn" id="refreshBtn" title="Modelle live mit den Anbieter-APIs abgleichen">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>
     <span data-i18n="btn_refresh">Aktualisieren</span>
   </button>
@@ -1411,6 +1446,18 @@
       filter_typ: "Typ", typ_all: "Alle", typ_text: "Text", typ_image: "Bild", typ_audio: "Audio", typ_video: "Video", typ_multi: "Multimodal",
       btn_refresh: "Aktualisieren", theme_dark: "Dunkel", theme_light: "Hell", lang_label: "Sprache",
       all_providers: "Alle Anbieter",
+      rf_title: "Live-Abgleich der Modelle", rf_eyebrow: "Aktualisieren",
+      rf_loading: "Frage die Anbieter-APIs ab …",
+      rf_sub: "Modell-IDs direkt von den Anbieter-APIs, verglichen mit dieser Seite. Hinweis: Die Rohlisten enthalten auch Hilfsmodelle (Embeddings, Sprache, Bild, alte Snapshots). Ein Häkchen bedeutet: bereits in den Karten erfasst.",
+      rf_live: "live", rf_tracked: "in den Karten", rf_new: "neu?",
+      rf_missing: "In deinen Karten, aber nicht mehr in der Live-Liste (evtl. umbenannt/abgekündigt):",
+      rf_skipped: "kein Schlüssel gesetzt", rf_error: "Fehler",
+      rf_nolive_title: "Kein Live-Abruf (bitte manuell prüfen)",
+      rf_nolive_text: "Meta (offene Gewichte), Alibaba/Qwen und die weiteren Anbieter haben keine einheitliche Modell-API. Neuheiten dort bitte über die Anbieter-Links in den Karten prüfen.",
+      rf_notconfigured_title: "Live-Abruf noch nicht verbunden",
+      rf_notconfigured_text: "Der Proxy-Code liegt bereit (Ordner proxy/). Nach dem Cloudflare-Deploy die Worker-URL in index.html bei PROXY_URL eintragen — dann holt dieser Knopf echte Live-Daten. Bis dahin bleibt data.js der geprüfte Stand.",
+      rf_fail_title: "Live-Abruf fehlgeschlagen",
+      rf_fail_text: "Der Proxy war nicht erreichbar. Prüfe die Worker-URL und ob der Cloudflare-Worker läuft.",
       intro_title: "Überblick über die führenden KI-Anbieter und ihre Modelle",
       intro_p1: "Diese Seite bündelt die aktuellen Modelle der großen KI-Anbieter — von OpenAI, Google und Anthropic über Meta und xAI bis DeepSeek, Mistral und Qwen — geordnet nach Anbieter und nach Modelltyp (Text, Bild, Audio, Video, multimodal). Über die Filter in der Kopfzeile lässt sich die Ansicht auf einen einzelnen Anbieter oder einen Modelltyp eingrenzen, und für die Darstellung stehen drei Formen zur Wahl: das Raster (Anbieter → Modelle), die Baumstruktur und die Detailkarten.",
       intro_p2: "Jede Modell-Kachel öffnet per Klick eine Detailansicht mit Beschreibung, Preis, Kontextfenster, Lizenz, Stärken und weiterführenden Links. Weiter unten führt eine Kurzliste 21 weitere bekannte Anbieter mit ihren Modellfamilien auf — ebenfalls anklickbar, mit Link zur offiziellen Seite.",
@@ -1445,6 +1492,18 @@
       filter_typ: "Type", typ_all: "All", typ_text: "Text", typ_image: "Image", typ_audio: "Audio", typ_video: "Video", typ_multi: "Multimodal",
       btn_refresh: "Refresh", theme_dark: "Dark", theme_light: "Light", lang_label: "Language",
       all_providers: "All providers",
+      rf_title: "Live model check", rf_eyebrow: "Refresh",
+      rf_loading: "Querying the provider APIs …",
+      rf_sub: "Model IDs straight from the provider APIs, compared with this page. Note: the raw lists also include helper models (embeddings, speech, image, old snapshots). A check mark means: already covered in the cards.",
+      rf_live: "live", rf_tracked: "in the cards", rf_new: "new?",
+      rf_missing: "In your cards but no longer in the live list (possibly renamed/retired):",
+      rf_skipped: "no key set", rf_error: "error",
+      rf_nolive_title: "No live retrieval (please check manually)",
+      rf_nolive_text: "Meta (open weights), Alibaba/Qwen and the further providers have no uniform model API. Please check for news there via the provider links in the cards.",
+      rf_notconfigured_title: "Live retrieval not connected yet",
+      rf_notconfigured_text: "The proxy code is ready (folder proxy/). After deploying to Cloudflare, set the worker URL in index.html at PROXY_URL — then this button fetches real live data. Until then, data.js remains the verified state.",
+      rf_fail_title: "Live retrieval failed",
+      rf_fail_text: "The proxy could not be reached. Check the worker URL and whether the Cloudflare worker is running.",
       intro_title: "Overview of the leading AI providers and their models",
       intro_p1: "This page brings together the current models of the major AI providers — from OpenAI, Google and Anthropic through Meta and xAI to DeepSeek, Mistral and Qwen — organized by provider and by model type (text, image, audio, video, multimodal). The filters in the header let you narrow the view to a single provider or model type, and three display forms are available: the Grid (provider → models), the Tree and the Detail cards.",
       intro_p2: "Each model tile opens a detail view on click, with description, price, context window, license, strengths and further links. Further down, a short list names 21 more well-known providers with their model families — also clickable, with a link to the official site.",
@@ -2086,18 +2145,126 @@
     applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
   });
 
-  /* ---------- Aktualisieren (Schritt 2 vorbereitet) ---------- */
+  /* ---------- Aktualisieren: Live-Abgleich der Modelle (Schritt 2) ----------
+     Fragt über den Cloudflare-Proxy die Modell-IDs der Anbieter ab und gleicht
+     sie mit data.js ab. Der Proxy hält die API-Schlüssel geheim (siehe proxy/).
+     PROXY_URL nach dem Deploy eintragen; leer = Live-Abruf aus, data.js bleibt
+     der geprüfte Stand. */
+  var PROXY_URL = "";  // z. B. "https://ki-ai-netz-proxy.<subdomain>.workers.dev"
+
+  // Anbieter mit Live-API (Anzeigereihenfolge). Schlüssel = id in data.js.
+  var LIVE_PROVIDERS = ["openai", "anthropic", "google", "xai", "deepseek", "mistral"];
+
+  function rfProv(id) { for (var i = 0; i < data.length; i++) { if (data[i].id === id) return data[i]; } return null; }
+  function normId(s) { return String(s || "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
+  function rfCores(p) {
+    if (!p || !p.modelle) return [];
+    return p.modelle.map(function (m) { return normId(m.name); }).filter(function (k) { return k.length >= 3; });
+  }
+  function looseMatch(a, b) { return a.indexOf(b) >= 0 || b.indexOf(a) >= 0; }
+  function isKnownId(liveId, cores) {
+    var n = normId(liveId);
+    for (var i = 0; i < cores.length; i++) { if (looseMatch(n, cores[i])) return true; }
+    return false;
+  }
+
+  function rfNote(body, titleKey, textKey) {
+    var note = el("div", "rf-note");
+    note.appendChild(el("b", null, esc(t(titleKey))));
+    note.appendChild(document.createElement("br"));
+    note.appendChild(document.createTextNode(t(textKey)));
+    body.appendChild(note);
+  }
+
+  function rfRenderReport(body, json) {
+    body.innerHTML = "";
+    body.appendChild(el("p", "rf-sub", esc(t("rf_sub"))));
+    var provs = (json && json.providers) || {};
+
+    LIVE_PROVIDERS.forEach(function (id) {
+      var r = provs[id];
+      if (!r) return;
+      var p = rfProv(id);
+      var box = el("div", "rf-prov");
+      var head = el("div", "rf-prov-head");
+      var dot = el("span", "rf-dot"); dot.style.background = (p && p.farbe) || "var(--accent)";
+      head.appendChild(dot);
+      head.appendChild(el("span", "rf-name", esc(p ? p.name : id)));
+
+      if (!r.ok) {
+        head.appendChild(el("span", "rf-badge warn", esc(r.skipped ? t("rf_skipped") : t("rf_error"))));
+        box.appendChild(head);
+        if (!r.skipped && r.error) box.appendChild(el("div", "rf-err", esc(r.error)));
+        body.appendChild(box);
+        return;
+      }
+
+      var cores = rfCores(p);
+      var models = r.models || [];
+      head.appendChild(el("span", "rf-counts",
+        (r.count || models.length) + " " + t("rf_live") + " · " + cores.length + " " + t("rf_tracked")));
+      box.appendChild(head);
+
+      var list = el("div", "rf-list");
+      models.forEach(function (mid) {
+        var known = isKnownId(mid, cores);
+        list.appendChild(el("span", "rf-id " + (known ? "known" : "newish"), esc(mid)));
+      });
+      box.appendChild(list);
+
+      // Karten-Modelle, die in der Live-Liste fehlen (evtl. umbenannt/abgekündigt)
+      var missing = [];
+      if (p && p.modelle) {
+        p.modelle.forEach(function (m) {
+          var core = normId(m.name);
+          if (core.length < 3) return;
+          var found = models.some(function (mid) { return looseMatch(normId(mid), core); });
+          if (!found) missing.push(m.name);
+        });
+      }
+      if (missing.length) {
+        var mrow = el("div", "rf-missing");
+        mrow.appendChild(el("b", null, esc(t("rf_missing")) + " "));
+        mrow.appendChild(document.createTextNode(missing.join(", ")));
+        box.appendChild(mrow);
+      }
+
+      body.appendChild(box);
+    });
+
+    rfNote(body, "rf_nolive_title", "rf_nolive_text");
+    if (json && json.generatedAt) body.appendChild(el("div", "rf-stamp", esc(json.generatedAt)));
+  }
+
+  function rfOpen() {
+    lastFocused = document.activeElement;
+    var overlay = document.getElementById("modalOverlay");
+    overlay.style.setProperty("--pc", "var(--accent)");
+    document.getElementById("modalDot").style.background = "var(--accent)";
+    document.getElementById("modalProvider").textContent = t("rf_eyebrow");
+    document.getElementById("modalTitle").textContent = t("rf_title");
+    document.getElementById("modalBadges").innerHTML = "";
+    var body = document.getElementById("modalBody");
+    body.innerHTML = "";
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    document.getElementById("modalClose").focus();
+    return body;
+  }
+
   document.getElementById("refreshBtn").addEventListener("click", function () {
-    alert(activeLang === "en"
-      ? "Live update is not active yet.\n\n" +
-        "Reason: A static site (e.g. on GitHub Pages) may not query the providers' model endpoints " +
-        "directly from the browser (CORS + API keys).\n\n" +
-        "In step 2 a small proxy will be connected here. Then this button will fetch real live data."
-      : "Live-Aktualisierung ist noch nicht aktiv.\n\n" +
-        "Grund: Eine reine Seite (z. B. auf GitHub Pages) darf die Modell-Endpunkte der Anbieter " +
-        "nicht direkt aus dem Browser abfragen (CORS + API-Schlüssel).\n\n" +
-        "In Schritt 2 wird hier ein kleiner Proxy angebunden. Dann holt dieser Knopf echte Live-Daten."
-    );
+    var body = rfOpen();
+    if (!PROXY_URL) {
+      rfNote(body, "rf_notconfigured_title", "rf_notconfigured_text");
+      rfNote(body, "rf_nolive_title", "rf_nolive_text");
+      return;
+    }
+    body.appendChild(el("p", "rf-sub", esc(t("rf_loading"))));
+    fetch(PROXY_URL, { cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { rfRenderReport(body, j); })
+      .catch(function () { body.innerHTML = ""; rfNote(body, "rf_fail_title", "rf_fail_text"); });
   });
 
   /* ---------- Weitere Anbieter (Kurzliste) — bei Sprachwechsel neu ---------- */

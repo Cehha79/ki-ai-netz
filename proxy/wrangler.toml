@@ -1,0 +1,7 @@
+# Cloudflare-Worker-Konfiguration für den Live-Modell-Proxy von „KI/AI - Netz".
+# Deploy:  npx wrangler deploy   (im Ordner proxy/)
+# Schlüssel NICHT hier eintragen — als Secrets setzen (siehe README.md).
+
+name = "ki-ai-netz-proxy"
+main = "worker.js"
+compatibility_date = "2025-01-01"
