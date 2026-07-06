@@ -977,16 +977,6 @@
   .foot-links .foot-action svg { width: 16px; height: 16px; }
   .foot-sep { color: var(--line-2); }
   .foot-left { display: inline-flex; align-items: center; gap: 16px; }
-  .visit-count {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-family: var(--mono); font-size: 11.5px; color: var(--ink-3);
-    padding: 3px 10px;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: var(--panel-2);
-  }
-  .visit-count svg { width: 13px; height: 13px; }
-  .visit-count[hidden] { display: none; }
 
   /* ---------- Rang-Nummern (oben 1-8, Kurzliste fortlaufend) ---------- */
   .rank-badge {
@@ -1510,10 +1500,6 @@
       <a class="foot-brand" href="https://www.mika-tec.com" target="_blank" rel="noopener">
         <span class="fb-by">by</span><span class="fb-name">Mika-Tec</span><span class="fb-sep">·</span><span class="fb-url">www.mika-tec.com</span>
       </a>
-      <span class="visit-count" id="visitCount" hidden title="Besuche dieser Seite (gezählt über GoatCounter, cookielos)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-        <span id="visitNum">–</span>&nbsp;<span data-i18n="visit_besuche">Besuche</span>
-      </span>
     </span>
     <nav class="foot-links" aria-label="Feedback, Spende und Rechtliches">
       <a href="https://mika-tec.com/impressum.html" target="_blank" rel="noopener" data-i18n="foot_impressum">Impressum</a>
@@ -2675,29 +2661,17 @@
   }
 
   /* ---------- Besucherzähler (GoatCounter, cookielos) ----------
-     TODO zum Aktivieren: kostenlosen Account auf goatcounter.com anlegen
-     und unten den gewählten Code eintragen (z. B. "mikatec" für
-     mikatec.goatcounter.com). Solange der Platzhalter steht, bleibt der
-     Zähler aus und die Seite macht KEINE Netzwerk-Anfrage. */
+     Zählt Besuche fürs private GoatCounter-Dashboard. Die Zahl wird bewusst
+     NICHT in der Fußzeile angezeigt: GoatCounter cacht die öffentliche Zahl
+     stundenlang, sie hinkt daher stark hinterher (wirkt „eingefroren"). Die
+     echten, aktuellen Zahlen stehen im Dashboard (kiainetz.goatcounter.com). */
   var GC_CODE = "kiainetz";
   if (GC_CODE && GC_CODE !== "DEIN-GOATCOUNTER-CODE" && location.protocol !== "file:") {
-    // 1) Besuch zählen
     var gc = document.createElement("script");
     gc.async = true;
     gc.src = "https://gc.zgo.at/count.js";
     gc.setAttribute("data-goatcounter", "https://" + GC_CODE + ".goatcounter.com/count");
     document.body.appendChild(gc);
-    // 2) Gesamtzahl anzeigen (TOTAL = Summe aller Seiten; robust für die Einzelseite).
-    //    Schlägt es fehl (z. B. Anzeige in GoatCounter nicht freigegeben), bleibt der Zähler versteckt.
-    fetch("https://" + GC_CODE + ".goatcounter.com/counter/TOTAL.json")
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        if (d && d.count) {
-          document.getElementById("visitNum").textContent = String(d.count).trim();
-          document.getElementById("visitCount").hidden = false;
-        }
-      })
-      .catch(function () {});
   }
 
   /* ---------- Stand-Anzeige ---------- */
