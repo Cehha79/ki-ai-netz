@@ -1137,9 +1137,32 @@
     .foot-links { gap: 12px 14px; }
     .foot-links .foot-action { font-size: 12px; padding: 5px 12px; }
 
-    /* Breite Ansichten (Baum, Tabelle) scrollen in sich — nicht die Seite */
-    .view-panel { min-height: 0; padding-top: 16px; overflow-x: auto; }
-    .market-scroll { max-width: 100%; }
+    /* Baum scrollt in sich; die Seite bleibt ruhig */
+    .view-panel { min-height: 0; padding-top: 16px; }
+    #panelTree { overflow-x: auto; }
+
+    /* Gesamtliste: breite Tabelle -> gestapelte Karten (kein Querscrollen) */
+    .market-scroll { overflow: visible; border: none; box-shadow: none; }
+    .market-table { min-width: 0; display: block; background: transparent; }
+    .market-table thead { display: none; }
+    .market-table tbody { display: block; }
+    .market-table tbody tr {
+      display: block; margin: 0 0 12px;
+      border: 1px solid var(--card-line); border-radius: 12px;
+      background: var(--panel); overflow: hidden;
+    }
+    .market-table tbody td {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+      padding: 8px 14px; border: none; border-bottom: 1px solid var(--line);
+      text-align: right; min-width: 0;
+    }
+    .market-table tbody tr td:last-child { border-bottom: none; }
+    .market-table tbody td::before {
+      content: attr(data-label); flex: none; text-align: left;
+      font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-3);
+    }
+    .market-table tbody td:has(.mt-empty) { display: none; }  /* leere (—) Zellen weg */
 
     /* Schrift & Kästen kompakter, mehr Platz für den Inhalt */
     .intro-card { padding: 16px 16px; margin-bottom: 14px; }
@@ -2639,6 +2662,12 @@
         qTd.appendChild(el("span", "mt-empty", "—"));
       }
       tr.appendChild(qTd);
+
+      // data-label je Zelle — nur für die Karten-Ansicht am Handy sichtbar
+      var MT_LABELS = ["th_rank", "th_anbieter", "th_land", "th_produkt", "th_kategorie", "th_nutzer", "th_umsatz", "th_bewertung", "th_gruendung", "th_quelle"];
+      for (var ci = 0; ci < tr.children.length; ci++) {
+        tr.children[ci].setAttribute("data-label", t(MT_LABELS[ci]) || "");
+      }
 
       tbody.appendChild(tr);
     });
