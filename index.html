@@ -1448,12 +1448,13 @@
       all_providers: "Alle Anbieter",
       rf_title: "Live-Abgleich der Modelle", rf_eyebrow: "Aktualisieren",
       rf_loading: "Frage die Anbieter-APIs ab …",
-      rf_sub: "Modell-IDs direkt von den Anbieter-APIs, verglichen mit dieser Seite. Hinweis: Die Rohlisten enthalten auch Hilfsmodelle (Embeddings, Sprache, Bild, alte Snapshots). Ein Häkchen bedeutet: bereits in den Karten erfasst.",
-      rf_live: "live", rf_tracked: "in den Karten", rf_new: "neu?",
-      rf_missing: "In deinen Karten, aber nicht mehr in der Live-Liste (evtl. umbenannt/abgekündigt):",
+      rf_sub: "Modell-Kennungen aus dem öffentlichen OpenRouter-Katalog (anonym, ohne Schlüssel, ohne Konto), verglichen mit dieser Seite. Ein Häkchen heißt: bereits in den Karten erfasst; hervorgehobene könnten neu sein (auch Varianten/Snapshots).",
+      rf_live: "im Katalog", rf_tracked: "in den Karten", rf_new: "neu?",
+      rf_missing: "In deinen Karten, aber nicht im Katalog (evtl. umbenannt/abgekündigt):",
+      rf_notincat: "nicht im Katalog", rf_weitere_title: "Weitere Anbieter im Katalog",
       rf_skipped: "kein Schlüssel gesetzt", rf_error: "Fehler",
-      rf_nolive_title: "Kein Live-Abruf (bitte manuell prüfen)",
-      rf_nolive_text: "Meta (offene Gewichte), Alibaba/Qwen und die weiteren Anbieter haben keine einheitliche Modell-API. Neuheiten dort bitte über die Anbieter-Links in den Karten prüfen.",
+      rf_nolive_title: "Nicht im Katalog (bitte manuell prüfen)",
+      rf_nolive_text: "Reine Bild-, Audio- und Video-Anbieter (Midjourney, Runway, ElevenLabs, Stability, Luma, Suno, Black Forest Labs) sowie Apple sind im OpenRouter-Katalog nicht enthalten. Neuheiten dort bitte über die Anbieter-Links in den Karten prüfen.",
       rf_notconfigured_title: "Live-Abruf noch nicht verbunden",
       rf_notconfigured_text: "Der Proxy-Code liegt bereit (Ordner proxy/). Nach dem Cloudflare-Deploy die Worker-URL in index.html bei PROXY_URL eintragen — dann holt dieser Knopf echte Live-Daten. Bis dahin bleibt data.js der geprüfte Stand.",
       rf_fail_title: "Live-Abruf fehlgeschlagen",
@@ -1494,12 +1495,13 @@
       all_providers: "All providers",
       rf_title: "Live model check", rf_eyebrow: "Refresh",
       rf_loading: "Querying the provider APIs …",
-      rf_sub: "Model IDs straight from the provider APIs, compared with this page. Note: the raw lists also include helper models (embeddings, speech, image, old snapshots). A check mark means: already covered in the cards.",
-      rf_live: "live", rf_tracked: "in the cards", rf_new: "new?",
-      rf_missing: "In your cards but no longer in the live list (possibly renamed/retired):",
+      rf_sub: "Model identifiers from the public OpenRouter catalog (anonymous, no key, no account), compared with this page. A check mark means already covered in the cards; highlighted ones may be new (also variants/snapshots).",
+      rf_live: "in catalog", rf_tracked: "in the cards", rf_new: "new?",
+      rf_missing: "In your cards but not in the catalog (possibly renamed/retired):",
+      rf_notincat: "not in catalog", rf_weitere_title: "Further providers in the catalog",
       rf_skipped: "no key set", rf_error: "error",
-      rf_nolive_title: "No live retrieval (please check manually)",
-      rf_nolive_text: "Meta (open weights), Alibaba/Qwen and the further providers have no uniform model API. Please check for news there via the provider links in the cards.",
+      rf_nolive_title: "Not in the catalog (please check manually)",
+      rf_nolive_text: "Pure image, audio and video providers (Midjourney, Runway, ElevenLabs, Stability, Luma, Suno, Black Forest Labs) and Apple are not in the OpenRouter catalog. Please check for news there via the provider links in the cards.",
       rf_notconfigured_title: "Live retrieval not connected yet",
       rf_notconfigured_text: "The proxy code is ready (folder proxy/). After deploying to Cloudflare, set the worker URL in index.html at PROXY_URL — then this button fetches real live data. Until then, data.js remains the verified state.",
       rf_fail_title: "Live retrieval failed",
@@ -2146,16 +2148,36 @@
   });
 
   /* ---------- Aktualisieren: Live-Abgleich der Modelle (Schritt 2) ----------
-     Fragt über den Cloudflare-Proxy die Modell-IDs der Anbieter ab und gleicht
-     sie mit data.js ab. Der Proxy hält die API-Schlüssel geheim (siehe proxy/).
-     PROXY_URL nach dem Deploy eintragen; leer = Live-Abruf aus, data.js bleibt
-     der geprüfte Stand. */
-  var PROXY_URL = "";  // z. B. "https://ki-ai-netz-proxy.<subdomain>.workers.dev"
+     Holt den öffentlichen OpenRouter-Katalog (anonym, ohne Schlüssel, ohne
+     Konto) und gleicht die Modell-Kennungen mit data.js ab. data.js bleibt der
+     geprüfte Stand — nichts wird automatisch überschrieben.
+     Direktabruf (funktioniert sofort). Für eine sauberere Datenschutz-Linie
+     kann hier stattdessen der eigene Worker eingetragen werden, der denselben
+     Katalog serverseitig holt (siehe proxy/):
+       "https://ki-ai-netz-proxy.calm-block-d696.workers.dev"  */
+  var PROXY_URL = "https://openrouter.ai/api/v1/models";
 
-  // Anbieter mit Live-API (Anzeigereihenfolge). Schlüssel = id in data.js.
-  var LIVE_PROVIDERS = ["openai", "anthropic", "google", "xai", "deepseek", "mistral"];
+  // OpenRouter-Präfix -> Anbieter-id in data.js (Hauptanbieter)
+  var OR_MAP = {
+    "openai": "openai", "~openai": "openai",
+    "google": "google", "~google": "google",
+    "anthropic": "anthropic", "~anthropic": "anthropic",
+    "meta-llama": "meta",
+    "x-ai": "xai",
+    "deepseek": "deepseek",
+    "mistralai": "mistral",
+    "qwen": "qwen"
+  };
+  // OpenRouter-Präfix -> Anzeigename der „weiteren Anbieter"
+  var OR_WEITERE = {
+    "cohere": "Cohere", "nvidia": "NVIDIA", "amazon": "Amazon (AWS)",
+    "perplexity": "Perplexity", "microsoft": "Microsoft", "ai21": "AI21 Labs",
+    "baidu": "Baidu", "tencent": "Tencent", "bytedance-seed": "ByteDance",
+    "bytedance": "ByteDance", "moonshotai": "Moonshot AI", "~moonshotai": "Moonshot AI",
+    "z-ai": "Zhipu AI / Z.ai", "minimax": "MiniMax", "rekaai": "Reka",
+    "ibm-granite": "IBM"
+  };
 
-  function rfProv(id) { for (var i = 0; i < data.length; i++) { if (data[i].id === id) return data[i]; } return null; }
   function normId(s) { return String(s || "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
   function rfCores(p) {
     if (!p || !p.modelle) return [];
@@ -2176,64 +2198,91 @@
     body.appendChild(note);
   }
 
+  // Katalog nach Präfix gruppieren: { prefix: [slug, …] }
+  function rfGroup(list) {
+    var by = {};
+    (list || []).forEach(function (m) {
+      var id = String((m && m.id) || "");
+      var i = id.indexOf("/");
+      if (i < 0) return;
+      var pre = id.slice(0, i), slug = id.slice(i + 1).replace(/:free$/, "");
+      (by[pre] = by[pre] || []).push(slug);
+    });
+    return by;
+  }
+
   function rfRenderReport(body, json) {
     body.innerHTML = "";
+    var list = (json && json.data) || [];
+    if (!list.length) { rfNote(body, "rf_fail_title", "rf_fail_text"); return; }
+    var by = rfGroup(list);
     body.appendChild(el("p", "rf-sub", esc(t("rf_sub"))));
-    var provs = (json && json.providers) || {};
 
-    LIVE_PROVIDERS.forEach(function (id) {
-      var r = provs[id];
-      if (!r) return;
-      var p = rfProv(id);
+    data.forEach(function (p) {
+      var slugs = [];
+      Object.keys(OR_MAP).forEach(function (pre) {
+        if (OR_MAP[pre] === p.id && by[pre]) slugs = slugs.concat(by[pre]);
+      });
       var box = el("div", "rf-prov");
       var head = el("div", "rf-prov-head");
-      var dot = el("span", "rf-dot"); dot.style.background = (p && p.farbe) || "var(--accent)";
+      var dot = el("span", "rf-dot"); dot.style.background = p.farbe || "var(--accent)";
       head.appendChild(dot);
-      head.appendChild(el("span", "rf-name", esc(p ? p.name : id)));
+      head.appendChild(el("span", "rf-name", esc(p.name)));
+      var cores = rfCores(p);
 
-      if (!r.ok) {
-        head.appendChild(el("span", "rf-badge warn", esc(r.skipped ? t("rf_skipped") : t("rf_error"))));
+      if (!slugs.length) {
+        head.appendChild(el("span", "rf-badge warn", esc(t("rf_notincat"))));
         box.appendChild(head);
-        if (!r.skipped && r.error) box.appendChild(el("div", "rf-err", esc(r.error)));
         body.appendChild(box);
         return;
       }
 
-      var cores = rfCores(p);
-      var models = r.models || [];
+      slugs.sort();
       head.appendChild(el("span", "rf-counts",
-        (r.count || models.length) + " " + t("rf_live") + " · " + cores.length + " " + t("rf_tracked")));
+        slugs.length + " " + t("rf_live") + " · " + cores.length + " " + t("rf_tracked")));
       box.appendChild(head);
 
-      var list = el("div", "rf-list");
-      models.forEach(function (mid) {
-        var known = isKnownId(mid, cores);
-        list.appendChild(el("span", "rf-id " + (known ? "known" : "newish"), esc(mid)));
+      var lst = el("div", "rf-list");
+      slugs.forEach(function (slug) {
+        var known = isKnownId(slug, cores);
+        lst.appendChild(el("span", "rf-id " + (known ? "known" : "newish"), esc(slug)));
       });
-      box.appendChild(list);
+      box.appendChild(lst);
 
-      // Karten-Modelle, die in der Live-Liste fehlen (evtl. umbenannt/abgekündigt)
+      // Karten-Modelle, die im Katalog fehlen (evtl. umbenannt/abgekündigt)
       var missing = [];
-      if (p && p.modelle) {
-        p.modelle.forEach(function (m) {
-          var core = normId(m.name);
-          if (core.length < 3) return;
-          var found = models.some(function (mid) { return looseMatch(normId(mid), core); });
-          if (!found) missing.push(m.name);
-        });
-      }
+      (p.modelle || []).forEach(function (m) {
+        var core = normId(m.name);
+        if (core.length < 3) return;
+        var found = slugs.some(function (slug) { return looseMatch(normId(slug), core); });
+        if (!found) missing.push(m.name);
+      });
       if (missing.length) {
         var mrow = el("div", "rf-missing");
         mrow.appendChild(el("b", null, esc(t("rf_missing")) + " "));
         mrow.appendChild(document.createTextNode(missing.join(", ")));
         box.appendChild(mrow);
       }
-
       body.appendChild(box);
     });
 
+    // Weitere Anbieter im Katalog (Info, ohne Karten-Abgleich)
+    var wCounts = {};
+    Object.keys(OR_WEITERE).forEach(function (pre) {
+      if (by[pre]) { var nm = OR_WEITERE[pre]; wCounts[nm] = (wCounts[nm] || 0) + by[pre].length; }
+    });
+    var wNames = Object.keys(wCounts).sort();
+    if (wNames.length) {
+      var wbox = el("div", "rf-note");
+      wbox.appendChild(el("b", null, esc(t("rf_weitere_title"))));
+      wbox.appendChild(document.createElement("br"));
+      wbox.appendChild(document.createTextNode(
+        wNames.map(function (n) { return n + " (" + wCounts[n] + ")"; }).join(" · ")));
+      body.appendChild(wbox);
+    }
+
     rfNote(body, "rf_nolive_title", "rf_nolive_text");
-    if (json && json.generatedAt) body.appendChild(el("div", "rf-stamp", esc(json.generatedAt)));
+    body.appendChild(el("div", "rf-stamp", "OpenRouter · " + list.length + " " + t("rf_live")));
   }
 
   function rfOpen() {
