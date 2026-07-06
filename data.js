@@ -117,9 +117,9 @@ window.KI_ATLAS_NEU = [
     quelleName: "centerbit.co", quelleUrl: "https://centerbit.co/en/blog/ai-rumors-june-2026-gpt-5-6-gemini-3-5-pro-claude-mythos"
   },
   {
-    name: "Claude Mythos 1", anbieter: "Anthropic", kategorie: "geplant", typ: "text",
+    name: "Claude Mythos 5", anbieter: "Anthropic", kategorie: "geplant", typ: "text",
     stand: { de: "2026", en: "2026" },
-    info: { de: "Angekündigt und auf lang laufende, agentische Unternehmensaufgaben optimiert; wechselt in die allgemeine Verfügbarkeit.", en: "Announced and optimized for long-running, agentic enterprise tasks; moving to general availability." },
+    info: { de: "Auf lang laufende, agentische Unternehmensaufgaben optimiert; derzeit nur für ausgewählte Kunden (Limited), auf dem Weg zur breiten Verfügbarkeit.", en: "Optimized for long-running, agentic enterprise tasks; currently limited to select customers, on the way to broad availability." },
     quelleName: "centerbit.co", quelleUrl: "https://centerbit.co/en/blog/ai-rumors-june-2026-gpt-5-6-gemini-3-5-pro-claude-mythos"
   },
   {

@@ -1236,6 +1236,13 @@
   .news-info { font-size: 14px; color: var(--ink); line-height: 1.6; margin: 8px 0 0; text-align: justify; }
   .news-src { margin-top: 8px; font-size: 12px; }
   .news-src a { color: var(--accent); }
+  .news-badge {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 999px; margin-left: auto; white-space: nowrap;
+  }
+  .news-badge.in { background: rgba(34,197,94,0.15); color: #16a34a; }
+  html[data-theme="dark"] .news-badge.in { color: #4ade80; }
+  .news-badge.out { background: var(--accent-soft); color: var(--ink-3); }
 
   /* Kacheln als klickbar kennzeichnen */
   .dg-model, .leaf, .detail { cursor: pointer; }
@@ -1430,7 +1437,7 @@
 
 <!-- ?v= zwingt den Browser, die Daten neu zu laden (Cache-Brecher).
      Bei Datenänderungen die Versionsnummer hochzählen. -->
-<script src="data.js?v=11"></script>
+<script src="data.js?v=12"></script>
 <script>
 (function () {
   "use strict";
@@ -1480,7 +1487,8 @@
       news_sub: "Handverlesene, quellenbelegte Übersicht: kürzlich erschienene, aktuelle und angekündigte/geplante Modelle. Diese Liste wird gepflegt und ist bewusst kurz gehalten — jeder Eintrag mit Quelle.",
       news_cat_neu: "Neu erschienen", news_cat_aktuell: "Aktuelle Flaggschiffe", news_cat_geplant: "Angekündigt / geplant",
       news_empty: "Noch keine Einträge gepflegt.", news_source: "Quelle", news_stand: "Stand",
-      news_planned_hint: "„Geplant“ beruht auf öffentlichen Ankündigungen und kann sich ändern.",
+      news_incards: "in den Karten", news_pending: "noch nicht in Karten",
+      news_planned_hint: "„Geplant“ beruht auf öffentlichen Ankündigungen und kann sich ändern. Grün = bereits in den Anbieter-Karten (alle Reiter).",
       intro_p1: "Diese Seite bündelt die aktuellen Modelle der großen KI-Anbieter — von OpenAI, Google und Anthropic über Meta und xAI bis DeepSeek, Mistral und Qwen — geordnet nach Anbieter und nach Modelltyp (Text, Bild, Audio, Video, multimodal). Über die Filter in der Kopfzeile lässt sich die Ansicht auf einen einzelnen Anbieter oder einen Modelltyp eingrenzen, und für die Darstellung stehen drei Formen zur Wahl: das Raster (Anbieter → Modelle), die Baumstruktur und die Detailkarten.",
       intro_p2: "Jede Modell-Kachel öffnet per Klick eine Detailansicht mit Beschreibung, Preis, Kontextfenster, Lizenz, Stärken und weiterführenden Links. Weiter unten führt eine Kurzliste 21 weitere bekannte Anbieter mit ihren Modellfamilien auf — ebenfalls anklickbar, mit Link zur offiziellen Seite.",
       intro_p3: "Der Datenstand ist statisch und sorgfältig quellengeprüft. Preise werden nur dort genannt, wo es einen öffentlichen Token-Preis gibt — sonst steht bewusst ein ehrlicher Hinweis statt einer geschätzten Zahl. Der Button „Aktualisieren“ ist für einen späteren Live-Abruf über einen Proxy vorbereitet.",
@@ -1531,7 +1539,8 @@
       news_sub: "A hand-picked, sourced overview: recently released, current and announced/planned models. This list is curated and deliberately concise — every entry with a source.",
       news_cat_neu: "Newly released", news_cat_aktuell: "Current flagships", news_cat_geplant: "Announced / planned",
       news_empty: "No entries curated yet.", news_source: "Source", news_stand: "As of",
-      news_planned_hint: "“Planned” is based on public announcements and may change.",
+      news_incards: "in the cards", news_pending: "not yet in cards",
+      news_planned_hint: "“Planned” is based on public announcements and may change. Green = already in the provider cards (all tabs).",
       intro_title: "Overview of the leading AI providers and their models",
       intro_p1: "This page brings together the current models of the major AI providers — from OpenAI, Google and Anthropic through Meta and xAI to DeepSeek, Mistral and Qwen — organized by provider and by model type (text, image, audio, video, multimodal). The filters in the header let you narrow the view to a single provider or model type, and three display forms are available: the Grid (provider → models), the Tree and the Detail cards.",
       intro_p2: "Each model tile opens a detail view on click, with description, price, context window, license, strengths and further links. Further down, a short list names 21 more well-known providers with their model families — also clickable, with a link to the official site.",
@@ -2349,6 +2358,15 @@
     return "var(--accent)";
   }
 
+  // Steht dieses Modell bereits in den Anbieter-Karten (data.js)?
+  function newsInCards(x) {
+    var p = null;
+    for (var i = 0; i < data.length; i++) { if (data[i].name === x.anbieter) { p = data[i]; break; } }
+    if (!p || !p.modelle) return false;
+    var core = normId(x.name);
+    return p.modelle.some(function (m) { return looseMatch(normId(m.name), core); });
+  }
+
   function renderNews() {
     lastFocused = document.activeElement;
     var overlay = document.getElementById("modalOverlay");
@@ -2376,6 +2394,8 @@
           var head = el("div", "news-head");
           head.appendChild(el("span", "news-name", esc((x.flagship ? "★ " : "") + x.name)));
           if (x.typ) head.appendChild(el("span", "type-dot type-" + x.typ, typeLabel(x.typ) || ""));
+          var inC = newsInCards(x);
+          head.appendChild(el("span", "news-badge " + (inC ? "in" : "out"), inC ? t("news_incards") : t("news_pending")));
           card.appendChild(head);
           var meta = x.anbieter + (L(x.stand) ? " · " + t("news_stand") + " " + L(x.stand) : "");
           card.appendChild(el("div", "news-meta", esc(meta)));
