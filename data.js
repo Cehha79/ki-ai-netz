@@ -64,6 +64,12 @@ window.KI_ATLAS_NEU = [
     info: { de: "Neues Open-Weight-Flaggschiff (Apache 2.0), Sparse-MoE mit 41 Mrd. aktiven / 675 Mrd. Gesamtparametern; erstes MoE seit Mixtral, mit Bildverständnis.", en: "New open-weight flagship (Apache 2.0), sparse MoE with 41B active / 675B total parameters; first MoE since Mixtral, with image understanding." },
     quelleName: "mistral.ai", quelleUrl: "https://mistral.ai/news/mistral-3/"
   },
+  {
+    name: "Claude Sonnet 5", anbieter: "Anthropic", kategorie: "neu", typ: "text",
+    stand: { de: "Juni 2026", en: "June 2026" },
+    info: { de: "Seit 30. Juni 2026 Standardmodell für alle Free- und Pro-Nutzer; ausgelegt auf Coding, Werkzeugnutzung und agentische Abläufe, 1M-Token-Kontext, adaptives Reasoning.", en: "Default model for all Free and Pro users since 30 June 2026; built for coding, tool use and agentic workflows, 1M-token context, adaptive reasoning." },
+    quelleName: "platform.claude.com", quelleUrl: "https://platform.claude.com/docs/en/about-claude/models/overview"
+  },
 
   // --- Aktuelle Flaggschiffe ---
   {
