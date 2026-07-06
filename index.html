@@ -180,6 +180,20 @@
     color: #fff;
   }
 
+  /* Sprach-Umschalter (DE/EN/TR) — kompaktes Segmented-Control */
+  .lang-switch {
+    display: inline-flex; gap: 2px; padding: 2px;
+    border: 1px solid var(--line-2); border-radius: 999px; background: var(--panel-2);
+  }
+  .lang-btn {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 600;
+    padding: 4px 9px; border: none; border-radius: 999px;
+    background: transparent; color: var(--ink-3); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .lang-btn:hover { color: var(--ink); }
+  .lang-btn[aria-pressed="true"] { background: var(--accent); color: #fff; }
+
   .btn {
     display: inline-flex;
     align-items: center;
@@ -1204,18 +1218,23 @@
   <div class="top-spacer"></div>
 
   <div class="filters" role="group" aria-label="Nach Modelltyp filtern">
-    <span class="filter-label">Typ</span>
-    <button class="chip" data-type="all" aria-pressed="true">Alle</button>
-    <button class="chip" data-type="text" aria-pressed="false">Text</button>
-    <button class="chip" data-type="image" aria-pressed="false">Bild</button>
-    <button class="chip" data-type="audio" aria-pressed="false">Audio</button>
-    <button class="chip" data-type="video" aria-pressed="false">Video</button>
-    <button class="chip" data-type="multi" aria-pressed="false">Multimodal</button>
+    <span class="filter-label" data-i18n="filter_typ">Typ</span>
+    <button class="chip" data-type="all" aria-pressed="true" data-i18n="typ_all">Alle</button>
+    <button class="chip" data-type="text" aria-pressed="false" data-i18n="typ_text">Text</button>
+    <button class="chip" data-type="image" aria-pressed="false" data-i18n="typ_image">Bild</button>
+    <button class="chip" data-type="audio" aria-pressed="false" data-i18n="typ_audio">Audio</button>
+    <button class="chip" data-type="video" aria-pressed="false" data-i18n="typ_video">Video</button>
+    <button class="chip" data-type="multi" aria-pressed="false" data-i18n="typ_multi">Multimodal</button>
+  </div>
+
+  <div class="lang-switch" role="group" aria-label="Sprache wählen / Language">
+    <button class="lang-btn" data-lang="de" type="button">DE</button>
+    <button class="lang-btn" data-lang="en" type="button">EN</button>
   </div>
 
   <button class="btn" id="refreshBtn" title="Live-Abruf folgt in Schritt 2 (Proxy)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>
-    Aktualisieren
+    <span data-i18n="btn_refresh">Aktualisieren</span>
   </button>
 
   <button class="btn" id="themeBtn" aria-label="Zwischen hellem und dunklem Design wechseln">
@@ -1230,10 +1249,10 @@
   <main class="center">
     <section class="stage">
       <div class="intro-card">
-        <h2>Überblick über die führenden KI-Anbieter und ihre Modelle</h2>
-        <p>Diese Seite bündelt die aktuellen Modelle der großen KI-Anbieter — von OpenAI, Google und Anthropic über Meta und xAI bis DeepSeek, Mistral und Qwen — geordnet nach Anbieter und nach Modelltyp (Text, Bild, Audio, Video, multimodal). Über die Filter in der Kopfzeile lässt sich die Ansicht auf einen einzelnen Anbieter oder einen Modelltyp eingrenzen, und für die Darstellung stehen drei Formen zur Wahl: das <strong>Raster</strong> (Anbieter → Modelle), die <strong>Baumstruktur</strong> und die <strong>Detailkarten</strong>.</p>
-        <p>Jede Modell-Kachel öffnet per Klick eine Detailansicht mit Beschreibung, Preis, Kontextfenster, Lizenz, Stärken und weiterführenden Links. Weiter unten führt eine Kurzliste 21 weitere bekannte Anbieter mit ihren Modellfamilien auf — ebenfalls anklickbar, mit Link zur offiziellen Seite.</p>
-        <p>Der Datenstand ist statisch und sorgfältig quellengeprüft. Preise werden nur dort genannt, wo es einen öffentlichen Token-Preis gibt — sonst steht bewusst ein ehrlicher Hinweis statt einer geschätzten Zahl. Der Button <code>Aktualisieren</code> ist für einen späteren Live-Abruf über einen Proxy vorbereitet.</p>
+        <h2 data-i18n="intro_title">Überblick über die führenden KI-Anbieter und ihre Modelle</h2>
+        <p data-i18n="intro_p1"></p>
+        <p data-i18n="intro_p2"></p>
+        <p data-i18n="intro_p3"></p>
         <span class="intro-meta" id="introMeta">Stand wird geladen …</span>
       </div>
 
@@ -1241,19 +1260,19 @@
         <div class="view-tabs" role="tablist" aria-label="Ansicht wählen">
           <button class="view-tab" id="tabGrid" role="tab" aria-selected="true" aria-controls="panelGrid">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-            Raster
+            <span data-i18n="tab_grid">Raster</span>
           </button>
           <button class="view-tab" id="tabTree" role="tab" aria-selected="false" aria-controls="panelTree">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><circle cx="5" cy="20" r="2"/><circle cx="19" cy="20" r="2"/><path d="M12 6v6M12 12H5v6M12 12h7v6"/></svg>
-            Baumstruktur
+            <span data-i18n="tab_tree">Baumstruktur</span>
           </button>
           <button class="view-tab" id="tabCards" role="tab" aria-selected="false" aria-controls="panelCards">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="1"/><rect x="3" y="14" width="18" height="7" rx="1"/></svg>
-            Detailkarten
+            <span data-i18n="tab_cards">Detailkarten</span>
           </button>
           <button class="view-tab" id="tabMarket" role="tab" aria-selected="false" aria-controls="panelMarket">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="5" x2="21" y2="5"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="19" x2="21" y2="19"/></svg>
-            Gesamtliste
+            <span data-i18n="tab_market">Gesamtliste</span>
           </button>
         </div>
         <div class="view-caption">
@@ -1264,18 +1283,18 @@
 
       <div class="legend" aria-hidden="false">
         <div class="lg-group" aria-label="Modelltypen">
-          <span class="lg-item"><span class="type-dot type-text">TEXT</span> Sprache / Code</span>
-          <span class="lg-item"><span class="type-dot type-image">BILD</span> Bild</span>
-          <span class="lg-item"><span class="type-dot type-audio">AUDIO</span> Sprache / Ton</span>
-          <span class="lg-item"><span class="type-dot type-video">VIDEO</span> Video</span>
-          <span class="lg-item"><span class="type-dot type-multi">MULTI</span> multimodal</span>
+          <span class="lg-item"><span class="type-dot type-text" data-typebadge="text">TEXT</span> <span data-i18n="lg_text">Sprache / Code</span></span>
+          <span class="lg-item"><span class="type-dot type-image" data-typebadge="image">BILD</span> <span data-i18n="lg_image">Bild</span></span>
+          <span class="lg-item"><span class="type-dot type-audio" data-typebadge="audio">AUDIO</span> <span data-i18n="lg_audio">Sprache / Ton</span></span>
+          <span class="lg-item"><span class="type-dot type-video" data-typebadge="video">VIDEO</span> <span data-i18n="lg_video">Video</span></span>
+          <span class="lg-item"><span class="type-dot type-multi" data-typebadge="multi">MULTI</span> <span data-i18n="lg_multi">multimodal</span></span>
         </div>
         <div class="lg-sep" aria-hidden="true"></div>
         <div class="lg-group" aria-label="Status">
-          <span class="lg-item"><span class="status st-ga">GA</span> verfügbar</span>
-          <span class="lg-item"><span class="status st-preview">PREVIEW</span> Vorschau</span>
-          <span class="lg-item"><span class="status st-limited">LIMITED</span> nur ausgewählt</span>
-          <span class="lg-item"><span class="status st-training">TRAINING</span> angekündigt</span>
+          <span class="lg-item"><span class="status st-ga">GA</span> <span data-i18n="lg_ga">verfügbar</span></span>
+          <span class="lg-item"><span class="status st-preview">PREVIEW</span> <span data-i18n="lg_preview">Vorschau</span></span>
+          <span class="lg-item"><span class="status st-limited">LIMITED</span> <span data-i18n="lg_limited">nur ausgewählt</span></span>
+          <span class="lg-item"><span class="status st-training">TRAINING</span> <span data-i18n="lg_training">angekündigt</span></span>
         </div>
       </div>
 
@@ -1303,8 +1322,8 @@
     </section>
 
     <section class="stage more-section" aria-label="Weitere Anbieter">
-      <h2>Weitere Anbieter — Kurzliste</h2>
-      <p class="card-sub">Oben stehen die acht großen Anbieter mit geprüften Detaildaten. Diese Liste nennt weitere bekannte Anbieter nur mit ihren Modellfamilien — bewusst ohne Preis- und Detailangaben, da nicht im selben Umfang quellengeprüft. Der Markt ändert sich schnell; kein Anspruch auf Vollständigkeit.</p>
+      <h2 data-i18n="more_title">Weitere Anbieter — Kurzliste</h2>
+      <p class="card-sub" data-i18n="more_sub">Oben stehen die acht großen Anbieter mit geprüften Detaildaten. Diese Liste nennt weitere bekannte Anbieter nur mit ihren Modellfamilien — bewusst ohne Preis- und Detailangaben, da nicht im selben Umfang quellengeprüft. Der Markt ändert sich schnell; kein Anspruch auf Vollständigkeit.</p>
       <div class="more-grid" id="moreGrid"></div>
     </section>
   </main>
@@ -1336,22 +1355,22 @@
       </a>
       <span class="visit-count" id="visitCount" hidden title="Besuche dieser Seite (gezählt über GoatCounter, cookielos)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-        <span id="visitNum">–</span>&nbsp;Besuche
+        <span id="visitNum">–</span>&nbsp;<span data-i18n="visit_besuche">Besuche</span>
       </span>
     </span>
     <nav class="foot-links" aria-label="Feedback, Spende und Rechtliches">
-      <a href="https://mika-tec.com/impressum.html" target="_blank" rel="noopener">Impressum</a>
-      <a href="datenschutz.html">Datenschutz</a>
-      <a href="https://mika-tec.com/kontakt.html" target="_blank" rel="noopener">Kontakt</a>
+      <a href="https://mika-tec.com/impressum.html" target="_blank" rel="noopener" data-i18n="foot_impressum">Impressum</a>
+      <a href="datenschutz.html" data-i18n="foot_datenschutz">Datenschutz</a>
+      <a href="https://mika-tec.com/kontakt.html" target="_blank" rel="noopener" data-i18n="foot_kontakt">Kontakt</a>
       <span class="foot-sep" aria-hidden="true">·</span>
       <a class="foot-action" href="mailto:cehha79@gmail.com?subject=Feedback%20zu%20KI%2FAI%20-%20Netz" title="Feedback per E-Mail senden">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.7 8.4 9 9 0 0 1-3.8-.8L3 20l.9-4.1a8.3 8.3 0 0 1-.9-3.9A8.4 8.4 0 0 1 11.7 3.5a8.4 8.4 0 0 1 9.3 8z"/><circle cx="8.3" cy="11.6" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="11.6" r="1" fill="currentColor" stroke="none"/><circle cx="15.7" cy="11.6" r="1" fill="currentColor" stroke="none"/></svg>
-        Feedback
+        <span data-i18n="foot_feedback">Feedback</span>
       </a>
       <!-- Spendenlink auf das PayPal-Konto info@mika-tec.com (klassischer Zahlungslink) -->
       <a class="foot-action donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=info%40mika-tec.com&amp;item_name=Spende%20KI%2FAI%20-%20Netz&amp;currency_code=EUR" target="_blank" rel="noopener" title="Das Projekt mit einer Spende unterstützen">
         <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
-        Spenden
+        <span data-i18n="foot_spenden">Spenden</span>
       </a>
     </nav>
   </div>
@@ -1359,15 +1378,125 @@
 
 <!-- ?v= zwingt den Browser, die Daten neu zu laden (Cache-Brecher).
      Bei Datenänderungen die Versionsnummer hochzählen. -->
-<script src="data.js?v=8"></script>
+<script src="data.js?v=9"></script>
 <script>
 (function () {
   "use strict";
 
-  var TYPE_LABEL = { text: "TEXT", image: "BILD", audio: "AUDIO", video: "VIDEO", multi: "MULTI" };
-  var TYPE_NAME  = { text: "Text · Sprache & Code", image: "Bild", audio: "Audio · Sprache & Ton", video: "Video", multi: "Multimodal" };
+  // Typ-Kürzel-Badges — sprachabhängig (nur BILD/Bild ist deutsch; Rest weitgehend universell)
+  var TYPE_BADGE = {
+    de: { text: "TEXT", image: "BILD",  audio: "AUDIO", video: "VIDEO", multi: "MULTI" },
+    en: { text: "TEXT", image: "IMAGE", audio: "AUDIO", video: "VIDEO", multi: "MULTI" },
+  };
+  function typeLabel(type) { return (TYPE_BADGE[activeLang] || TYPE_BADGE.de)[type] || ""; }
+  function typeName(type) { return t("typename_" + type); }
+  function typeFull(type) { return t("typefull_" + type); }
+  function statusFull(status) { return t("statusfull_" + status); }
   var TYPE_VAR   = { text: "--t-text", image: "--t-image", audio: "--t-audio", video: "--t-video", multi: "--t-multi" };
+  // Status-Badges bleiben englische Fachbegriffe (auch im deutschen Original)
   var STATUS_LABEL = { ga: "GA", preview: "PREVIEW", limited: "LIMITED", training: "TRAINING" };
+
+  /* ---------- Mehrsprachigkeit (DE / EN / TR) ----------
+     I18N = UI-Texte je Schlüssel. t(key) liefert den Text in der aktiven Sprache
+     (Fallback Deutsch). L(feld) liefert bei mehrsprachigen Datenfeldern {de,en,tr}
+     die aktive Sprache; einfache Strings gibt es unverändert zurück. */
+  var LANGS = ["de", "en"];
+  var LANG_LABEL = { de: "DE", en: "EN" };
+  var activeLang = "de";
+  try { var _sl = localStorage.getItem("kiatlas-lang"); if (LANGS.indexOf(_sl) >= 0) activeLang = _sl; } catch (e) {}
+
+  var I18N = {
+    de: {
+      sub_stand: "Übersicht der Modelle · Stand ",
+      filter_typ: "Typ", typ_all: "Alle", typ_text: "Text", typ_image: "Bild", typ_audio: "Audio", typ_video: "Video", typ_multi: "Multimodal",
+      btn_refresh: "Aktualisieren", theme_dark: "Dunkel", theme_light: "Hell", lang_label: "Sprache",
+      all_providers: "Alle Anbieter",
+      intro_title: "Überblick über die führenden KI-Anbieter und ihre Modelle",
+      intro_p1: "Diese Seite bündelt die aktuellen Modelle der großen KI-Anbieter — von OpenAI, Google und Anthropic über Meta und xAI bis DeepSeek, Mistral und Qwen — geordnet nach Anbieter und nach Modelltyp (Text, Bild, Audio, Video, multimodal). Über die Filter in der Kopfzeile lässt sich die Ansicht auf einen einzelnen Anbieter oder einen Modelltyp eingrenzen, und für die Darstellung stehen drei Formen zur Wahl: das Raster (Anbieter → Modelle), die Baumstruktur und die Detailkarten.",
+      intro_p2: "Jede Modell-Kachel öffnet per Klick eine Detailansicht mit Beschreibung, Preis, Kontextfenster, Lizenz, Stärken und weiterführenden Links. Weiter unten führt eine Kurzliste 21 weitere bekannte Anbieter mit ihren Modellfamilien auf — ebenfalls anklickbar, mit Link zur offiziellen Seite.",
+      intro_p3: "Der Datenstand ist statisch und sorgfältig quellengeprüft. Preise werden nur dort genannt, wo es einen öffentlichen Token-Preis gibt — sonst steht bewusst ein ehrlicher Hinweis statt einer geschätzten Zahl. Der Button „Aktualisieren“ ist für einen späteren Live-Abruf über einen Proxy vorbereitet.",
+      intro_meta_prefix: "Stand der Recherche: ",
+      tab_grid: "Raster", tab_tree: "Baumstruktur", tab_cards: "Detailkarten", tab_market: "Gesamtliste",
+      lg_text: "Sprache / Code", lg_image: "Bild", lg_audio: "Sprache / Ton", lg_video: "Video", lg_multi: "multimodal",
+      lg_ga: "verfügbar", lg_preview: "Vorschau", lg_limited: "nur ausgewählt", lg_training: "angekündigt",
+      more_title: "Weitere Anbieter — Kurzliste",
+      more_sub: "Oben stehen die acht großen Anbieter mit geprüften Detaildaten. Diese Liste nennt weitere bekannte Anbieter nur mit ihren Modellfamilien — bewusst ohne Preis- und Detailangaben, da nicht im selben Umfang quellengeprüft. Der Markt ändert sich schnell; kein Anspruch auf Vollständigkeit.",
+      foot_impressum: "Impressum", foot_datenschutz: "Datenschutz", foot_kontakt: "Kontakt", foot_feedback: "Feedback", foot_spenden: "Spenden", visit_besuche: "Besuche",
+      modal_staerken: "Stärken", modal_einsatz: "Typischer Einsatz", modal_fakten: "Fakten",
+      fact_typ: "Typ", fact_status: "Status", fact_preis: "Preis", fact_kontext: "Kontext", fact_lizenz: "Lizenz", fact_land: "Land", fact_modellfam: "Modellfamilien",
+      flagship: "FLAGGSCHIFF", link_preise: "Offizielle Preise ↗", link_modelle: "Modell-Doku ↗", link_web: "Anbieter ↗", link_anbieter: "Anbieter ↗",
+      more_eyebrow: "Weiterer Anbieter · Rang ", more_bekannte: "Bekannte Modelle",
+      more_hinweis: "Kurzeintrag: nicht im selben Umfang quellengeprüft wie die acht großen Anbieter. Details auf der offiziellen Seite.",
+      th_rank: "#", th_anbieter: "Anbieter", th_land: "Land", th_produkt: "Produkt", th_kategorie: "Kategorie", th_nutzer: "Nutzer", th_umsatz: "Umsatz / ARR", th_bewertung: "Bewertung", th_gruendung: "Gründung", th_quelle: "Quelle / Stand",
+      modelle_wort: "Modelle", modell_wort: "Modell",
+      typename_text: "Text · Sprache & Code", typename_image: "Bild", typename_audio: "Audio · Sprache & Ton", typename_video: "Video", typename_multi: "Multimodal",
+      typefull_text: "Text / Sprache & Code", typefull_image: "Bild", typefull_audio: "Audio · Sprache & Ton", typefull_video: "Video", typefull_multi: "Multimodal",
+      statusfull_ga: "allgemein verfügbar", statusfull_preview: "Vorschau / Beta", statusfull_limited: "nur ausgewählte Kunden", statusfull_training: "angekündigt, noch nicht öffentlich",
+      cap_grid_t: "Raster — Anbieter und ihre Modelle", cap_grid_s: "Jede Spalte ein Anbieter mit seinen Modellen nach Typ. Klick auf eine Kachel öffnet die Details.",
+      cap_grid_solo_t: " im Detail", cap_grid_solo_s_a: "Die Modelle von ", cap_grid_solo_s_b: ", nach Modelltyp gegliedert. Klick öffnet die Detail-Maske.",
+      cap_tree_t: "Baumstruktur — von der Wurzel zu den Modellen", cap_tree_s: "Von der Wurzel verzweigt jeder Anbieter zu seinen Modellen. Das Flaggschiff ist hervorgehoben.",
+      cap_tree_solo_s_a: "Der Ast von ", cap_tree_solo_s_b: " mit allen Modellen als Zweige. Das Flaggschiff ist hervorgehoben.",
+      cap_cards_t: "Detailkarten — alle Modelle nach Modalität", cap_cards_s: "Alle Modelle als Karten, gruppiert nach Modalität. Der farbige Punkt zeigt den Anbieter.",
+      cap_cards_solo_s_a: "Die Modelle von ", cap_cards_solo_s_b: " als ausführliche Karten, gruppiert nach Modalität.",
+      cap_market_t: "Gesamtliste — Nutzer, Umsatz & Bewertung", cap_market_s: "Alle Anbieter mit Nutzerzahlen, Umsatz, Bewertung und Gründungsjahr, nach Nutzern sortiert. Zahlen sind Schätzungen/Run-Rate — Quellen in der Tabelle.",
+    },
+    en: {
+      sub_stand: "Overview of models · as of ",
+      filter_typ: "Type", typ_all: "All", typ_text: "Text", typ_image: "Image", typ_audio: "Audio", typ_video: "Video", typ_multi: "Multimodal",
+      btn_refresh: "Refresh", theme_dark: "Dark", theme_light: "Light", lang_label: "Language",
+      all_providers: "All providers",
+      intro_title: "Overview of the leading AI providers and their models",
+      intro_p1: "This page brings together the current models of the major AI providers — from OpenAI, Google and Anthropic through Meta and xAI to DeepSeek, Mistral and Qwen — organized by provider and by model type (text, image, audio, video, multimodal). The filters in the header let you narrow the view to a single provider or model type, and three display forms are available: the Grid (provider → models), the Tree and the Detail cards.",
+      intro_p2: "Each model tile opens a detail view on click, with description, price, context window, license, strengths and further links. Further down, a short list names 21 more well-known providers with their model families — also clickable, with a link to the official site.",
+      intro_p3: "The data is static and carefully source-checked. Prices are only shown where a public token price exists — otherwise an honest note appears instead of an estimated figure. The “Refresh” button is prepared for a later live retrieval via a proxy.",
+      intro_meta_prefix: "Research as of: ",
+      tab_grid: "Grid", tab_tree: "Tree", tab_cards: "Detail cards", tab_market: "Full list",
+      lg_text: "Language / Code", lg_image: "Image", lg_audio: "Speech / Sound", lg_video: "Video", lg_multi: "multimodal",
+      lg_ga: "available", lg_preview: "Preview", lg_limited: "limited access", lg_training: "announced",
+      more_title: "More providers — short list",
+      more_sub: "Above are the eight major providers with verified detail data. This list names further well-known providers only with their model families — deliberately without price or detail data, as they are not source-checked to the same extent. The market changes fast; no claim to completeness.",
+      foot_impressum: "Imprint", foot_datenschutz: "Privacy", foot_kontakt: "Contact", foot_feedback: "Feedback", foot_spenden: "Donate", visit_besuche: "visits",
+      modal_staerken: "Strengths", modal_einsatz: "Typical use", modal_fakten: "Facts",
+      fact_typ: "Type", fact_status: "Status", fact_preis: "Price", fact_kontext: "Context", fact_lizenz: "License", fact_land: "Country", fact_modellfam: "Model families",
+      flagship: "FLAGSHIP", link_preise: "Official pricing ↗", link_modelle: "Model docs ↗", link_web: "Provider ↗", link_anbieter: "Provider ↗",
+      more_eyebrow: "Additional provider · Rank ", more_bekannte: "Known models",
+      more_hinweis: "Short entry: not source-checked to the same extent as the eight major providers. Details on the official site.",
+      th_rank: "#", th_anbieter: "Provider", th_land: "Country", th_produkt: "Product", th_kategorie: "Category", th_nutzer: "Users", th_umsatz: "Revenue / ARR", th_bewertung: "Valuation", th_gruendung: "Founded", th_quelle: "Source / date",
+      modelle_wort: "models", modell_wort: "model",
+      typename_text: "Text · Language & Code", typename_image: "Image", typename_audio: "Audio · Speech & Sound", typename_video: "Video", typename_multi: "Multimodal",
+      typefull_text: "Text / Language & Code", typefull_image: "Image", typefull_audio: "Audio · Speech & Sound", typefull_video: "Video", typefull_multi: "Multimodal",
+      statusfull_ga: "generally available", statusfull_preview: "Preview / Beta", statusfull_limited: "select customers only", statusfull_training: "announced, not yet public",
+      cap_grid_t: "Grid — providers and their models", cap_grid_s: "Each column is a provider with its models by type. Click a tile to open the details.",
+      cap_grid_solo_t: " in detail", cap_grid_solo_s_a: "The models of ", cap_grid_solo_s_b: ", organized by model type. Click opens the detail view.",
+      cap_tree_t: "Tree — from the root to the models", cap_tree_s: "From the root, each provider branches to its models. The flagship is highlighted.",
+      cap_tree_solo_s_a: "The branch of ", cap_tree_solo_s_b: " with all models as leaves. The flagship is highlighted.",
+      cap_cards_t: "Detail cards — all models by modality", cap_cards_s: "All models as cards, grouped by modality. The colored dot indicates the provider.",
+      cap_cards_solo_s_a: "The models of ", cap_cards_solo_s_b: " as detailed cards, grouped by modality.",
+      cap_market_t: "Full list — users, revenue & valuation", cap_market_s: "All providers with user numbers, revenue, valuation and founding year, sorted by users. Figures are estimates/run-rate — sources in the table.",
+    },
+  };
+
+  function t(key) {
+    var d = I18N[activeLang];
+    if (d && d[key] != null) return d[key];
+    return (I18N.de[key] != null) ? I18N.de[key] : key;
+  }
+  // L(feld): mehrsprachiges Datenfeld {de,en,tr} -> aktive Sprache (Fallback de); Strings unverändert
+  function L(field) {
+    if (field && typeof field === "object" && !Array.isArray(field)) {
+      return field[activeLang] != null ? field[activeLang] : (field.de != null ? field.de : "");
+    }
+    return field == null ? "" : field;
+  }
+  // Statische HTML-Texte mit [data-i18n] setzen
+  function applyStaticI18n() {
+    var nodes = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < nodes.length; i++) nodes[i].textContent = t(nodes[i].getAttribute("data-i18n"));
+    // Typ-Kürzel-Badges (z. B. Legende) an die aktive Sprache anpassen
+    var tb = document.querySelectorAll("[data-typebadge]");
+    for (var j = 0; j < tb.length; j++) tb[j].textContent = typeLabel(tb[j].getAttribute("data-typebadge"));
+    document.documentElement.setAttribute("lang", activeLang);
+  }
 
   /* Anbieter-Symbole als eingebaute SVGs (angelehnt an die Markenzeichen;
      keine externen Bilder — die Seite bleibt offline lauffähig).
@@ -1384,7 +1513,9 @@
   };
   // Land -> Flaggen-Emoji (offline, keine Bilder nötig)
   var FLAGS = { "USA": "\ud83c\uddfa\ud83c\uddf8", "China": "\ud83c\udde8\ud83c\uddf3", "Frankreich": "\ud83c\uddeb\ud83c\uddf7", "Deutschland": "\ud83c\udde9\ud83c\uddea", "UK": "\ud83c\uddec\ud83c\udde7", "Kanada": "\ud83c\udde8\ud83c\udde6", "Israel": "\ud83c\uddee\ud83c\uddf1" };
-  function flagged(land) { return (FLAGS[land] ? FLAGS[land] + " " : "") + (land || ""); }
+  var COUNTRY_EN = { "Frankreich": "France", "Deutschland": "Germany", "Kanada": "Canada" };
+  function countryName(land) { return (activeLang === "en" && COUNTRY_EN[land]) ? COUNTRY_EN[land] : (land || ""); }
+  function flagged(land) { return (FLAGS[land] ? FLAGS[land] + " " : "") + countryName(land); }
 
   // Logo-Chip: weißes Plättchen mit dem Anbieter-Symbol (Fallback: Initialen)
   function providerLogo(p, cls) {
@@ -1433,8 +1564,6 @@
   }
 
   /* ---------- Modal / Maske (Modell-Detail) ---------- */
-  var TYPE_FULL = { text: "Text · Sprache & Code", image: "Bild", audio: "Audio", video: "Video", multi: "Multimodal" };
-  var STATUS_FULL = { ga: "allgemein verfügbar", preview: "Vorschau / Beta", limited: "nur ausgewählte Kunden", training: "angekündigt, noch nicht öffentlich" };
   var lastFocused = null;
 
   function openModal(m, provider) {
@@ -1442,18 +1571,18 @@
     var overlay = document.getElementById("modalOverlay");
     overlay.style.setProperty("--pc", provider.farbe);
     document.getElementById("modalDot").style.background = provider.farbe;
-    document.getElementById("modalProvider").textContent = provider.name + " · " + provider.produkt + " · " + flagged(provider.land);
+    document.getElementById("modalProvider").textContent = provider.name + " · " + L(provider.produkt) + " · " + flagged(provider.land);
     document.getElementById("modalTitle").textContent = (m.flagship ? "★ " : "") + m.name;
 
     // Badges: Typ + Status
     var badges = document.getElementById("modalBadges");
     badges.innerHTML = "";
-    badges.appendChild(el("span", "type-dot type-" + m.type, TYPE_LABEL[m.type] || ""));
+    badges.appendChild(el("span", "type-dot type-" + m.type, typeLabel(m.type) || ""));
     badges.appendChild(el("span", "status st-" + m.status, STATUS_LABEL[m.status] || ""));
     if (m.flagship) {
       var fb = el("span", "status");
       fb.style.background = "var(--accent-soft)"; fb.style.color = "var(--accent)";
-      fb.textContent = "FLAGGSCHIFF";
+      fb.textContent = t("flagship");
       badges.appendChild(fb);
     }
 
@@ -1461,23 +1590,24 @@
     var body = document.getElementById("modalBody");
     body.innerHTML = "";
 
-    if (m.note) body.appendChild(el("p", "modal-note", esc(m.note)));
-    if (m.detail) body.appendChild(el("p", "modal-detail", esc(m.detail)));
+    if (L(m.note)) body.appendChild(el("p", "modal-note", esc(L(m.note))));
+    if (L(m.detail)) body.appendChild(el("p", "modal-detail", esc(L(m.detail))));
 
-    if (m.staerken && m.staerken.length) {
-      body.appendChild(el("div", "modal-section-title", "Stärken"));
+    var staerk = L(m.staerken);
+    if (staerk && staerk.length) {
+      body.appendChild(el("div", "modal-section-title", t("modal_staerken")));
       var ul = el("ul", "modal-staerken");
-      m.staerken.forEach(function (s) { ul.appendChild(el("li", null, esc(s))); });
+      staerk.forEach(function (s) { ul.appendChild(el("li", null, esc(s))); });
       body.appendChild(ul);
     }
 
-    if (m.einsatz) {
-      body.appendChild(el("div", "modal-section-title", "Typischer Einsatz"));
-      body.appendChild(el("div", "modal-einsatz", esc(m.einsatz)));
+    if (L(m.einsatz)) {
+      body.appendChild(el("div", "modal-section-title", t("modal_einsatz")));
+      body.appendChild(el("div", "modal-einsatz", esc(L(m.einsatz))));
     }
 
     // Fakten-Tabelle
-    body.appendChild(el("div", "modal-section-title", "Fakten"));
+    body.appendChild(el("div", "modal-section-title", t("modal_fakten")));
     var tbl = el("table", "fact-table");
     function row(label, value, cls) {
       var tr = document.createElement("tr");
@@ -1485,20 +1615,20 @@
       var td = document.createElement("td"); td.textContent = value; if (cls) td.className = cls;
       tr.appendChild(th); tr.appendChild(td); tbl.appendChild(tr);
     }
-    row("Typ", TYPE_FULL[m.type] || m.type);
-    row("Status", STATUS_FULL[m.status] || m.status);
-    row("Preis", m.preis || "—", "fact-price");
-    row("Kontext", m.kontext || "—");
-    row("Lizenz", m.lizenz || "—");
+    row(t("fact_typ"), typeFull(m.type) || m.type);
+    row(t("fact_status"), statusFull(m.status) || m.status);
+    row(t("fact_preis"), L(m.preis) || "—", "fact-price");
+    row(t("fact_kontext"), L(m.kontext) || "—");
+    row(t("fact_lizenz"), L(m.lizenz) || "—");
     body.appendChild(tbl);
-    body.appendChild(el("div", "price-hint", (window.KI_ATLAS_META && window.KI_ATLAS_META.preishinweis) || ""));
+    body.appendChild(el("div", "price-hint", L(window.KI_ATLAS_META && window.KI_ATLAS_META.preishinweis) || ""));
 
     // Links
     var links = el("div", "modal-links");
-    var L = provider.links || {};
-    if (L.preise) links.appendChild(mkLink(L.preise, "Offizielle Preise ↗"));
-    if (L.modelle) links.appendChild(mkLink(L.modelle, "Modell-Doku ↗"));
-    if (L.web) links.appendChild(mkLink(L.web, "Anbieter ↗"));
+    var lnk = provider.links || {};
+    if (lnk.preise) links.appendChild(mkLink(lnk.preise, t("link_preise")));
+    if (lnk.modelle) links.appendChild(mkLink(lnk.modelle, t("link_modelle")));
+    if (lnk.web) links.appendChild(mkLink(lnk.web, t("link_web")));
     body.appendChild(links);
 
     overlay.classList.add("open");
@@ -1522,7 +1652,7 @@
     overlay.style.setProperty("--pc", color);
     document.getElementById("modalDot").style.background = color;
     document.getElementById("modalProvider").textContent =
-      "Weiterer Anbieter · Rang " + rank + " · " + flagged(w.land);
+      t("more_eyebrow") + rank + " · " + flagged(w.land);
     document.getElementById("modalTitle").textContent = w.name;
 
     var badges = document.getElementById("modalBadges");
@@ -1531,16 +1661,15 @@
     var body = document.getElementById("modalBody");
     body.innerHTML = "";
 
-    if (w.info) body.appendChild(el("p", "modal-detail", esc(w.info)));
+    if (L(w.info)) body.appendChild(el("p", "modal-detail", esc(L(w.info))));
 
-    body.appendChild(el("div", "modal-section-title", "Bekannte Modelle"));
-    body.appendChild(el("div", "modal-einsatz", esc(w.modelle || "—")));
+    body.appendChild(el("div", "modal-section-title", t("more_bekannte")));
+    body.appendChild(el("div", "modal-einsatz", esc(L(w.modelle) || "—")));
 
-    body.appendChild(el("p", "price-hint",
-      "Kurzeintrag: nicht im selben Umfang quellengeprüft wie die acht großen Anbieter. Details auf der offiziellen Seite."));
+    body.appendChild(el("p", "price-hint", t("more_hinweis")));
 
     var links = el("div", "modal-links");
-    if (w.web) links.appendChild(mkLink(w.web, "Anbieter ↗"));
+    if (w.web) links.appendChild(mkLink(w.web, t("link_anbieter")));
     body.appendChild(links);
 
     overlay.classList.add("open");
@@ -1576,7 +1705,7 @@
     allBar.type = "button";
     allBar.setAttribute("aria-pressed", activeProvider === "all" ? "true" : "false");
     allBar.title = activeProvider === "all" ? "Alle Anbieter werden angezeigt" : "Filter aufheben — alle Anbieter anzeigen";
-    allBar.appendChild(el("span", "ab-label", "Alle Anbieter"));
+    allBar.appendChild(el("span", "ab-label", t("all_providers")));
     allBar.addEventListener("click", function () { setProvider("all"); });
     bar.appendChild(allBar);
 
@@ -1596,8 +1725,8 @@
       chip.appendChild(providerLogo(p));
       var txt = el("div", "ph-text");
       txt.appendChild(el("span", "dg-name", esc(p.name)));
-      txt.appendChild(el("small", null, esc(p.produkt)));
-      txt.appendChild(el("small", null, esc(flagged(p.land)) + " · " + p.modelle.length + " Modelle"));
+      txt.appendChild(el("small", null, esc(L(p.produkt))));
+      txt.appendChild(el("small", null, esc(flagged(p.land)) + " · " + p.modelle.length + " " + t("modelle_wort")));
       chip.appendChild(txt);
       chip.addEventListener("click", function () {
         setProvider(isActive ? "all" : p.id);
@@ -1617,8 +1746,8 @@
     head.appendChild(providerLogo(provider));
     var htxt = el("div", "ph-text");
     htxt.appendChild(el("span", "dg-name", esc(provider.name)));
-    htxt.appendChild(el("small", null, esc(provider.produkt)));
-    htxt.appendChild(el("small", null, esc(flagged(provider.land)) + " · " + models.length + " Modelle"));
+    htxt.appendChild(el("small", null, esc(L(provider.produkt))));
+    htxt.appendChild(el("small", null, esc(flagged(provider.land)) + " · " + models.length + " " + t("modelle_wort")));
     head.appendChild(htxt);
     col.appendChild(head);
 
@@ -1630,12 +1759,12 @@
         var row = el("div", "dg-model" + (m.flagship ? " is-flagship" : ""));
         row.style.setProperty("--tc", "var(" + TYPE_VAR[m.type] + ")");
         var top = el("div", "dg-top");
-        top.appendChild(el("span", "type-dot type-" + m.type, TYPE_LABEL[m.type] || ""));
+        top.appendChild(el("span", "type-dot type-" + m.type, typeLabel(m.type) || ""));
         top.appendChild(el("span", "nm", (m.flagship ? "★ " : "") + esc(m.name)));
         top.appendChild(el("span", "status st-" + m.status, STATUS_LABEL[m.status] || ""));
         row.appendChild(top);
-        if (m.note) row.appendChild(el("div", "dg-note", esc(m.note)));
-        row.title = "Details zu " + m.name + " anzeigen";
+        if (L(m.note)) row.appendChild(el("div", "dg-note", esc(L(m.note))));
+        row.title = m.name;
         row.setAttribute("role", "button");
         row.setAttribute("tabindex", "0");
         row.addEventListener("click", function () { openModal(m, provider); });
@@ -1664,8 +1793,8 @@
 
       var head = el("div", "dg-head");
       var htxt = el("div", "ph-text");
-      htxt.appendChild(el("span", "dg-name", esc(TYPE_NAME[type])));
-      htxt.appendChild(el("small", null, models.length + (models.length === 1 ? " Modell" : " Modelle")));
+      htxt.appendChild(el("span", "dg-name", esc(typeName(type))));
+      htxt.appendChild(el("small", null, models.length + " " + (models.length === 1 ? t("modell_wort") : t("modelle_wort"))));
       head.appendChild(htxt);
       col.appendChild(head);
 
@@ -1674,7 +1803,7 @@
         var d = el("div", "detail");
         d.setAttribute("role", "button");
         d.setAttribute("tabindex", "0");
-        d.title = "Details zu " + m.name + " anzeigen";
+        d.title = m.name;
         d.addEventListener("click", function () { openModal(m, provider); });
         d.addEventListener("keydown", function (e) {
           if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openModal(m, provider); }
@@ -1683,7 +1812,7 @@
         top.appendChild(el("span", "d-name", (m.flagship ? "★ " : "") + esc(m.name)));
         top.appendChild(el("span", "status st-" + m.status, STATUS_LABEL[m.status] || ""));
         d.appendChild(top);
-        if (m.note) d.appendChild(el("span", "d-note", esc(m.note)));
+        if (L(m.note)) d.appendChild(el("span", "d-note", esc(L(m.note))));
         var facts = el("div", "d-facts");
         [["Preis", m.preis], ["Kontext", m.kontext], ["Lizenz", m.lizenz]].forEach(function (f) {
           if (!f[1] || f[1] === "—") return;
@@ -1700,7 +1829,7 @@
       col.appendChild(body);
       host.appendChild(col);
     });
-    if (!host.children.length) host.appendChild(el("div", "empty", "Keine Modelle dieses Typs gefunden."));
+    if (!host.children.length) host.appendChild(el("div", "empty", "—"));
   }
 
   /* ---------- Detailkarten nach Typ ---------- */
@@ -1725,7 +1854,7 @@
       var sw = el("span", "type-swatch");
       sw.style.background = "var(" + TYPE_VAR[type] + ")";
       title.appendChild(sw);
-      title.appendChild(document.createTextNode(TYPE_NAME[type] + "  (" + items.length + ")"));
+      title.appendChild(document.createTextNode(typeName(type) + "  (" + items.length + ")"));
       sec.appendChild(title);
 
       var grid = el("div", "detail-grid");
@@ -1734,7 +1863,7 @@
         d.style.setProperty("--pc", it.p.farbe);
         d.setAttribute("role", "button");
         d.setAttribute("tabindex", "0");
-        d.title = "Details zu " + it.m.name + " anzeigen";
+        d.title = it.m.name;
         d.addEventListener("click", function () { openModal(it.m, it.p); });
         d.addEventListener("keydown", function (e) {
           if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openModal(it.m, it.p); }
@@ -1764,7 +1893,7 @@
       area.appendChild(sec);
     });
 
-    if (!any) area.appendChild(el("div", "empty", "Keine Modelle dieses Typs gefunden."));
+    if (!any) area.appendChild(el("div", "empty", "—"));
   }
 
   /* ---------- Baumstruktur (Wurzel -> Anbieter -> Modelle) ---------- */
@@ -1805,8 +1934,8 @@
         node.appendChild(providerLogo(provider));
         var ntxt = el("div", "ph-text");
         ntxt.appendChild(el("span", "dg-name", esc(provider.name)));
-        ntxt.appendChild(el("small", null, esc(provider.produkt)));
-        ntxt.appendChild(el("small", null, esc(flagged(provider.land)) + " · " + models.length + " Modelle"));
+        ntxt.appendChild(el("small", null, esc(L(provider.produkt))));
+        ntxt.appendChild(el("small", null, esc(flagged(provider.land)) + " · " + models.length + " " + t("modelle_wort")));
         node.appendChild(ntxt);
         branch.appendChild(node);
 
@@ -1822,10 +1951,10 @@
             var leaf = el("div", "leaf" + (m.flagship ? " is-flagship" : ""));
             leaf.style.setProperty("--pc", provider.farbe);
             leaf.style.setProperty("--tc", "var(" + TYPE_VAR[m.type] + ")");
-            leaf.appendChild(el("span", "type-dot type-" + m.type, TYPE_LABEL[m.type] || ""));
+            leaf.appendChild(el("span", "type-dot type-" + m.type, typeLabel(m.type) || ""));
             leaf.appendChild(el("span", "lf-name", (m.flagship ? "★ " : "") + esc(m.name)));
             leaf.appendChild(el("span", "status st-" + m.status, STATUS_LABEL[m.status] || ""));
-            leaf.title = "Details zu " + m.name + " anzeigen";
+            leaf.title = m.name;
             leaf.setAttribute("role", "button");
             leaf.setAttribute("tabindex", "0");
             (function (mm) {
@@ -1876,28 +2005,21 @@
      Filtern auf einen einzelnen Anbieter an. */
   function updateViewCaption() {
     var soloP = activeProvider !== "all" ? providersToShow()[0] : null;
-    var t, s;
+    var tt, ss;
     if (activeView === "market") {
-      t = "Gesamtliste — Nutzer, Umsatz & Bewertung";
-      s = "Alle Anbieter mit Nutzerzahlen, Umsatz, Bewertung und Gründungsjahr, nach Nutzern sortiert. Zahlen sind Schätzungen/Run-Rate — Quellen in der Tabelle.";
+      tt = t("cap_market_t"); ss = t("cap_market_s");
     } else if (activeView === "tree") {
-      t = soloP ? "Baumstruktur — " + soloP.name : "Baumstruktur — von der Wurzel zu den Modellen";
-      s = soloP
-        ? "Der Ast von " + soloP.name + " mit allen Modellen als Zweige. Das Flaggschiff ist hervorgehoben."
-        : "Von der Wurzel verzweigt jeder Anbieter zu seinen Modellen. Das Flaggschiff ist hervorgehoben.";
+      tt = soloP ? t("tab_tree") + " — " + soloP.name : t("cap_tree_t");
+      ss = soloP ? t("cap_tree_solo_s_a") + soloP.name + t("cap_tree_solo_s_b") : t("cap_tree_s");
     } else if (activeView === "cards") {
-      t = soloP ? "Detailkarten — " + soloP.name : "Detailkarten — alle Modelle nach Modalität";
-      s = soloP
-        ? "Die Modelle von " + soloP.name + " als ausführliche Karten, gruppiert nach Modalität."
-        : "Alle Modelle als Karten, gruppiert nach Modalität. Der farbige Punkt zeigt den Anbieter.";
+      tt = soloP ? t("tab_cards") + " — " + soloP.name : t("cap_cards_t");
+      ss = soloP ? t("cap_cards_solo_s_a") + soloP.name + t("cap_cards_solo_s_b") : t("cap_cards_s");
     } else {
-      t = soloP ? "Raster — " + soloP.name + " im Detail" : "Raster — Anbieter und ihre Modelle";
-      s = soloP
-        ? "Die Modelle von " + soloP.name + ", nach Modelltyp gegliedert. Klick öffnet die Detail-Maske."
-        : "Jede Spalte ein Anbieter mit seinen Modellen nach Typ. Klick auf eine Kachel öffnet die Details.";
+      tt = soloP ? t("tab_grid") + " — " + soloP.name + t("cap_grid_solo_t") : t("cap_grid_t");
+      ss = soloP ? t("cap_grid_solo_s_a") + soloP.name + t("cap_grid_solo_s_b") : t("cap_grid_s");
     }
-    document.getElementById("viewTitle").textContent = t;
-    document.getElementById("viewSub").textContent = s;
+    document.getElementById("viewTitle").textContent = tt;
+    document.getElementById("viewSub").textContent = ss;
   }
 
   /* ---------- Anbieter-Filter (Klick auf einen Chip in der Anbieter-Zeile) ---------- */
@@ -1952,7 +2074,7 @@
   var MOON = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
   function applyTheme(mode) {
     document.documentElement.setAttribute("data-theme", mode);
-    themeText.textContent = mode === "dark" ? "Hell" : "Dunkel";
+    themeText.textContent = mode === "dark" ? t("theme_light") : t("theme_dark");
     themeIcon.innerHTML = mode === "dark" ? MOON : SUN;
     try { localStorage.setItem("kiatlas-theme", mode); } catch (e) {}
   }
@@ -1966,20 +2088,24 @@
 
   /* ---------- Aktualisieren (Schritt 2 vorbereitet) ---------- */
   document.getElementById("refreshBtn").addEventListener("click", function () {
-    alert(
-      "Live-Aktualisierung ist noch nicht aktiv.\n\n" +
-      "Grund: Eine reine Seite (z. B. auf GitHub Pages) darf die Modell-Endpunkte der Anbieter " +
-      "nicht direkt aus dem Browser abfragen (CORS + API-Schlüssel).\n\n" +
-      "In Schritt 2 wird hier ein kleiner Proxy angebunden. Dann holt dieser Knopf echte Live-Daten."
+    alert(activeLang === "en"
+      ? "Live update is not active yet.\n\n" +
+        "Reason: A static site (e.g. on GitHub Pages) may not query the providers' model endpoints " +
+        "directly from the browser (CORS + API keys).\n\n" +
+        "In step 2 a small proxy will be connected here. Then this button will fetch real live data."
+      : "Live-Aktualisierung ist noch nicht aktiv.\n\n" +
+        "Grund: Eine reine Seite (z. B. auf GitHub Pages) darf die Modell-Endpunkte der Anbieter " +
+        "nicht direkt aus dem Browser abfragen (CORS + API-Schlüssel).\n\n" +
+        "In Schritt 2 wird hier ein kleiner Proxy angebunden. Dann holt dieser Knopf echte Live-Daten."
     );
   });
 
-  /* ---------- Weitere Anbieter (Kurzliste, einmalig gerendert) ---------- */
-  (function () {
+  /* ---------- Weitere Anbieter (Kurzliste) — bei Sprachwechsel neu ---------- */
+  function renderMore() {
     var host = document.getElementById("moreGrid");
+    if (!host) return;
+    host.innerHTML = "";
     var list = window.KI_ATLAS_WEITERE || [];
-    // Rang läuft hinter den Haupt-Anbietern weiter (9, 10, ...);
-    // Farben rotieren durch die Anbieter-Palette — nur als dezente Kante.
     var palette = data.length ? data.map(function (p) { return p.farbe; }) : ["#4285f4"];
     list.forEach(function (w, i) {
       var rank = data.length + i + 1;
@@ -1991,27 +2117,28 @@
       top.appendChild(el("span", "mi-name", esc(w.name)));
       top.appendChild(el("span", "mi-land", esc(flagged(w.land))));
       row.appendChild(top);
-      var mo = el("div", "mi-modelle", esc(w.modelle || ""));
-      mo.title = w.modelle || "";
+      var mo = el("div", "mi-modelle", esc(L(w.modelle) || ""));
+      mo.title = L(w.modelle) || "";
       row.appendChild(mo);
-      // klickbar: öffnet eine schlanke Info-Maske mit Link zum Anbieter
       row.setAttribute("role", "button");
       row.setAttribute("tabindex", "0");
-      row.title = "Mehr zu " + w.name + " anzeigen";
+      row.title = w.name;
       row.addEventListener("click", function () { openMoreModal(w, rank, color); });
       row.addEventListener("keydown", function (e) {
         if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openMoreModal(w, rank, color); }
       });
       host.appendChild(row);
     });
-    if (!list.length) host.appendChild(el("div", "model-note", "Keine weiteren Anbieter hinterlegt."));
-  })();
+  }
 
-  /* ---------- Gesamtliste (Marktzahlen-Tabelle, einmalig gerendert) ---------- */
-  (function () {
+  /* ---------- Gesamtliste (Marktzahlen-Tabelle) — bei Sprachwechsel neu ---------- */
+  function renderMarket() {
     var rows = window.KI_ATLAS_MARKT || [];
     var tbl = document.getElementById("marketTable");
     if (!tbl) return;
+    tbl.innerHTML = "";
+    // Kategorie-Farbe hängt an den DEUTSCHEN Schlüsselwörtern — daher immer de-Wert
+    function catKey(c) { return (c && typeof c === "object") ? (c.de || "") : (c || ""); }
 
     // Anbieterfarbe der acht großen (über den Namen gematcht) für den Farbpunkt
     function provColor(name) {
@@ -2041,10 +2168,10 @@
 
     var thead = document.createElement("thead");
     var htr = document.createElement("tr");
-    ["#", "Anbieter", "Land", "Produkt", "Kategorie", "Nutzer", "Umsatz / ARR", "Bewertung", "Gründung", "Quelle / Stand"]
-      .forEach(function (h) {
+    ["th_rank", "th_anbieter", "th_land", "th_produkt", "th_kategorie", "th_nutzer", "th_umsatz", "th_bewertung", "th_gruendung", "th_quelle"]
+      .forEach(function (k) {
         var th = document.createElement("th");
-        th.textContent = h;
+        th.textContent = t(k);
         htr.appendChild(th);
       });
     thead.appendChild(htr);
@@ -2066,30 +2193,30 @@
       tr.appendChild(provTd);
 
       tr.appendChild(el("td", "mt-land", esc(flagged(m.land))));
-      tr.appendChild(el("td", "mt-product", esc(m.produkt || "")));
+      tr.appendChild(el("td", "mt-product", esc(L(m.produkt) || "")));
 
       // Kategorie-Badge
       var catTd = document.createElement("td");
-      var badge = el("span", "mt-cat", esc(m.kategorie || "—"));
-      badge.style.setProperty("--cc", catColor(m.kategorie));
+      var badge = el("span", "mt-cat", esc(L(m.kategorie) || "—"));
+      badge.style.setProperty("--cc", catColor(catKey(m.kategorie)));
       catTd.appendChild(badge);
       tr.appendChild(catTd);
 
       // Nutzer (+ Metrik klein darunter)
-      var nu = orDash(m.nutzer);
+      var nu = orDash(L(m.nutzer));
       var nuTd = document.createElement("td");
       nuTd.className = "mt-num";
       if (nu) {
         nuTd.appendChild(el("div", null, esc(nu)));
-        if (m.metrik) nuTd.appendChild(el("div", "mt-metric", esc(m.metrik)));
+        if (L(m.metrik)) nuTd.appendChild(el("div", "mt-metric", esc(L(m.metrik))));
       } else {
         nuTd.appendChild(el("span", "mt-empty", "—"));
       }
       tr.appendChild(nuTd);
 
-      var um = orDash(m.umsatz);
+      var um = orDash(L(m.umsatz));
       tr.appendChild(cell("mt-num", um, !um));
-      var bw = orDash(m.bewertung);
+      var bw = orDash(L(m.bewertung));
       tr.appendChild(cell("mt-num", bw, !bw));
       tr.appendChild(cell("mt-year", m.gruendung, !orDash(m.gruendung)));
 
@@ -2100,7 +2227,7 @@
         a.className = "mt-srclink";
         a.href = m.quelleUrl; a.target = "_blank"; a.rel = "noopener";
         a.textContent = m.quelleName + " ↗";
-        if (m.quelle) a.title = m.quelle;
+        if (L(m.quelle)) a.title = L(m.quelle);
         qTd.appendChild(a);
       } else {
         qTd.appendChild(el("span", "mt-empty", "—"));
@@ -2110,7 +2237,7 @@
       tbody.appendChild(tr);
     });
     tbl.appendChild(tbody);
-  })();
+  }
 
   /* ---------- Besucherzähler (GoatCounter, cookielos) ----------
      TODO zum Aktivieren: kostenlosen Account auf goatcounter.com anlegen
@@ -2146,11 +2273,43 @@
     resizeTimer = setTimeout(renderTree, 150);
   });
 
-  document.getElementById("standLine").textContent = "Übersicht der Modelle · Stand " + meta.stand;
-  document.getElementById("introMeta").textContent =
-    "Stand der Recherche: " + meta.stand + (meta.hinweis ? " · " + meta.hinweis : "");
+  // Per JS gesetzte Texte (auch bei Sprachwechsel erneut aufrufen)
+  function updateDynamicTexts() {
+    document.getElementById("standLine").textContent = t("sub_stand") + meta.stand;
+    document.getElementById("introMeta").textContent =
+      t("intro_meta_prefix") + meta.stand + (L(meta.hinweis) ? " · " + L(meta.hinweis) : "");
+    var th = document.getElementById("themeText");
+    if (th) th.textContent = document.documentElement.getAttribute("data-theme") === "dark" ? t("theme_light") : t("theme_dark");
+  }
 
+  /* ---------- Sprach-Umschalter (DE / EN / TR) ---------- */
+  function markLangButtons() {
+    var lb = document.querySelectorAll(".lang-btn");
+    for (var i = 0; i < lb.length; i++) lb[i].setAttribute("aria-pressed", lb[i].getAttribute("data-lang") === activeLang ? "true" : "false");
+  }
+  function setLang(lang) {
+    if (LANGS.indexOf(lang) < 0) lang = "de";
+    activeLang = lang;
+    try { localStorage.setItem("kiatlas-lang", lang); } catch (e) {}
+    markLangButtons();
+    applyStaticI18n();
+    updateDynamicTexts();
+    renderAll();
+    renderMore();
+    renderMarket();
+  }
+  var langBtns = document.querySelectorAll(".lang-btn");
+  for (var _i = 0; _i < langBtns.length; _i++) {
+    (function (b) { b.addEventListener("click", function () { setLang(b.getAttribute("data-lang")); }); })(langBtns[_i]);
+  }
+
+  // Start
+  applyStaticI18n();
+  updateDynamicTexts();
+  markLangButtons();
   renderAll();
+  renderMore();
+  renderMarket();
 })();
 </script>
 </body>
