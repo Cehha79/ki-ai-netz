@@ -2125,8 +2125,9 @@
     gc.src = "https://gc.zgo.at/count.js";
     gc.setAttribute("data-goatcounter", "https://" + GC_CODE + ".goatcounter.com/count");
     document.body.appendChild(gc);
-    // 2) Gesamtzahl anzeigen (schlägt es fehl, bleibt der Zähler einfach versteckt)
-    fetch("https://" + GC_CODE + ".goatcounter.com/counter/" + encodeURIComponent(location.pathname) + ".json")
+    // 2) Gesamtzahl anzeigen (TOTAL = Summe aller Seiten; robust für die Einzelseite).
+    //    Schlägt es fehl (z. B. Anzeige in GoatCounter nicht freigegeben), bleibt der Zähler versteckt.
+    fetch("https://" + GC_CODE + ".goatcounter.com/counter/TOTAL.json")
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (d && d.count) {
