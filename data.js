@@ -1,829 +1,4405 @@
-/*
-  KI-Modell-Atlas — Datenbasis
-  Stand der Recherche: 4. Juli 2026 (quellengeprüft)
-
-  Preise: USD pro 1 Mio. Token (Eingabe / Ausgabe), sofern nicht anders vermerkt.
-  Quellen: offizielle Anbieter-Preisseiten (openai.com/api/pricing,
-  anthropic.com/pricing, ai.google.dev/pricing, api-docs.deepseek.com,
-  mistral.ai/pricing, docs.x.ai, Alibaba Cloud Model Studio), gegengeprüft
-  über aipricing.guru (Stand Anfang Juli 2026).
-
-  WICHTIG (ehrlich): Nicht jedes Modell hat einen öffentlichen Token-Preis.
-  Bild-, Audio- und Video-Modelle rechnen anders ab (pro Bild/Sekunde/Zeichen).
-  Open-Weight-Modelle sind kostenlos selbst hostbar; ihr API-Preis hängt vom
-  Anbieter ab. Noch nicht veröffentlichte Modelle haben keinen Preis. In diesen
-  Fällen steht ein ehrlicher Hinweis statt einer erfundenen Zahl.
-
-  Felder je Modell:
-    name, type, status, flagship?, note (Kurznotiz),
-    preis   – String: Token-Preis oder ehrlicher Hinweis
-    kontext – String: Kontextfenster / Ausgabegrenze oder "—"
-    lizenz  – String: z. B. "proprietär (API)", "Open-Weight (Apache 2.0)"
-    staerken – Array kurzer Stichpunkte
-    einsatz  – String: typischer Einsatzzweck
-    detail   – String: längerer Erklärtext
-*/
+/* KI/AI-Netz – redaktionelle Daten, geprüft am 14.09.2026.
+   Modellquellen und Prüfdatum stehen am jeweiligen Eintrag.
+   Kurzprofile und unbelegte Marktkennzahlen sind ausdrücklich gekennzeichnet. */
 
 window.KI_ATLAS_META = {
-  stand: "4. Juli 2026",
-  hinweis: { de: "Statischer, quellengeprüfter Stand. Preise können sich ändern — im Zweifel die offizielle Anbieterseite prüfen.", en: "Static, source-checked snapshot. Prices may change — when in doubt, check the official provider page." },
-  preishinweis: { de: "Preise in USD pro 1 Mio. Token (Eingabe / Ausgabe), sofern nicht anders angegeben.", en: "Prices in USD per 1 M tokens (input / output), unless stated otherwise." },
+  "stand": "14. September 2026",
+  "geprueftAm": "2026-09-14",
+  "hinweis": {
+    "de": "Redaktioneller Stand mit offiziellen Modellquellen. Unbestätigte Altangaben, Zugangsgrenzen und Abschaltungen sind gekennzeichnet. Auswahl ohne Vollständigkeitsanspruch.",
+    "en": "Editorial snapshot with official model sources. Unconfirmed legacy claims, access limits and shutdowns are labelled. Selected catalogue, not exhaustive."
+  },
+  "preishinweis": {
+    "de": "API-Preise in USD je 1 Mio. Token (Eingabe / Ausgabe), soweit nicht anders angegeben. Token sind kleine Text- oder Datenbausteine. Kein Chat-Abo-Preis. Sondertarife, Cache, Werkzeuge und Regionen können abweichen; offene Gewichte verursachen Betriebskosten.",
+    "en": "API prices in USD per 1M tokens (input / output), unless stated otherwise. Tokens are small text or data units. These are not chat subscription prices. Service tiers, cache, tools and regions can differ; open weights incur running costs."
+  }
 };
 
-// Gepflegte, quellenbelegte Kurzliste für den Knopf „Aktualisieren":
-// kategorie ∈ neu | aktuell | geplant. Handverlesen, bewusst knapp.
 window.KI_ATLAS_NEU = [
-  // --- Neu erschienen ---
   {
-    name: "GPT-5.5", anbieter: "OpenAI", kategorie: "neu", typ: "text", flagship: true,
-    stand: { de: "April 2026", en: "April 2026" },
-    info: { de: "OpenAIs allgemein verfügbares Flaggschiff, seit 23. April 2026 Standardmodell (Instant). Deckt viele Funktionen ab, die zunächst als GPT-6 erwartet wurden.", en: "OpenAI's generally available flagship, the default model (Instant) since 23 April 2026. Covers many features initially expected as GPT-6." },
-    quelleName: "currentaffair.today", quelleUrl: "https://www.currentaffair.today/blog/technology-13/4-ai-giants-launch-in-14-days-google-i-o-openai-gpt-5-5-anthropic-opus-4-8-microsoft-mai-who-wins-790"
+    "name": "GPT-6 Astra",
+    "anbieter": "OpenAI",
+    "kategorie": "aktuell",
+    "typ": "multi",
+    "flagship": true,
+    "info": {
+      "de": "Komplexe Aufgaben, Programmieren und Werkzeuge.",
+      "en": "Complex tasks, coding and tools."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "developers.openai.com",
+    "quelleUrl": "https://developers.openai.com/api/docs/models/gpt-6-astra"
   },
   {
-    name: "Gemini 3.5 Flash", anbieter: "Google DeepMind", kategorie: "neu", typ: "multi", flagship: true,
-    stand: { de: "Mai 2026", en: "May 2026" },
-    info: { de: "Auf der Google I/O am 19. Mai 2026 veröffentlicht und sofort verfügbar; schnelles, breit einsetzbares Modell nahe Pro-Niveau.", en: "Released at Google I/O on 19 May 2026 and available immediately; fast, broadly usable model close to Pro level." },
-    quelleName: "blog.google", quelleUrl: "https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-may-2026/"
+    "name": "GPT-5.3 Instant",
+    "anbieter": "OpenAI",
+    "kategorie": "aktuell",
+    "typ": "multi",
+    "flagship": false,
+    "info": {
+      "de": "API-Endpunkt seit 10.08.2026 abgeschaltet.",
+      "en": "API endpoint shut down on 10 August 2026."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "developers.openai.com",
+    "quelleUrl": "https://developers.openai.com/api/docs/deprecations"
   },
   {
-    name: "Claude Opus 4.8", anbieter: "Anthropic", kategorie: "neu", typ: "text",
-    stand: { de: "2026", en: "2026" },
-    info: { de: "Kürzlich veröffentlicht mit 88,6 % auf SWE-Bench Verified; dient bei Anthropic als Sicherheits-Routing-Basis für Fable 5.", en: "Recently released with 88.6% on SWE-Bench Verified; serves as the safety-routing base for Fable 5 at Anthropic." },
-    quelleName: "currentaffair.today", quelleUrl: "https://www.currentaffair.today/blog/technology-13/4-ai-giants-launch-in-14-days-google-i-o-openai-gpt-5-5-anthropic-opus-4-8-microsoft-mai-who-wins-790"
+    "name": "Sora 2",
+    "anbieter": "OpenAI",
+    "kategorie": "aktuell",
+    "typ": "video",
+    "flagship": false,
+    "info": {
+      "de": "Videoerzeugung; API-Abschaltung am 24.09.2026 angekündigt.",
+      "en": "Video generation; API shutdown announced for 24 September 2026."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "developers.openai.com",
+    "quelleUrl": "https://developers.openai.com/api/docs/deprecations"
   },
   {
-    name: "MAI-Thinking-1", anbieter: "Microsoft", kategorie: "neu", typ: "text",
-    stand: { de: "2026", en: "2026" },
-    info: { de: "Microsofts erstes von Grund auf selbst trainiertes Reasoning-Modell.", en: "Microsoft's first reasoning model trained from scratch in-house." },
-    quelleName: "currentaffair.today", quelleUrl: "https://www.currentaffair.today/blog/technology-13/4-ai-giants-launch-in-14-days-google-i-o-openai-gpt-5-5-anthropic-opus-4-8-microsoft-mai-who-wins-790"
+    "name": "Gemini 3.8 Flash",
+    "anbieter": "Google DeepMind",
+    "kategorie": "aktuell",
+    "typ": "multi",
+    "flagship": true,
+    "info": {
+      "de": "Text, Bilder, Audio, Video und PDF verstehen; Text ausgeben.",
+      "en": "Understand text, images, audio, video and PDF; output text."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "ai.google.dev",
+    "quelleUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash"
   },
   {
-    name: "Mistral Large 3", anbieter: "Mistral AI", kategorie: "neu", typ: "multi",
-    stand: { de: "Juli 2026", en: "July 2026" },
-    info: { de: "Neues Open-Weight-Flaggschiff (Apache 2.0), Sparse-MoE mit 41 Mrd. aktiven / 675 Mrd. Gesamtparametern; erstes MoE seit Mixtral, mit Bildverständnis.", en: "New open-weight flagship (Apache 2.0), sparse MoE with 41B active / 675B total parameters; first MoE since Mixtral, with image understanding." },
-    quelleName: "mistral.ai", quelleUrl: "https://mistral.ai/news/mistral-3/"
+    "name": "Gemini 3.5 Pro",
+    "anbieter": "Google DeepMind",
+    "kategorie": "geplant",
+    "typ": "multi",
+    "flagship": false,
+    "info": {
+      "de": "Alter Katalogeintrag: aktuelle offizielle Bestätigung fehlt.",
+      "en": "Legacy catalogue entry: current official confirmation missing."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "ai.google.dev",
+    "quelleUrl": "https://ai.google.dev/gemini-api/docs/models"
   },
   {
-    name: "Claude Sonnet 5", anbieter: "Anthropic", kategorie: "neu", typ: "text",
-    stand: { de: "Juni 2026", en: "June 2026" },
-    info: { de: "Seit 30. Juni 2026 Standardmodell für alle Free- und Pro-Nutzer; ausgelegt auf Coding, Werkzeugnutzung und agentische Abläufe, 1M-Token-Kontext, adaptives Reasoning.", en: "Default model for all Free and Pro users since 30 June 2026; built for coding, tool use and agentic workflows, 1M-token context, adaptive reasoning." },
-    quelleName: "platform.claude.com", quelleUrl: "https://platform.claude.com/docs/en/about-claude/models/overview"
-  },
-
-  // --- Aktuelle Flaggschiffe ---
-  {
-    name: "Claude Fable 5", anbieter: "Anthropic", kategorie: "aktuell", typ: "text", flagship: true,
-    stand: { de: "Juli 2026", en: "July 2026" },
-    info: { de: "Fähigstes öffentliches Anthropic-Modell; Sicherheits-Routing auf Opus 4.8.", en: "Anthropic's most capable public model; safety routing onto Opus 4.8." },
-    quelleName: "claude.com", quelleUrl: "https://platform.claude.com/docs/en/about-claude/models/overview"
-  },
-  {
-    name: "Llama 4 (Scout / Maverick)", anbieter: "Meta", kategorie: "aktuell", typ: "multi", flagship: true,
-    stand: { de: "Juli 2026", en: "July 2026" },
-    info: { de: "Nativ multimodale Open-Weight-Linie von Meta.", en: "Meta's natively multimodal open-weight line." },
-    quelleName: "ai.meta.com", quelleUrl: "https://ai.meta.com/blog/llama-4-multimodal-intelligence/"
+    "name": "Claude Fable 5.1",
+    "anbieter": "Anthropic",
+    "kategorie": "aktuell",
+    "typ": "multi",
+    "flagship": true,
+    "info": {
+      "de": "Aufwendige Denkaufgaben und mehrstufige Werkzeugnutzung.",
+      "en": "Demanding reasoning and multi-step tool use."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "platform.claude.com",
+    "quelleUrl": "https://platform.claude.com/docs/en/models/fable-5-1/overview"
   },
   {
-    name: "Grok 4.3 beta", anbieter: "xAI", kategorie: "aktuell", typ: "multi", flagship: true,
-    stand: { de: "Juli 2026", en: "July 2026" },
-    info: { de: "Aktuelles Flaggschiff (Beta) mit Sprach-, Bild- und Videoverständnis.", en: "Current flagship (beta) with speech, image and video understanding." },
-    quelleName: "x.ai", quelleUrl: "https://x.ai/news"
+    "name": "Claude Opus 5",
+    "anbieter": "Anthropic",
+    "kategorie": "aktuell",
+    "typ": "multi",
+    "flagship": false,
+    "info": {
+      "de": "Programmieren und komplexe Arbeitsabläufe.",
+      "en": "Coding and complex workflows."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "platform.claude.com",
+    "quelleUrl": "https://platform.claude.com/docs/en/models/opus-5/overview"
   },
   {
-    name: "DeepSeek V4-Pro", anbieter: "DeepSeek", kategorie: "aktuell", typ: "text", flagship: true,
-    stand: { de: "Juli 2026", en: "July 2026" },
-    info: { de: "1,6T-MoE (49B aktiv), 1M-Kontext, offene Gewichte (MIT).", en: "1.6T MoE (49B active), 1M context, open weights (MIT)." },
-    quelleName: "api-docs.deepseek.com", quelleUrl: "https://api-docs.deepseek.com/"
+    "name": "Claude Sonnet 5",
+    "anbieter": "Anthropic",
+    "kategorie": "aktuell",
+    "typ": "multi",
+    "flagship": false,
+    "info": {
+      "de": "Text, Bildverständnis und Programmieren.",
+      "en": "Text, vision and coding."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "platform.claude.com",
+    "quelleUrl": "https://platform.claude.com/docs/en/models/sonnet-5/overview"
   },
   {
-    name: "Mistral Medium 3.5", anbieter: "Mistral AI", kategorie: "aktuell", typ: "multi", flagship: true,
-    stand: { de: "Juli 2026", en: "July 2026" },
-    info: { de: "Erstes zusammengeführtes Flaggschiff (Instruct + Reasoning + Code).", en: "First merged flagship (instruct + reasoning + code)." },
-    quelleName: "docs.mistral.ai", quelleUrl: "https://docs.mistral.ai/models/overview"
+    "name": "Claude Mythos 5.1",
+    "anbieter": "Anthropic",
+    "kategorie": "aktuell",
+    "typ": "multi",
+    "flagship": false,
+    "info": {
+      "de": "Nur auf Einladung im Programm Project Glasswing.",
+      "en": "Invitation only through Project Glasswing."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "platform.claude.com",
+    "quelleUrl": "https://platform.claude.com/docs/en/models/mythos-5-1/overview"
   },
   {
-    name: "Qwen3.7-Max", anbieter: "Alibaba (Qwen)", kategorie: "aktuell", typ: "text", flagship: true,
-    stand: { de: "Juli 2026", en: "July 2026" },
-    info: { de: "Neues proprietäres Flaggschiff, 1M-Kontext, nur per API.", en: "New proprietary flagship, 1M context, API-only." },
-    quelleName: "alibabacloud.com", quelleUrl: "https://www.alibabacloud.com/help/en/model-studio/models"
-  },
-
-  // --- Angekündigt / geplant ---
-  {
-    name: "GPT-5.6 (Sol / Terra / Luna)", anbieter: "OpenAI", kategorie: "geplant", typ: "text",
-    stand: { de: "Juni 2026", en: "June 2026" },
-    info: { de: "Am 26. Juni 2026 als Vorschau gezeigt, zunächst auf rund 20 Organisationen beschränkt; breite Verfügbarkeit noch offen.", en: "Previewed on 26 June 2026, initially limited to about 20 organizations; broad availability still open." },
-    quelleName: "centerbit.co", quelleUrl: "https://centerbit.co/en/blog/ai-rumors-june-2026-gpt-5-6-gemini-3-5-pro-claude-mythos"
-  },
-  {
-    name: "Gemini 3.5 Pro", anbieter: "Google DeepMind", kategorie: "geplant", typ: "multi",
-    stand: { de: "Juli 2026", en: "July 2026" },
-    info: { de: "Auf der Google I/O angekündigt; für Juli 2026 zur allgemeinen Verfügbarkeit vorgesehen (von Juni verschoben), soll die Reasoning-Lücken von Flash schließen.", en: "Announced at Google I/O; slated for general availability in July 2026 (slipped from June), intended to close Flash's reasoning gaps." },
-    quelleName: "centerbit.co", quelleUrl: "https://centerbit.co/en/blog/ai-rumors-june-2026-gpt-5-6-gemini-3-5-pro-claude-mythos"
+    "name": "Muse Spark 1.3",
+    "anbieter": "Meta",
+    "kategorie": "aktuell",
+    "typ": "multi",
+    "flagship": true,
+    "info": {
+      "de": "Programmieren sowie Bild-, Video- und Dokumentverständnis.",
+      "en": "Coding, image, video and document understanding."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "developer.meta.com",
+    "quelleUrl": "https://developer.meta.com/ai/"
   },
   {
-    name: "Claude Mythos 5", anbieter: "Anthropic", kategorie: "geplant", typ: "text",
-    stand: { de: "2026", en: "2026" },
-    info: { de: "Auf lang laufende, agentische Unternehmensaufgaben optimiert; derzeit nur für ausgewählte Kunden (Limited), auf dem Weg zur breiten Verfügbarkeit.", en: "Optimized for long-running, agentic enterprise tasks; currently limited to select customers, on the way to broad availability." },
-    quelleName: "centerbit.co", quelleUrl: "https://centerbit.co/en/blog/ai-rumors-june-2026-gpt-5-6-gemini-3-5-pro-claude-mythos"
+    "name": "Grok 4.6",
+    "anbieter": "xAI",
+    "kategorie": "aktuell",
+    "typ": "multi",
+    "flagship": true,
+    "info": {
+      "de": "Text, Bildverständnis, Programmieren und Werkzeuge.",
+      "en": "Text, vision, coding and tools."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "docs.x.ai",
+    "quelleUrl": "https://docs.x.ai/developers/models/grok-4.6"
   },
   {
-    name: "Grok 5", anbieter: "xAI", kategorie: "geplant", typ: "multi",
-    stand: { de: "erwartet 2026", en: "expected 2026" },
-    info: { de: "Angekündigtes nächstes Flaggschiff (~6 Bio. Parameter, MoE), trainiert auf xAIs Colossus-2-Cluster; Termin von Q2 2026 verschoben, offiziell noch offen.", en: "Announced next flagship (~6T parameters, MoE), trained on xAI's Colossus 2 cluster; timing slipped from Q2 2026, still officially open." },
-    quelleName: "felloai.com", quelleUrl: "https://felloai.com/all-we-know-so-far-about-grok-5/"
+    "name": "Grok Imagine Video 1.5",
+    "anbieter": "xAI",
+    "kategorie": "aktuell",
+    "typ": "video",
+    "flagship": false,
+    "info": {
+      "de": "Videos aus Text, Bildern und Referenzen erzeugen.",
+      "en": "Generate video from text, images and references."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "docs.x.ai",
+    "quelleUrl": "https://docs.x.ai/developers/models/grok-imagine-video-1.5-preview"
   },
   {
-    name: "DeepSeek R2", anbieter: "DeepSeek", kategorie: "geplant", typ: "text",
-    stand: { de: "unbestätigt", en: "unconfirmed" },
-    info: { de: "Erwarteter Reasoning-Nachfolger; bislang kein bestätigter Termin — Berichten zufolge wegen Leistungs- und Chip-Problemen verzögert. Ausgeliefert wurde stattdessen V4.", en: "Expected reasoning successor; no confirmed date so far — reportedly delayed by performance and chip issues. V4 shipped instead." },
-    quelleName: "chat-deep.ai", quelleUrl: "https://chat-deep.ai/guide/deepseek-roadmap-rumors/"
+    "name": "Grok 5",
+    "anbieter": "xAI",
+    "kategorie": "geplant",
+    "typ": "multi",
+    "flagship": false,
+    "info": {
+      "de": "Alter Ausblick ohne bestätigten Veröffentlichungstermin.",
+      "en": "Legacy forecast without a confirmed release date."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "docs.x.ai",
+    "quelleUrl": "https://docs.x.ai/developers/models"
   },
+  {
+    "name": "DeepSeek V4.1-Flash",
+    "anbieter": "DeepSeek",
+    "kategorie": "aktuell",
+    "typ": "multi",
+    "flagship": true,
+    "info": {
+      "de": "Text und Werkzeuge; Flash zusätzlich mit Bildverständnis.",
+      "en": "Text and tools; Flash also supports vision."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "api-docs.deepseek.com",
+    "quelleUrl": "https://api-docs.deepseek.com/quick_start/pricing/"
+  },
+  {
+    "name": "Mistral Medium 3.5",
+    "anbieter": "Mistral AI",
+    "kategorie": "aktuell",
+    "typ": "multi",
+    "flagship": true,
+    "info": {
+      "de": "Text, Bildverständnis und Werkzeuge; Gewichte verfügbar.",
+      "en": "Text, vision and tools; downloadable weights."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "docs.mistral.ai",
+    "quelleUrl": "https://docs.mistral.ai/models/mistral-medium-3-5-26-04"
+  },
+  {
+    "name": "OCR 4.1",
+    "anbieter": "Mistral AI",
+    "kategorie": "aktuell",
+    "typ": "multi",
+    "flagship": false,
+    "info": {
+      "de": "Dokumente in Text und strukturierte Blöcke umwandeln.",
+      "en": "Convert documents into text and structured blocks."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "docs.mistral.ai",
+    "quelleUrl": "https://docs.mistral.ai/models/ocr-4-1"
+  },
+  {
+    "name": "Qwen3.8-Max",
+    "anbieter": "Alibaba (Qwen)",
+    "kategorie": "aktuell",
+    "typ": "multi",
+    "flagship": true,
+    "info": {
+      "de": "Text, Bildverständnis und Werkzeugnutzung.",
+      "en": "Text, vision and tool use."
+    },
+    "stand": {
+      "de": "Geprüft: 14.09.2026",
+      "en": "Checked: 14 September 2026"
+    },
+    "quelleName": "www.alibabacloud.com",
+    "quelleUrl": "https://www.alibabacloud.com/help/en/model-studio/text-generation-model"
+  }
 ];
 
 window.KI_ATLAS_DATA = [
   {
-    id: "openai",
-    name: "OpenAI",
-    land: "USA",
-    produkt: "ChatGPT",
-    farbe: "#10a37f",
-    links: {
-      modelle: "https://platform.openai.com/docs/models",
-      news: "https://openai.com/news/",
-      web: "https://openai.com/",
-      preise: "https://openai.com/api/pricing/",
+    "id": "openai",
+    "name": "OpenAI",
+    "land": "USA",
+    "produkt": "ChatGPT",
+    "farbe": "#10a37f",
+    "links": {
+      "modelle": "https://platform.openai.com/docs/models",
+      "news": "https://openai.com/news/",
+      "web": "https://openai.com/",
+      "preise": "https://openai.com/api/pricing/"
     },
-    modelle: [
+    "modelle": [
       {
-        name: "GPT-5.5", type: "text", flagship: true, status: "ga",
-        note: { de: "Allgemein verfügbares Flaggschiff für Reasoning & Coding", en: "Generally available flagship for reasoning & coding" },
-        preis: "$5 / $30", kontext: { de: "≈ 1,05 Mio. Token", en: "≈ 1.05M tokens" }, lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["Starkes Reasoning", "Sehr gutes Coding", "Native Computer-Nutzung"], en: ["Strong reasoning", "Very good coding", "Native computer use"] },
-        einsatz: { de: "Anspruchsvolle Entwicklung, komplexe Agenten, professionelle Wissensarbeit.", en: "Demanding development, complex agents, professional knowledge work." },
-        detail: { de: "GPT-5.5 ist OpenAIs allgemein verfügbares Spitzenmodell (Stand Juli 2026). Es vereint hohe Reasoning-Tiefe mit sehr guter Code-Qualität und ist der empfohlene Standard für schwierige Aufgaben. Über ChatGPT ist es das stärkste Modell für zahlende Nutzer; über die API der Standard für neue anspruchsvolle Anwendungen.", en: "GPT-5.5 is OpenAI's generally available top model (as of July 2026). It combines deep reasoning with very good code quality and is the recommended default for hard tasks. Via ChatGPT it is the strongest model for paying users; via the API it is the default for demanding new applications." },
+        "name": "GPT-6 Astra",
+        "type": "multi",
+        "status": "ga",
+        "flagship": true,
+        "note": {
+          "de": "Komplexe Aufgaben, Programmieren und Werkzeuge.",
+          "en": "Complex tasks, coding and tools."
+        },
+        "preis": {
+          "de": "10 / 50 USD",
+          "en": "10 / 50 USD"
+        },
+        "kontext": {
+          "de": "1.050.000 Token Kontext; bis 128.000 Ausgabe.",
+          "en": "1,050,000-token context; up to 128,000 output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Komplexe Aufgaben, Programmieren und Werkzeuge.",
+          "en": "Complex tasks, coding and tools."
+        },
+        "detail": {
+          "de": "Standardtarif ohne Cache bis 272.000 Eingabe-Token. Darüber: Eingabepreis × 2, Ausgabepreis × 1,5. Werkzeuge und regionale Verarbeitung können extra kosten.",
+          "en": "Standard uncached rate up to 272,000 input tokens. Above: input × 2, output × 1.5. Tools and regional processing may cost extra."
+        },
+        "modellId": "gpt-6-astra",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/models/gpt-6-astra"
+          }
+        ]
       },
       {
-        name: "GPT-5.5 Pro", type: "text", status: "ga",
-        note: { de: "Höchste Präzision, teuerste Variante", en: "Highest precision, most expensive variant" },
-        preis: "$30 / $180", kontext: { de: "≈ 1,05 Mio. Token", en: "≈ 1.05M tokens" }, lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["Maximale Reasoning-Tiefe", "Höchste Zuverlässigkeit"], en: ["Maximum reasoning depth", "Highest reliability"] },
-        einsatz: { de: "Teure, aber besonders wichtige Aufgaben, bei denen Fehler viel kosten.", en: "Expensive but especially important tasks where mistakes are costly." },
-        detail: { de: "Die Pro-Variante von GPT-5.5 ist auf maximale Präzision bei den schwersten Problemen ausgelegt. Sie ist deutlich teurer und wird gezielt für hochwertige, fehlerkritische Arbeit eingesetzt — nicht als Alltagsmodell.", en: "The Pro variant of GPT-5.5 is designed for maximum precision on the hardest problems. It is significantly more expensive and used deliberately for high-value, error-critical work — not as an everyday model." },
+        "name": "GPT-5.6 Sol",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Allgemeine Text-, Bild- und Programmieraufgaben.",
+          "en": "General text, vision and coding tasks."
+        },
+        "preis": {
+          "de": "4 / 20 USD; Aktionspreis mindestens bis 21.11.2026.",
+          "en": "4 / 20 USD; promotional price at least through 21 November 2026."
+        },
+        "kontext": {
+          "de": "1.050.000 Token Kontext; bis 128.000 Ausgabe.",
+          "en": "1,050,000-token context; up to 128,000 output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Allgemeine Text-, Bild- und Programmieraufgaben.",
+          "en": "General text, vision and coding tasks."
+        },
+        "detail": {
+          "de": "Standardtarif ohne Cache bis 272.000 Eingabe-Token. Darüber: Eingabepreis × 2, Ausgabepreis × 1,5. Werkzeuge und regionale Verarbeitung können extra kosten.",
+          "en": "Standard uncached rate up to 272,000 input tokens. Above: input × 2, output × 1.5. Tools and regional processing may cost extra."
+        },
+        "modellId": "gpt-5.6-sol",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/models/gpt-5.6-sol"
+          }
+        ]
       },
       {
-        name: "GPT-5.6 Sol / Terra / Luna", type: "text", status: "preview",
-        note: { de: "Neueste Familie, eingeschränkte Preview (API/Codex, ~20 Partner)", en: "Newest family, limited preview (API/Codex, ~20 partners)" },
-        preis: { de: "Sol $5 / $30 · Terra $2.50 / $15 · Luna $1 / $6 (Preview)", en: "Sol $5 / $30 · Terra $2.50 / $15 · Luna $1 / $6 (preview)" }, kontext: { de: "je nach Variante", en: "depending on variant" },
-        lizenz: { de: "proprietär (Preview, eingeschränkt)", en: "proprietary (preview, limited)" },
-        staerken: { de: ["Sol: Frontier-Reasoning & Agenten", "Terra: günstig, GPT-5.5-nah", "Luna: sehr schnell & billig"], en: ["Sol: frontier reasoning & agents", "Terra: cheap, close to GPT-5.5", "Luna: very fast & cheap"] },
-        einsatz: { de: "Frühzugang für ausgewählte Partner; noch nicht allgemein verfügbar.", en: "Early access for selected partners; not yet generally available." },
-        detail: { de: "GPT-5.6 ist OpenAIs neueste Familie (Ende Juni 2026 als begrenzte Preview gestartet, zunächst nur über API/Codex für rund 20 Partnerorganisationen). Sol ist das Flaggschiff für Frontier-Reasoning und lange agentische Aufgaben, Terra die günstige Allround-Variante, Luna die schnellste und billigste. Allgemeine Verfügbarkeit war angekündigt, aber noch nicht erfolgt.", en: "GPT-5.6 is OpenAI's newest family (launched as a limited preview at the end of June 2026, initially only via API/Codex for around 20 partner organizations). Sol is the flagship for frontier reasoning and long agentic tasks, Terra the cheap all-round variant, Luna the fastest and cheapest. General availability was announced but has not yet happened." },
+        "name": "GPT-5.6 Terra",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text- und Bildverarbeitung mit Werkzeugnutzung.",
+          "en": "Text and image processing with tools."
+        },
+        "preis": {
+          "de": "2 / 12 USD",
+          "en": "2 / 12 USD"
+        },
+        "kontext": {
+          "de": "1.050.000 Token Kontext; bis 128.000 Ausgabe.",
+          "en": "1,050,000-token context; up to 128,000 output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text- und Bildverarbeitung mit Werkzeugnutzung.",
+          "en": "Text and image processing with tools."
+        },
+        "detail": {
+          "de": "Standardtarif ohne Cache bis 272.000 Eingabe-Token. Darüber: Eingabepreis × 2, Ausgabepreis × 1,5. Werkzeuge und regionale Verarbeitung können extra kosten.",
+          "en": "Standard uncached rate up to 272,000 input tokens. Above: input × 2, output × 1.5. Tools and regional processing may cost extra."
+        },
+        "modellId": "gpt-5.6-terra",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/models/gpt-5.6-terra"
+          }
+        ]
       },
       {
-        name: "GPT-5.4", type: "text", status: "ga",
-        note: { de: "Günstigeres Frontier-Modell; + mini / nano", en: "Cheaper frontier model; + mini / nano" },
-        preis: { de: "$2.50 / $15 · mini $0.75 / $4.50 · nano $0.20 / $1.25", en: "$2.50 / $15 · mini $0.75 / $4.50 · nano $0.20 / $1.25" }, kontext: { de: "≈ 1 Mio. Token", en: "≈ 1M tokens" },
-        lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["Gutes Preis-Leistungs-Verhältnis", "Skalierbare Größen (mini/nano)"], en: ["Good value for money", "Scalable sizes (mini/nano)"] },
-        einsatz: { de: "Allgemeine Produktion, hohe Volumen, Routing in Multi-Agent-Systemen.", en: "General production, high volumes, routing in multi-agent systems." },
-        detail: { de: "GPT-5.4 bleibt als günstigere Frontier-Familie aktiv. Die mini- und nano-Varianten sind für schnelle, kostensensible Aufgaben (Klassifizierung, Extraktion, hohe Durchsätze) gedacht, während das Basismodell eine starke Allround-Wahl zu moderatem Preis ist.", en: "GPT-5.4 remains active as the cheaper frontier family. The mini and nano variants are intended for fast, cost-sensitive tasks (classification, extraction, high throughput), while the base model is a strong all-round choice at a moderate price." },
+        "name": "GPT-5.6 Luna",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Kostengünstige Text- und Bildverarbeitung.",
+          "en": "Low-cost text and image processing."
+        },
+        "preis": {
+          "de": "0,20 / 1,20 USD",
+          "en": "0.20 / 1.20 USD"
+        },
+        "kontext": {
+          "de": "1.050.000 Token Kontext; bis 128.000 Ausgabe.",
+          "en": "1,050,000-token context; up to 128,000 output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Kostengünstige Text- und Bildverarbeitung.",
+          "en": "Low-cost text and image processing."
+        },
+        "detail": {
+          "de": "Standardtarif ohne Cache bis 272.000 Eingabe-Token. Darüber: Eingabepreis × 2, Ausgabepreis × 1,5. Werkzeuge und regionale Verarbeitung können extra kosten.",
+          "en": "Standard uncached rate up to 272,000 input tokens. Above: input × 2, output × 1.5. Tools and regional processing may cost extra."
+        },
+        "modellId": "gpt-5.6-luna",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/models/gpt-5.6-luna"
+          }
+        ]
       },
       {
-        name: "GPT-5.3 Instant", type: "text", status: "ga",
-        note: { de: "Schneller Standard in ChatGPT", en: "Fast default in ChatGPT" },
-        preis: { de: "kein separater API-Einzelpreis (ChatGPT-Standard)", en: "no separate individual API price (ChatGPT default)" }, kontext: "—",
-        lizenz: { de: "proprietär (in ChatGPT)", en: "proprietary (in ChatGPT)" },
-        staerken: { de: ["Sehr schnell", "Automatisches Umschalten zu Reasoning"], en: ["Very fast", "Automatic switching to reasoning"] },
-        einsatz: { de: "Alltags-Chat in ChatGPT; wechselt bei Bedarf selbst auf tieferes Denken.", en: "Everyday chat in ChatGPT; switches to deeper thinking on its own when needed." },
-        detail: { de: "GPT-5.3 Instant ist der schnelle Standard im ChatGPT-Router und schaltet automatisch auf tieferes Reasoning um, wenn eine Anfrage es braucht. Ein eigener API-Token-Preis wird dafür nicht separat ausgewiesen; die Abrechnung läuft über die ChatGPT-Pläne.", en: "GPT-5.3 Instant is the fast default in the ChatGPT router and automatically switches to deeper reasoning when a request requires it. No separate API token price is listed for it; billing runs through the ChatGPT plans." },
+        "name": "GPT-5.5",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text, Bildverständnis, Programmieren.",
+          "en": "Text, vision and coding."
+        },
+        "preis": {
+          "de": "5 / 30 USD",
+          "en": "5 / 30 USD"
+        },
+        "kontext": {
+          "de": "1.050.000 Token Kontext; bis 128.000 Ausgabe.",
+          "en": "1,050,000-token context; up to 128,000 output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bildverständnis, Programmieren.",
+          "en": "Text, vision and coding."
+        },
+        "detail": {
+          "de": "Standardtarif ohne Cache bis 272.000 Eingabe-Token. Darüber: Eingabepreis × 2, Ausgabepreis × 1,5. Werkzeuge und regionale Verarbeitung können extra kosten.",
+          "en": "Standard uncached rate up to 272,000 input tokens. Above: input × 2, output × 1.5. Tools and regional processing may cost extra."
+        },
+        "modellId": "gpt-5.5",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/models/gpt-5.5"
+          }
+        ]
       },
       {
-        name: "GPT-Image (in GPT-5.x)", type: "image", status: "ga",
-        note: { de: "Bilderzeugung integriert in die GPT-5-Familie", en: "Image generation integrated into the GPT-5 family" },
-        preis: { de: "pro Bild abgerechnet (kein Token-Preis)", en: "billed per image (no token price)" }, kontext: "—",
-        lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["In die GPT-5-Familie integriert", "Gute Prompt-Treue"], en: ["Integrated into the GPT-5 family", "Good prompt fidelity"] },
-        einsatz: { de: "Bilderzeugung direkt aus dem Chat- bzw. API-Kontext.", en: "Image generation directly from the chat or API context." },
-        detail: { de: "Die Bildfähigkeiten sind in die GPT-5-Familie integriert. Die Abrechnung erfolgt pro erzeugtem Bild (abhängig von Auflösung/Qualität), nicht pro Token — deshalb hier kein Token-Preis. Aktuelle Sätze stehen auf der offiziellen Preisseite.", en: "The image capabilities are integrated into the GPT-5 family. Billing is per generated image (depending on resolution/quality), not per token — hence no token price here. Current rates are on the official pricing page." },
+        "name": "GPT-5.5 Pro",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Aufwendige Denk- und Programmieraufgaben.",
+          "en": "Demanding reasoning and coding tasks."
+        },
+        "preis": {
+          "de": "30 / 180 USD",
+          "en": "30 / 180 USD"
+        },
+        "kontext": {
+          "de": "1.050.000 Token Kontext; bis 128.000 Ausgabe.",
+          "en": "1,050,000-token context; up to 128,000 output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Aufwendige Denk- und Programmieraufgaben.",
+          "en": "Demanding reasoning and coding tasks."
+        },
+        "detail": {
+          "de": "Standardtarif ohne Cache bis 272.000 Eingabe-Token. Darüber: Eingabepreis × 2, Ausgabepreis × 1,5. Werkzeuge und regionale Verarbeitung können extra kosten.",
+          "en": "Standard uncached rate up to 272,000 input tokens. Above: input × 2, output × 1.5. Tools and regional processing may cost extra."
+        },
+        "modellId": "gpt-5.5-pro",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/models/gpt-5.5-pro"
+          }
+        ]
       },
       {
-        name: "Sora (Video)", type: "video", status: "ga",
-        note: { de: "Text-zu-Video (separates Produkt)", en: "Text-to-video (separate product)" },
-        preis: { de: "Video — separate Abrechnung (kein Token-Preis)", en: "Video — separate billing (no token price)" }, kontext: "—",
-        lizenz: { de: "proprietär (Produkt/API)", en: "proprietary (product/API)" },
-        staerken: { de: ["Text-zu-Video", "Hohe visuelle Qualität"], en: ["Text-to-video", "High visual quality"] },
-        einsatz: { de: "Videoerzeugung aus Textbeschreibungen.", en: "Video generation from text descriptions." },
-        detail: { de: "Sora ist OpenAIs Text-zu-Video-System und wird als eigenes Produkt abgerechnet (nach Länge/Auflösung), nicht pro Token. Verfügbarkeit und Preise richten sich nach dem jeweiligen Sora-Angebot.", en: "Sora is OpenAI's text-to-video system and is billed as a separate product (by length/resolution), not per token. Availability and pricing depend on the respective Sora offering." },
+        "name": "GPT-5.4",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text, Bildverständnis und Werkzeugnutzung.",
+          "en": "Text, vision and tool use."
+        },
+        "preis": {
+          "de": "2,50 / 15 USD",
+          "en": "2.50 / 15 USD"
+        },
+        "kontext": {
+          "de": "1.050.000 Token Kontext; bis 128.000 Ausgabe.",
+          "en": "1,050,000-token context; up to 128,000 output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bildverständnis und Werkzeugnutzung.",
+          "en": "Text, vision and tool use."
+        },
+        "detail": {
+          "de": "Standardtarif ohne Cache bis 272.000 Eingabe-Token. Darüber: Eingabepreis × 2, Ausgabepreis × 1,5. Werkzeuge und regionale Verarbeitung können extra kosten.",
+          "en": "Standard uncached rate up to 272,000 input tokens. Above: input × 2, output × 1.5. Tools and regional processing may cost extra."
+        },
+        "modellId": "gpt-5.4",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/models/gpt-5.4"
+          }
+        ]
       },
-    ],
+      {
+        "name": "GPT-5.3 Instant",
+        "type": "multi",
+        "status": "retired",
+        "flagship": false,
+        "note": {
+          "de": "API-Endpunkt seit 10.08.2026 abgeschaltet.",
+          "en": "API endpoint shut down on 10 August 2026."
+        },
+        "preis": {
+          "de": "Kein aktueller API-Tarif für den abgeschalteten Endpunkt.",
+          "en": "No current API rate for the retired endpoint."
+        },
+        "kontext": {
+          "de": "Historisch: 128.000 Kontext / 16.384 Ausgabe.",
+          "en": "Historical: 128,000 context / 16,384 output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "API-Endpunkt seit 10.08.2026 abgeschaltet.",
+          "en": "API endpoint shut down on 10 August 2026."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "gpt-5.3-chat-latest",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/deprecations"
+          },
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/models/gpt-5.3-chat-latest"
+          }
+        ]
+      },
+      {
+        "name": "GPT Image 2",
+        "type": "image",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Bilder erzeugen und bearbeiten.",
+          "en": "Generate and edit images."
+        },
+        "preis": {
+          "de": "Je 1 Mio. Token: Texteingabe 2,50 USD; Bildeingabe 4 USD; Bildausgabe 15 USD.",
+          "en": "Per 1M tokens: text input USD 2.50; image input USD 4; image output USD 15."
+        },
+        "kontext": {
+          "de": "Bildmodell; Kosten hängen auch von Größe und Qualität ab.",
+          "en": "Image model; cost also depends on size and quality."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Bilder erzeugen und bearbeiten.",
+          "en": "Generate and edit images."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "gpt-image-2",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/models/gpt-image-2"
+          },
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/pricing"
+          }
+        ]
+      },
+      {
+        "name": "Sora 2",
+        "type": "video",
+        "status": "deprecated",
+        "flagship": false,
+        "note": {
+          "de": "Videoerzeugung; API-Abschaltung am 24.09.2026 angekündigt.",
+          "en": "Video generation; API shutdown announced for 24 September 2026."
+        },
+        "preis": {
+          "de": "720p: 0,10 USD je erzeugter Sekunde (Standard).",
+          "en": "720p: USD 0.10 per generated second (standard)."
+        },
+        "kontext": {
+          "de": "Video; kein Text-Kontextwert.",
+          "en": "Video; no text context value."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Videoerzeugung; API-Abschaltung am 24.09.2026 angekündigt.",
+          "en": "Video generation; API shutdown announced for 24 September 2026."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "sora-2",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/deprecations"
+          },
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/models/sora-2"
+          },
+          {
+            "name": "developers.openai.com",
+            "url": "https://developers.openai.com/api/docs/pricing"
+          }
+        ]
+      }
+    ]
   },
   {
-    id: "google",
-    name: "Google DeepMind",
-    land: "USA",
-    produkt: "Gemini",
-    farbe: "#4285f4",
-    links: {
-      modelle: "https://ai.google.dev/gemini-api/docs/models",
-      news: "https://blog.google/technology/ai/",
-      web: "https://deepmind.google/",
-      preise: "https://ai.google.dev/pricing",
+    "id": "google",
+    "name": "Google DeepMind",
+    "land": "USA",
+    "produkt": "Gemini",
+    "farbe": "#4285f4",
+    "links": {
+      "modelle": "https://ai.google.dev/gemini-api/docs/models",
+      "news": "https://blog.google/technology/ai/",
+      "web": "https://deepmind.google/",
+      "preise": "https://ai.google.dev/pricing"
     },
-    modelle: [
+    "modelle": [
       {
-        name: "Gemini 3.5 Flash", type: "multi", flagship: true, status: "ga",
-        note: { de: "Neuester breit verfügbarer Release (Mai 2026), nahe Pro-Niveau", en: "Newest broadly available release (May 2026), close to Pro level" },
-        preis: "$1.50 / $9.00", kontext: { de: "1 Mio. Token", en: "1M tokens" }, lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["Nahe Pro-Niveau bei Flash-Tempo", "Sehr gutes Coding & Agenten", "1M-Kontext"], en: ["Close to Pro level at Flash speed", "Very good coding & agents", "1M context"] },
-        einsatz: { de: "Produktions-Pipelines, lange Dokumente, agentische Workflows zu moderatem Preis.", en: "Production pipelines, long documents, agentic workflows at a moderate price." },
-        detail: { de: "Gemini 3.5 Flash (Mai 2026) ist Googles neuester breit verfügbarer Release und bringt nahezu Pro-Niveau bei Flash-typischem Tempo und Preis. Für viele Aufgaben, die früher ein Pro-Modell brauchten, ist 3.5 Flash der neue Startpunkt — stark bei Coding, langen Kontexten und parallelen Agenten.", en: "Gemini 3.5 Flash (May 2026) is Google's newest broadly available release and delivers near-Pro level at Flash-typical speed and price. For many tasks that used to require a Pro model, 3.5 Flash is the new starting point — strong at coding, long contexts and parallel agents." },
+        "name": "Gemini 3.8 Flash",
+        "type": "multi",
+        "status": "ga",
+        "flagship": true,
+        "note": {
+          "de": "Text, Bilder, Audio, Video und PDF verstehen; Text ausgeben.",
+          "en": "Understand text, images, audio, video and PDF; output text."
+        },
+        "preis": {
+          "de": "0,75 / 3,75 USD bis 31.12.2026; danach 1,50 / 7,50 USD.",
+          "en": "0.75 / 3.75 USD through 31 December 2026; then 1.50 / 7.50 USD."
+        },
+        "kontext": {
+          "de": "1.048.576 Eingabe-Token; 65.536 Ausgabe.",
+          "en": "1,048,576 input tokens; 65,536 output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bilder, Audio, Video und PDF verstehen; Text ausgeben.",
+          "en": "Understand text, images, audio, video and PDF; output text."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "gemini-3.8-flash",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash"
+          },
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/pricing"
+          }
+        ]
       },
       {
-        name: "Gemini 3.5 Pro", type: "multi", status: "preview",
-        note: { de: "Neues Premium-Reasoning-Flaggschiff, im Rollout", en: "New premium reasoning flagship, rolling out" },
-        preis: { de: "Preview — Preis noch nicht offiziell gelistet", en: "Preview — price not yet officially listed" }, kontext: { de: "1 Mio. Token (erwartet)", en: "1M tokens (expected)" },
-        lizenz: { de: "proprietär (Preview)", en: "proprietary (preview)" },
-        staerken: { de: ["Höchste Reasoning-Tiefe der Gemini-Linie", "Multimodal"], en: ["Deepest reasoning of the Gemini line", "Multimodal"] },
-        einsatz: { de: "Anspruchsvollstes Reasoning, sobald allgemein verfügbar.", en: "Most demanding reasoning, once generally available." },
-        detail: { de: "Gemini 3.5 Pro ist das angekündigte Premium-Reasoning-Flaggschiff und befindet sich im Rollout. Ein offizieller Listenpreis lag zum RechercheStand noch nicht vor — daher hier bewusst kein Preis, sondern der Hinweis auf die Preview-Phase.", en: "Gemini 3.5 Pro is the announced premium reasoning flagship and is rolling out. No official list price was available as of the research date — hence deliberately no price here, but a note about the preview phase." },
+        "name": "Gemini 3.5 Flash",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text, Bilder, Audio, Video und PDF verstehen; Text ausgeben.",
+          "en": "Understand text, images, audio, video and PDF; output text."
+        },
+        "preis": {
+          "de": "1,50 / 9 USD",
+          "en": "1.50 / 9 USD"
+        },
+        "kontext": {
+          "de": "1.048.576 Eingabe-Token; 65.536 Ausgabe.",
+          "en": "1,048,576 input tokens; 65,536 output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bilder, Audio, Video und PDF verstehen; Text ausgeben.",
+          "en": "Understand text, images, audio, video and PDF; output text."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "gemini-3.5-flash",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash"
+          },
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/pricing"
+          }
+        ]
       },
       {
-        name: "Gemini 3.1 Pro", type: "multi", status: "ga",
-        note: { de: "Starkes Reasoning-Modell, großer Kontext", en: "Strong reasoning model, large context" },
-        preis: { de: "$2 / $12 (bis 200K) · darüber $4 / $18", en: "$2 / $12 (up to 200K) · above that $4 / $18" }, kontext: { de: "bis 2 Mio. Token", en: "up to 2M tokens" },
-        lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["Sehr großer, stabiler Kontext", "Starkes Reasoning", "Gute Multimodalität"], en: ["Very large, stable context", "Strong reasoning", "Good multimodality"] },
-        einsatz: { de: "Codebasis-weite Analysen, sehr lange Dokumente, komplexes Reasoning.", en: "Codebase-wide analyses, very long documents, complex reasoning." },
-        detail: { de: "Gemini 3.1 Pro ist ein starkes Reasoning-Modell mit einem der größten zuverlässig nutzbaren Kontextfenster am Markt. Bei Prompts über 200K Token steigt der Token-Preis. Besonders geeignet, wenn sehr viele Dateien oder lange Texte konsistent verarbeitet werden müssen.", en: "Gemini 3.1 Pro is a strong reasoning model with one of the largest reliably usable context windows on the market. For prompts above 200K tokens the token price rises. Especially suited when very many files or long texts must be processed consistently." },
+        "name": "Gemini 3.1 Pro",
+        "type": "multi",
+        "status": "preview",
+        "flagship": false,
+        "note": {
+          "de": "Text, Bilder, Audio, Video und PDF verstehen; Text ausgeben.",
+          "en": "Understand text, images, audio, video and PDF; output text."
+        },
+        "preis": {
+          "de": "Bis 200.000 Eingabe-Token: 2 / 12 USD; darüber 4 / 18 USD.",
+          "en": "Up to 200,000 input tokens: 2 / 12 USD; above: 4 / 18 USD."
+        },
+        "kontext": {
+          "de": "1.048.576 Eingabe-Token; 65.536 Ausgabe.",
+          "en": "1,048,576 input tokens; 65,536 output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bilder, Audio, Video und PDF verstehen; Text ausgeben.",
+          "en": "Understand text, images, audio, video and PDF; output text."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "gemini-3.1-pro-preview",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-pro-preview"
+          },
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/pricing"
+          }
+        ]
       },
       {
-        name: "Gemini 3.1 Flash-Lite", type: "multi", status: "ga",
-        note: { de: "Günstigste, schnellste Stufe", en: "Cheapest, fastest tier" },
-        preis: { de: "$0.25 / $1.50", en: "$0.25 / $1.50" }, kontext: { de: "1 Mio. Token", en: "1M tokens" }, lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["Sehr günstig", "Sehr schnell", "1M-Kontext"], en: ["Very cheap", "Very fast", "1M context"] },
-        einsatz: { de: "Hochvolumige, kostensensible Aufgaben (Klassifizierung, Routing, Extraktion).", en: "High-volume, cost-sensitive tasks (classification, routing, extraction)." },
-        detail: { de: "Flash-Lite ist die günstigste und schnellste Stufe der Gemini-Familie, optimiert für hohe Durchsätze bei niedrigen Kosten — bei weiterhin sehr großem Kontextfenster.", en: "Flash-Lite is the cheapest and fastest tier of the Gemini family, optimized for high throughput at low cost — while still offering a very large context window." },
+        "name": "Gemini 3.1 Flash-Lite",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text, Bilder, Audio, Video und PDF verstehen; Text ausgeben.",
+          "en": "Understand text, images, audio, video and PDF; output text."
+        },
+        "preis": {
+          "de": "Text/Bild/Video: 0,25 / 1,50 USD; Audioeingabe: 0,50 USD.",
+          "en": "Text/image/video: 0.25 / 1.50 USD; audio input: USD 0.50."
+        },
+        "kontext": {
+          "de": "1.048.576 Eingabe-Token; 65.536 Ausgabe.",
+          "en": "1,048,576 input tokens; 65,536 output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bilder, Audio, Video und PDF verstehen; Text ausgeben.",
+          "en": "Understand text, images, audio, video and PDF; output text."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "gemini-3.1-flash-lite",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite"
+          },
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/pricing"
+          }
+        ]
       },
       {
-        name: "Gemini Omni", type: "video", status: "preview",
-        note: { de: "Video-Generierung & -Editing aus beliebigem Input", en: "Video generation & editing from any input" },
-        preis: { de: "Video — separate Abrechnung (kein Token-Preis)", en: "Video — separate billing (no token price)" }, kontext: "—",
-        lizenz: { de: "proprietär (Preview)", en: "proprietary (preview)" },
-        staerken: { de: ["Video aus Text/Bild/Audio/Video", "Führend bei Videoverständnis"], en: ["Video from text/image/audio/video", "Leading at video understanding"] },
-        einsatz: { de: "Videoerzeugung und -bearbeitung, multimodale Inhalte.", en: "Video generation and editing, multimodal content." },
-        detail: { de: "Gemini Omni erzeugt und bearbeitet Video aus beliebigem Input (Bild, Audio, Video, Text) und gilt bei nativem Videoverständnis als führend. Als Generativ-Media-Modell wird es nicht pro Token abgerechnet, sondern nach Ausgabe (Länge/Auflösung).", en: "Gemini Omni generates and edits video from any input (image, audio, video, text) and is considered leading at native video understanding. As a generative media model it is not billed per token but by output (length/resolution)." },
+        "name": "Gemini 3.5 Pro",
+        "type": "multi",
+        "status": "unconfirmed",
+        "flagship": false,
+        "note": {
+          "de": "Alter Katalogeintrag: aktuelle offizielle Bestätigung fehlt.",
+          "en": "Legacy catalogue entry: current official confirmation missing."
+        },
+        "preis": {
+          "de": "Nicht belastbar bestätigt.",
+          "en": "Not reliably confirmed."
+        },
+        "kontext": {
+          "de": "Nicht belastbar bestätigt.",
+          "en": "Not reliably confirmed."
+        },
+        "lizenz": {
+          "de": "Nicht belastbar bestätigt.",
+          "en": "Not reliably confirmed."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Alter Katalogeintrag: aktuelle offizielle Bestätigung fehlt.",
+          "en": "Legacy catalogue entry: current official confirmation missing."
+        },
+        "detail": {
+          "de": "Bei der Prüfung der offiziellen Modellliste und einer gezielten Suche am 14.09.2026 wurde diese Bezeichnung nicht bestätigt. Kein belastbarer Termin; die frühere Vorschau-Angabe ist zurückgezogen.",
+          "en": "The official model list and a targeted search on 14 September 2026 did not confirm this name. No reliable date; the former preview claim is withdrawn."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/models"
+          }
+        ]
       },
       {
-        name: "Nano Banana 2 (3.1 Flash Image)", type: "image", status: "ga",
-        note: { de: "Bildgenerierung/-editing", en: "Image generation/editing" },
-        preis: { de: "pro Bild abgerechnet (kein Token-Preis)", en: "billed per image (no token price)" }, kontext: "—",
-        lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["Sehr gutes Textrendering im Bild", "Konversationelles Editing"], en: ["Very good text rendering in the image", "Conversational editing"] },
-        einsatz: { de: "Produktionsreife Bilderzeugung und -bearbeitung.", en: "Production-ready image generation and editing." },
-        detail: { de: "Nano Banana 2 (offiziell Gemini 3.1 Flash Image) ist Googles Bildmodell mit starker Instruktionstreue und Textrendering. Abgerechnet wird pro erzeugtem Bild, nicht pro Token.", en: "Nano Banana 2 (officially Gemini 3.1 Flash Image) is Google's image model with strong instruction fidelity and text rendering. Billing is per generated image, not per token." },
+        "name": "Gemini Omni 1.1 Flash",
+        "type": "video",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Videoerzeugung und dialoggesteuerte Bearbeitung.",
+          "en": "Video generation and conversational editing."
+        },
+        "preis": {
+          "de": "Abhängig von Modellvariante, Region und Eingabe/Ausgabe. Siehe verlinkte Preistabelle.",
+          "en": "Depends on variant, region and input/output. See the linked pricing table."
+        },
+        "kontext": {
+          "de": "1.048.576 Token Kontext; 3–10 Sekunden Video, bis 4K bei 24 Bildern/s.",
+          "en": "1,048,576-token context; 3–10 seconds of video, up to 4K at 24 fps."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Videoerzeugung und dialoggesteuerte Bearbeitung.",
+          "en": "Video generation and conversational editing."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "gemini-omni-1.1-flash",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/models/gemini-omni-flash"
+          },
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/pricing"
+          }
+        ]
       },
       {
-        name: "Gemini 3.1 Flash TTS", type: "audio", status: "ga",
-        note: { de: "Steuerbare Sprachsynthese", en: "Controllable speech synthesis" },
-        preis: { de: "Audio — separate Abrechnung (kein Token-Preis)", en: "Audio — separate billing (no token price)" }, kontext: "—",
-        lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["Fein steuerbare Stimme (Tempo, Tonhöhe)", "Lange Inhalte"], en: ["Finely controllable voice (speed, pitch)", "Long content"] },
-        einsatz: { de: "Sprachsynthese für Podcasts, Vorlesen, Barrierefreiheit.", en: "Speech synthesis for podcasts, read-aloud, accessibility." },
-        detail: { de: "Gemini 3.1 Flash TTS ist Googles steuerbares Text-zu-Sprache-Modell mit natürlicher Prosodie. Die Abrechnung erfolgt audio-/zeichenbasiert, nicht pro Token.", en: "Gemini 3.1 Flash TTS is Google's controllable text-to-speech model with natural prosody. Billing is audio-/character-based, not per token." },
+        "name": "Nano Banana 2 (3.1 Flash Image)",
+        "type": "image",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Bildgenerierung und Bildbearbeitung.",
+          "en": "Image generation and editing."
+        },
+        "preis": {
+          "de": "Abhängig von Modellvariante, Region und Eingabe/Ausgabe. Siehe verlinkte Preistabelle.",
+          "en": "Depends on variant, region and input/output. See the linked pricing table."
+        },
+        "kontext": {
+          "de": "131.072 Eingabe-Token / 32.768 Ausgabe; Auflösung beeinflusst den Verbrauch.",
+          "en": "131,072 input tokens / 32,768 output; resolution affects usage."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Bildgenerierung und Bildbearbeitung.",
+          "en": "Image generation and editing."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "gemini-3.1-flash-image",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image"
+          },
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/pricing"
+          }
+        ]
       },
       {
-        name: "Gemma 4", type: "text", status: "ga",
-        note: { de: "Offenes Modell (Open-Weight)", en: "Open model (Open-Weight)" },
-        preis: { de: "Open-Weight — kostenlos selbst hostbar (API-Preis je Anbieter)", en: "Open-Weight — free to self-host (API price depends on provider)" }, kontext: { de: "128K+ Token", en: "128K+ tokens" },
-        lizenz: { de: "Open-Weight (Gemma-Lizenz)", en: "Open-Weight (Gemma license)" },
-        staerken: { de: ["Frei herunterladbar", "Für Reasoning & Agenten ausgelegt", "Multimodal"], en: ["Freely downloadable", "Designed for reasoning & agents", "Multimodal"] },
-        einsatz: { de: "Selbst-Hosting, Feintuning, datenschutzsensible Umgebungen.", en: "Self-hosting, fine-tuning, privacy-sensitive environments." },
-        detail: { de: "Gemma 4 ist Googles offene Modellfamilie (April 2026), die man kostenlos herunterladen, feintunen und selbst betreiben kann. Ein Token-Preis entsteht nur, wenn man es über einen Cloud-Anbieter nutzt — beim Self-Hosting fallen nur die eigenen Infrastrukturkosten an.", en: "Gemma 4 is Google's open model family (April 2026), which you can download, fine-tune and run yourself for free. A token price only arises when using it via a cloud provider — with self-hosting only your own infrastructure costs apply." },
+        "name": "Gemini 3.1 Flash TTS",
+        "type": "audio",
+        "status": "preview",
+        "flagship": false,
+        "note": {
+          "de": "Text in gesprochene Sprache umwandeln.",
+          "en": "Turn text into spoken audio."
+        },
+        "preis": {
+          "de": "1 USD je 1 Mio. Text-Eingabe-Token; 20 USD je 1 Mio. Audio-Ausgabe-Token.",
+          "en": "USD 1 per 1M text input tokens; USD 20 per 1M audio output tokens."
+        },
+        "kontext": {
+          "de": "8.192 Eingabe-Token / 16.384 Audio-Ausgabe-Token.",
+          "en": "8,192 input tokens / 16,384 audio output tokens."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text in gesprochene Sprache umwandeln.",
+          "en": "Turn text into spoken audio."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "gemini-3.1-flash-tts-preview",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-tts-preview"
+          },
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemini-api/docs/pricing"
+          }
+        ]
       },
-    ],
+      {
+        "name": "Gemma 4",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Offene Gewichte für Text und Bildverständnis; Audio je Variante.",
+          "en": "Open weights for text and vision; audio depends on variant."
+        },
+        "preis": {
+          "de": "Gewichte zum Download; Rechenkosten beim eigenen Betrieb, API-Preis abhängig vom Betreiber.",
+          "en": "Downloadable weights; self-hosting incurs compute costs, API prices depend on the host."
+        },
+        "kontext": {
+          "de": "Kleine Varianten 128K; mittlere Varianten 256K.",
+          "en": "Small variants 128K; medium variants 256K."
+        },
+        "lizenz": {
+          "de": "Open-Weight; Bedingungen der jeweiligen Gemma-Modellkarte beachten.",
+          "en": "Open weights; consult the applicable Gemma model-card terms."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Offene Gewichte für Text und Bildverständnis; Audio je Variante.",
+          "en": "Open weights for text and vision; audio depends on variant."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "ai.google.dev",
+            "url": "https://ai.google.dev/gemma/docs/core"
+          }
+        ]
+      }
+    ]
   },
   {
-    id: "anthropic",
-    name: "Anthropic",
-    land: "USA",
-    produkt: "Claude",
-    farbe: "#d97757",
-    links: {
-      modelle: "https://platform.claude.com/docs/en/about-claude/models/overview",
-      news: "https://www.anthropic.com/news",
-      web: "https://www.anthropic.com/",
-      preise: "https://www.anthropic.com/pricing",
+    "id": "anthropic",
+    "name": "Anthropic",
+    "land": "USA",
+    "produkt": "Claude",
+    "farbe": "#d97757",
+    "links": {
+      "modelle": "https://platform.claude.com/docs/en/about-claude/models/overview",
+      "news": "https://www.anthropic.com/news",
+      "web": "https://www.anthropic.com/",
+      "preise": "https://www.anthropic.com/pricing"
     },
-    modelle: [
+    "modelle": [
       {
-        name: "Claude Fable 5", type: "text", flagship: true, status: "ga",
-        note: { de: "Fähigstes öffentliches Modell; Sicherheits-Routing auf Opus 4.8", en: "Most capable public model; safety routing to Opus 4.8" },
-        preis: "$10 / $50", kontext: { de: "1 Mio. Token · Ausgabe bis 128K", en: "1M tokens · output up to 128K" }, lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["Höchste Fähigkeit im öffentlichen Angebot", "Sehr präzise Instruktionstreue", "Adaptives Denken"], en: ["Highest capability in the public offering", "Very precise instruction fidelity", "Adaptive thinking"] },
-        einsatz: { de: "Lange, hochkomplexe Aufgaben, bei denen Mehrleistung die Mehrkosten rechtfertigt.", en: "Long, highly complex tasks where extra performance justifies the extra cost." },
-        detail: { de: "Claude Fable 5 ist Anthropics fähigstes öffentlich verfügbares Modell (Mythos-Klasse). Für bestimmte sensible Themen (u. a. Cybersicherheit, Biologie) leiten Sicherheits-Klassifikatoren die Anfrage automatisch an Claude Opus 4.8 um. Sinnvoll bei langlaufenden, fehlerkritischen Aufgaben mit hohem Wert.", en: "Claude Fable 5 is Anthropic's most capable publicly available model (Mythos class). For certain sensitive topics (including cybersecurity, biology), safety classifiers automatically route the request to Claude Opus 4.8. Sensible for long-running, error-critical, high-value tasks." },
+        "name": "Claude Fable 5.1",
+        "type": "multi",
+        "status": "ga",
+        "flagship": true,
+        "note": {
+          "de": "Aufwendige Denkaufgaben und mehrstufige Werkzeugnutzung.",
+          "en": "Demanding reasoning and multi-step tool use."
+        },
+        "preis": {
+          "de": "10 / 50 USD",
+          "en": "10 / 50 USD"
+        },
+        "kontext": {
+          "de": "1 Mio. Kontext / 128K Ausgabe.",
+          "en": "1M context / 128K output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Aufwendige Denkaufgaben und mehrstufige Werkzeugnutzung.",
+          "en": "Demanding reasoning and multi-step tool use."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "claude-fable-5-1",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "platform.claude.com",
+            "url": "https://platform.claude.com/docs/en/models/fable-5-1/overview"
+          }
+        ]
       },
       {
-        name: "Claude Opus 4.8", type: "text", status: "ga",
-        note: { de: "Arbeitspferd für komplexe Aufgaben & agentisches Coding", en: "Workhorse for complex tasks & agentic coding" },
-        preis: { de: "$5 / $25", en: "$5 / $25" }, kontext: { de: "1 Mio. Token", en: "1M tokens" }, lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["Sehr stark im Coding", "Zuverlässig für Agenten", "Zero-Data-Retention möglich"], en: ["Very strong at coding", "Reliable for agents", "Zero data retention possible"] },
-        einsatz: { de: "Standard für anspruchsvolle Entwicklung und autonome Agenten.", en: "Default for demanding development and autonomous agents." },
-        detail: { de: "Claude Opus 4.8 ist das zuverlässige Arbeitspferd für ernsthafte Arbeit — der empfohlene Standard für die meisten API-Anwendungen und für Claude Code, wenn man nicht die volle Fable-5-Leistung braucht. Unterstützt Zero-Data-Retention, was Fable 5 nicht bietet.", en: "Claude Opus 4.8 is the reliable workhorse for serious work — the recommended default for most API applications and for Claude Code when you don't need the full Fable 5 performance. Supports zero data retention, which Fable 5 does not offer." },
+        "name": "Claude Opus 5",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Programmieren und komplexe Arbeitsabläufe.",
+          "en": "Coding and complex workflows."
+        },
+        "preis": {
+          "de": "5 / 25 USD",
+          "en": "5 / 25 USD"
+        },
+        "kontext": {
+          "de": "1 Mio. Kontext / 128K Ausgabe.",
+          "en": "1M context / 128K output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Programmieren und komplexe Arbeitsabläufe.",
+          "en": "Coding and complex workflows."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "claude-opus-5",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "platform.claude.com",
+            "url": "https://platform.claude.com/docs/en/models/opus-5/overview"
+          }
+        ]
       },
       {
-        name: "Claude Sonnet 5", type: "text", status: "ga",
-        note: { de: "Standard für Alltag & Entwicklung", en: "Default for everyday use & development" },
-        preis: { de: "Sonnet-Tier ≈ $3 / $15 (Sonnet 5 ggf. abweichend — offizielle Seite prüfen)", en: "Sonnet tier ≈ $3 / $15 (Sonnet 5 may differ — check the official page)" },
-        kontext: { de: "1 Mio. Token", en: "1M tokens" }, lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["Nahe Opus-Intelligenz zu Sonnet-Preis", "Sehr agentisch", "Treibt Terminals & Browser"], en: ["Near-Opus intelligence at Sonnet price", "Very agentic", "Drives terminals & browsers"] },
-        einsatz: { de: "Alltags-Entwicklung und der Großteil der Agenten-Aufgaben.", en: "Everyday development and the bulk of agent tasks." },
-        detail: { de: "Claude Sonnet 5 (30. Juni 2026) ist der neue Standard auf Free und Pro und bringt nahezu Opus-Intelligenz zum Sonnet-Preis. Hinweis zur Ehrlichkeit: Der Sonnet-Tier lag zuletzt bei $3/$15 (Sonnet 4.6); ein separat gelisteter Sonnet-5-Preis lag zum Rechercheszeitpunkt noch nicht vor — im Zweifel die offizielle Preisseite prüfen.", en: "Claude Sonnet 5 (June 30, 2026) is the new default on Free and Pro and delivers near-Opus intelligence at the Sonnet price. Honesty note: the Sonnet tier was most recently at $3/$15 (Sonnet 4.6); a separately listed Sonnet 5 price was not yet available at the time of research — when in doubt, check the official pricing page." },
+        "name": "Claude Fable 5",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Ältere, weiterhin verfügbare Fable-Version.",
+          "en": "Older Fable version, still available."
+        },
+        "preis": {
+          "de": "10 / 50 USD",
+          "en": "10 / 50 USD"
+        },
+        "kontext": {
+          "de": "1 Mio. Kontext / 128K Ausgabe.",
+          "en": "1M context / 128K output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Ältere, weiterhin verfügbare Fable-Version.",
+          "en": "Older Fable version, still available."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "claude-fable-5",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "platform.claude.com",
+            "url": "https://platform.claude.com/docs/en/models/fable-5/overview"
+          }
+        ]
       },
       {
-        name: "Claude Haiku 4.5", type: "text", status: "ga",
-        note: { de: "Schnell & günstig", en: "Fast & cheap" },
-        preis: { de: "$1 / $5", en: "$1 / $5" }, kontext: { de: "200K Token · Ausgabe bis 64K", en: "200K tokens · output up to 64K" }, lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["Sehr schnell", "Günstig", "Nahe Frontier-Qualität für die Größe"], en: ["Very fast", "Cheap", "Near-frontier quality for its size"] },
-        einsatz: { de: "Klassifizierung, Zusammenfassung, Support, hohe Durchsätze.", en: "Classification, summarization, support, high throughput." },
-        detail: { de: "Claude Haiku 4.5 ist das schnelle, günstige Modell der Familie — geeignet für hochvolumige, latenzsensible Aufgaben. Kleineres Kontextfenster (200K) als die größeren Modelle, dafür deutlich billiger.", en: "Claude Haiku 4.5 is the family's fast, cheap model — suited for high-volume, latency-sensitive tasks. Smaller context window (200K) than the larger models, but considerably cheaper." },
+        "name": "Claude Sonnet 5",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text, Bildverständnis und Programmieren.",
+          "en": "Text, vision and coding."
+        },
+        "preis": {
+          "de": "2 / 10 USD",
+          "en": "2 / 10 USD"
+        },
+        "kontext": {
+          "de": "1 Mio. Kontext / 128K Ausgabe.",
+          "en": "1M context / 128K output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bildverständnis und Programmieren.",
+          "en": "Text, vision and coding."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "claude-sonnet-5",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "platform.claude.com",
+            "url": "https://platform.claude.com/docs/en/models/sonnet-5/overview"
+          }
+        ]
       },
       {
-        name: "Claude Mythos 5", type: "text", status: "limited",
-        note: { de: "Nur Trusted Access / Project Glasswing", en: "Trusted Access / Project Glasswing only" },
-        preis: { de: "$10 / $50 (nur Trusted Access)", en: "$10 / $50 (Trusted Access only)" }, kontext: { de: "1 Mio. Token", en: "1M tokens" }, lizenz: { de: "proprietär (eingeschränkt)", en: "proprietary (restricted)" },
-        staerken: { de: ["Gleiche Fähigkeitsklasse wie Fable 5", "Ohne bestimmte Sicherheits-Weichen"], en: ["Same capability class as Fable 5", "Without certain safety gates"] },
-        einsatz: { de: "Nur für geprüfte Organisationen im Project Glasswing.", en: "Only for vetted organizations in Project Glasswing." },
-        detail: { de: "Claude Mythos 5 teilt die Fähigkeitsklasse von Fable 5, jedoch ohne bestimmte Sicherheits-Klassifikatoren. Es ist nicht allgemein verfügbar, sondern nur über Trusted Access (Project Glasswing) für ausgewählte Organisationen.", en: "Claude Mythos 5 shares the capability class of Fable 5 but without certain safety classifiers. It is not generally available, only via Trusted Access (Project Glasswing) for selected organizations." },
+        "name": "Claude Haiku 4.5",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Schnelle Text- und Bildverarbeitung.",
+          "en": "Fast text and image processing."
+        },
+        "preis": {
+          "de": "1 / 5 USD",
+          "en": "1 / 5 USD"
+        },
+        "kontext": {
+          "de": "200K Kontext / 64K Ausgabe.",
+          "en": "200K context / 64K output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Schnelle Text- und Bildverarbeitung.",
+          "en": "Fast text and image processing."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "claude-haiku-4-5-20251001",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "platform.claude.com",
+            "url": "https://platform.claude.com/docs/en/models/haiku-4-5/overview"
+          }
+        ]
       },
-    ],
+      {
+        "name": "Claude Mythos 5.1",
+        "type": "multi",
+        "status": "limited",
+        "flagship": false,
+        "note": {
+          "de": "Nur auf Einladung im Programm Project Glasswing.",
+          "en": "Invitation only through Project Glasswing."
+        },
+        "preis": {
+          "de": "10 / 50 USD",
+          "en": "10 / 50 USD"
+        },
+        "kontext": {
+          "de": "1 Mio. Kontext / 128K Ausgabe.",
+          "en": "1M context / 128K output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Nur auf Einladung im Programm Project Glasswing.",
+          "en": "Invitation only through Project Glasswing."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "claude-mythos-5-1",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "platform.claude.com",
+            "url": "https://platform.claude.com/docs/en/models/mythos-5-1/overview"
+          }
+        ]
+      },
+      {
+        "name": "Claude Mythos 5",
+        "type": "multi",
+        "status": "limited",
+        "flagship": false,
+        "note": {
+          "de": "Ältere Mythos-Version, nur auf Einladung.",
+          "en": "Older Mythos version, invitation only."
+        },
+        "preis": {
+          "de": "10 / 50 USD",
+          "en": "10 / 50 USD"
+        },
+        "kontext": {
+          "de": "1 Mio. Kontext / 128K Ausgabe.",
+          "en": "1M context / 128K output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Ältere Mythos-Version, nur auf Einladung.",
+          "en": "Older Mythos version, invitation only."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "claude-mythos-5",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "platform.claude.com",
+            "url": "https://platform.claude.com/docs/en/models/mythos-5/overview"
+          }
+        ]
+      },
+      {
+        "name": "Claude Opus 4.8",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Ältere Opus-Version; laut Lebenszyklusliste weiter aktiv.",
+          "en": "Older Opus version; still active in the lifecycle list."
+        },
+        "preis": {
+          "de": "Abhängig von Modellvariante, Region und Eingabe/Ausgabe. Siehe verlinkte Preistabelle.",
+          "en": "Depends on variant, region and input/output. See the linked pricing table."
+        },
+        "kontext": {
+          "de": "Grenzen des konkreten Endpunkts in den Anbieterunterlagen prüfen.",
+          "en": "Check the specific endpoint limits in provider documentation."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Ältere Opus-Version; laut Lebenszyklusliste weiter aktiv.",
+          "en": "Older Opus version; still active in the lifecycle list."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "claude-opus-4-8",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "platform.claude.com",
+            "url": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+          }
+        ]
+      }
+    ]
   },
   {
-    id: "meta",
-    name: "Meta",
-    land: "USA",
-    produkt: "Llama / Meta AI",
-    farbe: "#06b6d4",
-    links: {
-      modelle: "https://ai.meta.com/blog/llama-4-multimodal-intelligence/",
-      news: "https://ai.meta.com/blog/",
-      web: "https://ai.meta.com/",
-      preise: "https://ai.meta.com/",
+    "id": "meta",
+    "name": "Meta",
+    "land": "USA",
+    "produkt": "Llama / Meta AI",
+    "farbe": "#06b6d4",
+    "links": {
+      "modelle": "https://ai.meta.com/blog/llama-4-multimodal-intelligence/",
+      "news": "https://ai.meta.com/blog/",
+      "web": "https://ai.meta.com/",
+      "preise": "https://ai.meta.com/"
     },
-    modelle: [
+    "modelle": [
       {
-        name: "Llama 4 (Scout / Maverick)", type: "multi", flagship: true, status: "ga",
-        note: { de: "Nativ multimodale Open-Weight-Linie", en: "Natively multimodal Open-Weight line" },
-        preis: { de: "Open-Weight — kostenlos selbst hostbar (API-Preis je Anbieter)", en: "Open-Weight — free to self-host (API price depends on provider)" }, kontext: { de: "sehr großer Kontext", en: "very large context" },
-        lizenz: { de: "Open-Weight (Llama-Lizenz)", en: "Open-Weight (Llama license)" },
-        staerken: { de: ["Nativ multimodal", "Frei herunterladbar", "Zwei Größen (Scout/Maverick)"], en: ["Natively multimodal", "Freely downloadable", "Two sizes (Scout/Maverick)"] },
-        einsatz: { de: "Self-Hosting, Feintuning, Aufbau eigener Produkte auf offener Basis.", en: "Self-hosting, fine-tuning, building your own products on an open foundation." },
-        detail: { de: "Llama 4 (Scout und Maverick) ist Metas nativ multimodale, offene Modell-Linie. Die Gewichte sind frei verfügbar; man kann selbst hosten oder über Cloud-Anbieter (AWS, Azure, u. a.) nutzen — der Token-Preis hängt dann vom jeweiligen Anbieter ab, nicht von Meta direkt.", en: "Llama 4 (Scout and Maverick) is Meta's natively multimodal, open model line. The weights are freely available; you can self-host or use them via cloud providers (AWS, Azure, and others) — the token price then depends on the respective provider, not on Meta directly." },
+        "name": "Llama 4 Scout",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text und Bilder verstehen; Gewichte zum Download.",
+          "en": "Understand text and images; downloadable weights."
+        },
+        "preis": {
+          "de": "Gewichte zum Download; Rechenkosten beim eigenen Betrieb, API-Preis abhängig vom Betreiber.",
+          "en": "Downloadable weights; self-hosting incurs compute costs, API prices depend on the host."
+        },
+        "kontext": {
+          "de": "10 Mio. Token",
+          "en": "10M tokens"
+        },
+        "lizenz": {
+          "de": "Open-Weight; Llama 4 Community License.",
+          "en": "Open weights; Llama 4 Community License."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text und Bilder verstehen; Gewichte zum Download.",
+          "en": "Understand text and images; downloadable weights."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "ai.meta.com",
+            "url": "https://ai.meta.com/blog/llama-4-multimodal-intelligence/"
+          },
+          {
+            "name": "huggingface.co",
+            "url": "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct"
+          }
+        ]
       },
       {
-        name: "Meta Muse Spark", type: "text", status: "ga",
-        note: { de: "Metas erstes proprietäres Closed-Weight-Modell, nur auf meta.ai", en: "Meta's first proprietary closed-weight model, only on meta.ai" },
-        preis: { de: "nur über meta.ai — kein öffentlicher API-Token-Preis", en: "only via meta.ai — no public API token price" }, kontext: "—",
-        lizenz: { de: "proprietär (Closed-Weight)", en: "proprietary (closed-weight)" },
-        staerken: { de: ["Metas erstes geschlossenes Modell", "Von Meta Superintelligence Labs"], en: ["Meta's first closed model", "From Meta Superintelligence Labs"] },
-        einsatz: { de: "Nutzung ausschließlich über meta.ai (keine herunterladbaren Gewichte).", en: "Use exclusively via meta.ai (no downloadable weights)." },
-        detail: { de: "Meta Muse Spark (April 2026) ist Metas erstes proprietäres Closed-Weight-Modell — ein Bruch mit der bisherigen Open-Source-Strategie. Es ist nur auf meta.ai nutzbar, ohne herunterladbare Gewichte und ohne öffentlich gelisteten API-Token-Preis.", en: "Meta Muse Spark (April 2026) is Meta's first proprietary closed-weight model — a break with its previous open-source strategy. It is only usable on meta.ai, with no downloadable weights and no publicly listed API token price." },
+        "name": "Llama 4 Maverick",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text und Bilder verstehen; Gewichte zum Download.",
+          "en": "Understand text and images; downloadable weights."
+        },
+        "preis": {
+          "de": "Gewichte zum Download; Rechenkosten beim eigenen Betrieb, API-Preis abhängig vom Betreiber.",
+          "en": "Downloadable weights; self-hosting incurs compute costs, API prices depend on the host."
+        },
+        "kontext": {
+          "de": "1 Mio. Token",
+          "en": "1M tokens"
+        },
+        "lizenz": {
+          "de": "Open-Weight; Llama 4 Community License.",
+          "en": "Open weights; Llama 4 Community License."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text und Bilder verstehen; Gewichte zum Download.",
+          "en": "Understand text and images; downloadable weights."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "ai.meta.com",
+            "url": "https://ai.meta.com/blog/llama-4-multimodal-intelligence/"
+          },
+          {
+            "name": "huggingface.co",
+            "url": "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct"
+          }
+        ]
       },
-    ],
+      {
+        "name": "Muse Spark 1.3",
+        "type": "multi",
+        "status": "preview",
+        "flagship": true,
+        "note": {
+          "de": "Programmieren sowie Bild-, Video- und Dokumentverständnis.",
+          "en": "Coding, image, video and document understanding."
+        },
+        "preis": {
+          "de": "Abhängig von Modellvariante, Region und Eingabe/Ausgabe. Siehe verlinkte Preistabelle.",
+          "en": "Depends on variant, region and input/output. See the linked pricing table."
+        },
+        "kontext": {
+          "de": "Nicht aus der abgerufenen Produktseite übernommen.",
+          "en": "Not specified in the retrieved product page."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Programmieren sowie Bild-, Video- und Dokumentverständnis.",
+          "en": "Coding, image, video and document understanding."
+        },
+        "detail": {
+          "de": "Öffentliche Vorschau über Meta Model API und Muse Code. Zugang und regionale Verfügbarkeit nach Anbieterangaben prüfen.",
+          "en": "Public preview through Meta Model API and Muse Code. Check provider access and regional availability."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "developer.meta.com",
+            "url": "https://developer.meta.com/ai/"
+          }
+        ]
+      }
+    ]
   },
   {
-    id: "xai",
-    name: "xAI",
-    land: "USA",
-    produkt: "Grok",
-    farbe: "#e11d48",
-    links: {
-      modelle: "https://x.ai/news",
-      news: "https://x.ai/news",
-      web: "https://x.ai/",
-      preise: "https://docs.x.ai/docs/models",
+    "id": "xai",
+    "name": "xAI",
+    "land": "USA",
+    "produkt": "Grok",
+    "farbe": "#e11d48",
+    "links": {
+      "modelle": "https://x.ai/news",
+      "news": "https://x.ai/news",
+      "web": "https://x.ai/",
+      "preise": "https://docs.x.ai/docs/models"
     },
-    modelle: [
+    "modelle": [
       {
-        name: "Grok 4.3 beta", type: "multi", flagship: true, status: "preview",
-        note: { de: "Aktuelles Flaggschiff (Beta), mit Sprach-/Bild-/Video-Verständnis", en: "Current flagship (beta), with speech/image/video understanding" },
-        preis: { de: "$1.25 / $2.50", en: "$1.25 / $2.50" }, kontext: { de: "256K Token", en: "256K tokens" }, lizenz: { de: "proprietär (Beta)", en: "proprietary (beta)" },
-        staerken: { de: ["Starkes agentisches Tool-Calling", "Niedrige Halluzinationsrate", "Multimodal"], en: ["Strong agentic tool calling", "Low hallucination rate", "Multimodal"] },
-        einsatz: { de: "Reasoning, Recherche, komplexe Dokumenten-Workflows in Echtzeit.", en: "Reasoning, research, complex document workflows in real time." },
-        detail: { de: "Grok 4.3 beta ist xAIs aktuelles Flaggschiff (Early Beta, für ausgewählte Abonnenten) mit verbessertem Reasoning, agentischem Tool-Calling und multimodalem Verständnis (Sprache, Bild, Video). Wissensstand bis Dezember 2025; laufend verfeinert.", en: "Grok 4.3 beta is xAI's current flagship (early beta, for selected subscribers) with improved reasoning, agentic tool calling and multimodal understanding (speech, image, video). Knowledge cutoff December 2025; continuously refined." },
+        "name": "Grok 4.6",
+        "type": "multi",
+        "status": "ga",
+        "flagship": true,
+        "note": {
+          "de": "Text, Bildverständnis, Programmieren und Werkzeuge.",
+          "en": "Text, vision, coding and tools."
+        },
+        "preis": {
+          "de": "2 / 6 USD; höhere Tarife oberhalb 200K Kontext laut Modellseite.",
+          "en": "2 / 6 USD; model page specifies higher rates above 200K context."
+        },
+        "kontext": {
+          "de": "500.000 Token",
+          "en": "500,000 tokens"
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bildverständnis, Programmieren und Werkzeuge.",
+          "en": "Text, vision, coding and tools."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "grok-4.6",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "docs.x.ai",
+            "url": "https://docs.x.ai/developers/models/grok-4.6"
+          }
+        ]
       },
       {
-        name: "Grok Build 0.1 / V9-Medium", type: "text", status: "preview",
-        note: { de: "Coding-Modelle", en: "Coding models" },
-        preis: { de: "Grok Build 0.1: $1 / $2 · V9-Medium: kein Listenpreis", en: "Grok Build 0.1: $1 / $2 · V9-Medium: no list price" }, kontext: { de: "256K Token", en: "256K tokens" },
-        lizenz: { de: "proprietär (Beta)", en: "proprietary (beta)" },
-        staerken: { de: ["Auf agentisches Coding ausgelegt", "Immer-an-Reasoning", "Text- & Bildeingabe"], en: ["Designed for agentic coding", "Always-on reasoning", "Text & image input"] },
-        einsatz: { de: "Coding-Agenten im Terminal/IDE, längere Implementierungsaufgaben.", en: "Coding agents in the terminal/IDE, longer implementation tasks." },
-        detail: { de: "Grok Build 0.1 ist xAIs dediziertes Coding-Modell (öffentliche Beta seit Mai 2026) mit 256K-Kontext, Immer-an-Reasoning sowie Text- und Bildeingabe. V9-Medium (1,5 Bio. Parameter, auf Cursor-Daten trainiert) ist ein weiteres Coding-Modell; ein öffentlicher Token-Preis war dafür nicht gelistet.", en: "Grok Build 0.1 is xAI's dedicated coding model (public beta since May 2026) with 256K context, always-on reasoning, and text and image input. V9-Medium (1.5 trillion parameters, trained on Cursor data) is another coding model; no public token price was listed for it." },
+        "name": "Grok 4.3",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text und Bildverständnis mit einstellbarem Denkaufwand.",
+          "en": "Text and vision with configurable reasoning."
+        },
+        "preis": {
+          "de": "1,25 / 2,50 USD",
+          "en": "1.25 / 2.50 USD"
+        },
+        "kontext": {
+          "de": "1.000.000 Token",
+          "en": "1,000,000 tokens"
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text und Bildverständnis mit einstellbarem Denkaufwand.",
+          "en": "Text and vision with configurable reasoning."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "grok-4.3",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "docs.x.ai",
+            "url": "https://docs.x.ai/developers/models/grok-4.3"
+          }
+        ]
       },
       {
-        name: "Grok Voice", type: "audio", status: "ga",
-        note: { de: "Gesprochene Interaktion", en: "Spoken interaction" },
-        preis: { de: "Audio — separate Abrechnung (kein Token-Preis)", en: "Audio — separate billing (no token price)" }, kontext: "—",
-        lizenz: { de: "proprietär (App/API)", en: "proprietary (app/API)" },
-        staerken: { de: ["Gesprochene Interaktion in Echtzeit"], en: ["Spoken interaction in real time"] },
-        einsatz: { de: "Sprachdialog mit Grok in der mobilen App.", en: "Voice dialog with Grok in the mobile app." },
-        detail: { de: "Grok Voice (Juni 2026) bringt gesprochene Interaktion in die Grok-App. Als Sprachfunktion wird es nicht pro Text-Token abgerechnet; Verfügbarkeit und Konditionen richten sich nach dem jeweiligen Grok-Angebot.", en: "Grok Voice (June 2026) brings spoken interaction to the Grok app. As a voice feature it is not billed per text token; availability and terms depend on the respective Grok offering." },
+        "name": "Grok Build",
+        "type": "text",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Programmierwerkzeug, kein einzelnes Basismodell.",
+          "en": "Coding tool, not a single base model."
+        },
+        "preis": {
+          "de": "Abhängig von Modellvariante, Region und Eingabe/Ausgabe. Siehe verlinkte Preistabelle.",
+          "en": "Depends on variant, region and input/output. See the linked pricing table."
+        },
+        "kontext": {
+          "de": "Abhängig vom ausgewählten Modell.",
+          "en": "Depends on the selected model."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Programmierwerkzeug, kein einzelnes Basismodell.",
+          "en": "Coding tool, not a single base model."
+        },
+        "detail": {
+          "de": "Der frühere Sammelname „0.1 / V9-Medium“ wird nicht als aktuelle Modellkennung geführt. Grok Build ist ein Agentenwerkzeug und kann unterschiedliche Modelle verwenden.",
+          "en": "The former combined label “0.1 / V9-Medium” is not used as a current model ID. Grok Build is an agent tool that can use different models."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "docs.x.ai",
+            "url": "https://docs.x.ai/build/overview"
+          }
+        ]
       },
       {
-        name: "Grok Imagine 1.5", type: "video", status: "preview",
-        note: { de: "Bild-zu-Video mit nativem Audio", en: "Image-to-video with native audio" },
-        preis: { de: "Video — separate Abrechnung (kein Token-Preis)", en: "Video — separate billing (no token price)" }, kontext: "—",
-        lizenz: { de: "proprietär (Preview/API)", en: "proprietary (preview/API)" },
-        staerken: { de: ["Bild-zu-Video", "Natives Audio in einem Durchgang"], en: ["Image-to-video", "Native audio in a single pass"] },
-        einsatz: { de: "Kurze, cineastische Videoclips aus Standbildern.", en: "Short, cinematic video clips from still images." },
-        detail: { de: "Grok Imagine 1.5 (Preview, API-Zugang seit Juni 2026) erzeugt aus einem Standbild flüssige Videoclips und generiert dabei Audio (Musik, Effekte, Lippensynchronität) im selben Durchgang. Abrechnung video-/clipbasiert, nicht pro Token.", en: "Grok Imagine 1.5 (preview, API access since June 2026) generates smooth video clips from a still image while generating audio (music, effects, lip sync) in the same pass. Billing is video-/clip-based, not per token." },
+        "name": "Grok Voice",
+        "type": "audio",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Gesprochene Dialoge, Sprachausgabe und Transkription.",
+          "en": "Spoken conversations, speech generation and transcription."
+        },
+        "preis": {
+          "de": "Voice Agent: 0,08 USD/Minute; TTS: 15 USD/Mio. Zeichen; STT: 0,10 USD/Stunde (Batch), 0,20 USD/Stunde (Streaming).",
+          "en": "Voice Agent: USD 0.08/min; TTS: USD 15/M chars; STT: USD 0.10/hour (batch), USD 0.20/hour (streaming)."
+        },
+        "kontext": {
+          "de": "Audiodienst; Abrechnung nach Funktion.",
+          "en": "Audio service; billing depends on function."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Gesprochene Dialoge, Sprachausgabe und Transkription.",
+          "en": "Spoken conversations, speech generation and transcription."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "docs.x.ai",
+            "url": "https://docs.x.ai/developers/models"
+          }
+        ]
       },
       {
-        name: "Grok 5", type: "text", status: "training",
-        note: { de: "6T-Parameter angekündigt, noch nicht öffentlich (Q2-Fenster verstrichen)", en: "6T parameters announced, not yet public (Q2 window passed)" },
-        preis: { de: "noch nicht veröffentlicht — kein Preis", en: "not yet released — no price" }, kontext: "—", lizenz: "—",
-        staerken: { de: ["Angekündigt: 6 Bio. Parameter (MoE)", "Nativ multimodal (geplant)"], en: ["Announced: 6 trillion parameters (MoE)", "Natively multimodal (planned)"] },
-        einsatz: { de: "Noch nicht nutzbar — in Training/Vorbereitung.", en: "Not yet usable — in training/preparation." },
-        detail: { de: "Grok 5 ist angekündigt (rund 6 Bio. Parameter, Mixture-of-Experts), war zum Rechercheszeitpunkt aber noch nicht öffentlich verfügbar — das ursprüngliche Q2-2026-Fenster ist verstrichen. Deshalb bewusst kein Preis und keine gesicherten Spezifikationen, nur der ehrliche Status.", en: "Grok 5 is announced (around 6 trillion parameters, mixture-of-experts) but was not yet publicly available at the time of research — the original Q2 2026 window has passed. Hence deliberately no price and no confirmed specifications, only the honest status." },
+        "name": "Grok Imagine Video 1.5",
+        "type": "video",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Videos aus Text, Bildern und Referenzen erzeugen.",
+          "en": "Generate video from text, images and references."
+        },
+        "preis": {
+          "de": "Je Ausgabesekunde: 480p 0,08 USD, 720p 0,14 USD, 1080p 0,25 USD; Eingabemedien zusätzlich.",
+          "en": "Per output second: 480p USD 0.08, 720p USD 0.14, 1080p USD 0.25; input media extra."
+        },
+        "kontext": {
+          "de": "Videomodell; Grenzen nach Modus.",
+          "en": "Video model; limits depend on mode."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Videos aus Text, Bildern und Referenzen erzeugen.",
+          "en": "Generate video from text, images and references."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "grok-imagine-video-1.5",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "docs.x.ai",
+            "url": "https://docs.x.ai/developers/models/grok-imagine-video-1.5-preview"
+          },
+          {
+            "name": "docs.x.ai",
+            "url": "https://docs.x.ai/developers/release-notes"
+          }
+        ]
       },
-    ],
+      {
+        "name": "Grok Imagine Image 2.0",
+        "type": "image",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Bilder erzeugen und bearbeiten.",
+          "en": "Generate and edit images."
+        },
+        "preis": {
+          "de": "Abhängig von Modellvariante, Region und Eingabe/Ausgabe. Siehe verlinkte Preistabelle.",
+          "en": "Depends on variant, region and input/output. See the linked pricing table."
+        },
+        "kontext": {
+          "de": "Bildmodell; siehe Auflösungs- und Qualitätstarife.",
+          "en": "Image model; see resolution and quality pricing."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Bilder erzeugen und bearbeiten.",
+          "en": "Generate and edit images."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "docs.x.ai",
+            "url": "https://docs.x.ai/developers/models"
+          }
+        ]
+      },
+      {
+        "name": "Grok 5",
+        "type": "multi",
+        "status": "unconfirmed",
+        "flagship": false,
+        "note": {
+          "de": "Alter Ausblick ohne bestätigten Veröffentlichungstermin.",
+          "en": "Legacy forecast without a confirmed release date."
+        },
+        "preis": {
+          "de": "Nicht belastbar bestätigt.",
+          "en": "Not reliably confirmed."
+        },
+        "kontext": {
+          "de": "Nicht belastbar bestätigt.",
+          "en": "Not reliably confirmed."
+        },
+        "lizenz": {
+          "de": "Nicht belastbar bestätigt.",
+          "en": "Not reliably confirmed."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Alter Ausblick ohne bestätigten Veröffentlichungstermin.",
+          "en": "Legacy forecast without a confirmed release date."
+        },
+        "detail": {
+          "de": "Die aktuelle offizielle Modellliste und die gezielte Suche bestätigen keinen verfügbaren Grok-5-Endpunkt. Die frühere Trainings- und Terminangabe wird nicht als gesicherte Information weitergeführt.",
+          "en": "The current official model list and targeted search do not confirm an available Grok 5 endpoint. The former training and release-date claims are not retained as verified facts."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "docs.x.ai",
+            "url": "https://docs.x.ai/developers/models"
+          }
+        ]
+      }
+    ]
   },
   {
-    id: "deepseek",
-    name: "DeepSeek",
-    land: "China",
-    produkt: "DeepSeek",
-    farbe: "#6d4aff",
-    links: {
-      modelle: "https://api-docs.deepseek.com/",
-      news: "https://api-docs.deepseek.com/news/",
-      web: "https://www.deepseek.com/",
-      preise: "https://api-docs.deepseek.com/quick_start/pricing",
+    "id": "deepseek",
+    "name": "DeepSeek",
+    "land": "China",
+    "produkt": "DeepSeek",
+    "farbe": "#6d4aff",
+    "links": {
+      "modelle": "https://api-docs.deepseek.com/",
+      "news": "https://api-docs.deepseek.com/news/",
+      "web": "https://www.deepseek.com/",
+      "preise": "https://api-docs.deepseek.com/quick_start/pricing"
     },
-    modelle: [
+    "modelle": [
       {
-        name: "DeepSeek V4-Pro", type: "text", flagship: true, status: "preview",
-        note: { de: "1,6T MoE (49B aktiv), 1M-Kontext, offene Gewichte (MIT); offizielle GA Mitte Juli", en: "1.6T MoE (49B active), 1M context, open weights (MIT); official GA mid-July" },
-        preis: { de: "$0.435 / $0.87", en: "$0.435 / $0.87" }, kontext: { de: "1 Mio. Token · Ausgabe bis 384K", en: "1M tokens · output up to 384K" }, lizenz: { de: "Open-Weight (MIT)", en: "Open-Weight (MIT)" },
-        staerken: { de: ["Sehr günstig für die Leistung", "Offene Gewichte (MIT)", "Starkes Coding & Reasoning"], en: ["Very cheap for the performance", "Open weights (MIT)", "Strong coding & reasoning"] },
-        einsatz: { de: "Inferenz-lastige Produktion, Self-Hosting, kostensensible Frontier-Arbeit.", en: "Inference-heavy production, self-hosting, cost-sensitive frontier work." },
-        detail: { de: "DeepSeek V4-Pro (1,6 Bio. Parameter MoE, 49 Mrd. aktiv) ist ein offen lizenziertes (MIT) Frontier-Modell mit 1M-Kontext und außergewöhnlich niedrigem Token-Preis. Zum Rechercheszeitpunkt als Preview gelistet, offizielle GA für Mitte Juli angekündigt. Spricht OpenAI- und Anthropic-API-Format.", en: "DeepSeek V4-Pro (1.6 trillion parameters MoE, 49 billion active) is an openly licensed (MIT) frontier model with 1M context and an exceptionally low token price. Listed as preview at the time of research, official GA announced for mid-July. Speaks the OpenAI and Anthropic API formats." },
+        "name": "DeepSeek V4-Pro-0813",
+        "type": "text",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text und Werkzeuge; Flash zusätzlich mit Bildverständnis.",
+          "en": "Text and tools; Flash also supports vision."
+        },
+        "preis": {
+          "de": "Spitzenzeit: 1,32 / 3,96 USD; Nebenzeit: 0,66 / 1,98 USD (ohne Cache).",
+          "en": "Peak: 1.32 / 3.96 USD; off-peak: 0.66 / 1.98 USD (uncached)."
+        },
+        "kontext": {
+          "de": "1 Mio. Kontext; bis 384K Ausgabe.",
+          "en": "1M context; up to 384K output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text und Werkzeuge; Flash zusätzlich mit Bildverständnis.",
+          "en": "Text and tools; Flash also supports vision."
+        },
+        "detail": {
+          "de": "Spitzenzeit: Montag bis Freitag 01–04 und 06–10 Uhr UTC. Sonst Nebenzeit. V4-Pro bleibt laut Anbieter nach dem 14.09.2026 verfügbar; alte Flash-Aliasse werden auf V4.1-Flash geleitet.",
+          "en": "Peak: Monday–Friday, 01:00–04:00 and 06:00–10:00 UTC. All other times off-peak. V4-Pro remains available after 14 September 2026; old Flash aliases route to V4.1-Flash."
+        },
+        "modellId": "deepseek-v4-pro",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "api-docs.deepseek.com",
+            "url": "https://api-docs.deepseek.com/quick_start/pricing/"
+          }
+        ]
       },
       {
-        name: "DeepSeek V4-Flash", type: "text", status: "preview",
-        note: { de: "284B MoE (13B aktiv), günstig & schnell", en: "284B MoE (13B active), cheap & fast" },
-        preis: { de: "$0.14 / $0.28", en: "$0.14 / $0.28" }, kontext: { de: "1 Mio. Token · Ausgabe bis 384K", en: "1M tokens · output up to 384K" }, lizenz: { de: "Open-Weight (MIT)", en: "Open-Weight (MIT)" },
-        staerken: { de: ["Extrem günstig", "Schnell", "Offene Gewichte (MIT)"], en: ["Extremely cheap", "Fast", "Open weights (MIT)"] },
-        einsatz: { de: "Hochvolumige Agenten-Schleifen, Drafting, Iteration.", en: "High-volume agent loops, drafting, iteration." },
-        detail: { de: "DeepSeek V4-Flash (284 Mrd. Parameter MoE, 13 Mrd. aktiv) ist die schnelle, sehr günstige Variante mit gleichem 1M-Kontext. Reasoning nahe der Pro-Version bei größerem Denk-Budget. Ideal für hohe Durchsätze zu minimalen Kosten.", en: "DeepSeek V4-Flash (284 billion parameters MoE, 13 billion active) is the fast, very cheap variant with the same 1M context. Reasoning close to the Pro version given a larger thinking budget. Ideal for high throughput at minimal cost." },
+        "name": "DeepSeek V4.1-Flash",
+        "type": "multi",
+        "status": "ga",
+        "flagship": true,
+        "note": {
+          "de": "Text und Werkzeuge; Flash zusätzlich mit Bildverständnis.",
+          "en": "Text and tools; Flash also supports vision."
+        },
+        "preis": {
+          "de": "Spitzenzeit: 0,30 / 1,20 USD; Nebenzeit: 0,15 / 0,60 USD (ohne Cache).",
+          "en": "Peak: 0.30 / 1.20 USD; off-peak: 0.15 / 0.60 USD (uncached)."
+        },
+        "kontext": {
+          "de": "1 Mio. Kontext; bis 384K Ausgabe.",
+          "en": "1M context; up to 384K output."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text und Werkzeuge; Flash zusätzlich mit Bildverständnis.",
+          "en": "Text and tools; Flash also supports vision."
+        },
+        "detail": {
+          "de": "Spitzenzeit: Montag bis Freitag 01–04 und 06–10 Uhr UTC. Sonst Nebenzeit. V4-Pro bleibt laut Anbieter nach dem 14.09.2026 verfügbar; alte Flash-Aliasse werden auf V4.1-Flash geleitet.",
+          "en": "Peak: Monday–Friday, 01:00–04:00 and 06:00–10:00 UTC. All other times off-peak. V4-Pro remains available after 14 September 2026; old Flash aliases route to V4.1-Flash."
+        },
+        "modellId": "deepseek-flash",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "api-docs.deepseek.com",
+            "url": "https://api-docs.deepseek.com/quick_start/pricing/"
+          }
+        ]
       },
       {
-        name: "DeepSeek R1", type: "text", status: "ga",
-        note: { de: "Reasoning-Linie (Vorgänger)", en: "Reasoning line (predecessor)" },
-        preis: { de: "gering (Open-Weight; frühere API-Sätze ≈ $0.55 / $2.19)", en: "low (Open-Weight; earlier API rates ≈ $0.55 / $2.19)" }, kontext: { de: "128K Token", en: "128K tokens" },
-        lizenz: { de: "Open-Weight (MIT)", en: "Open-Weight (MIT)" },
-        staerken: { de: ["Etablierte Reasoning-Linie", "Frei herunterladbar", "Gut untersucht"], en: ["Established reasoning line", "Freely downloadable", "Well studied"] },
-        einsatz: { de: "Bestehende R1-Deployments, Feintuning eines Reasoning-Modells.", en: "Existing R1 deployments, fine-tuning a reasoning model." },
-        detail: { de: "DeepSeek R1 ist die bekannte Reasoning-Linie (Vorgänger der V4-Ära). Offen lizenziert (MIT) und frei hostbar; für neue Produktions-Workloads ist meist V4 die stärkere und günstigere Wahl, R1 bleibt als stabiler, gut untersuchter Checkpoint relevant.", en: "DeepSeek R1 is the well-known reasoning line (predecessor of the V4 era). Openly licensed (MIT) and free to host; for new production workloads V4 is usually the stronger and cheaper choice, while R1 remains relevant as a stable, well-studied checkpoint." },
+        "name": "DeepSeek R1",
+        "type": "text",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Offenes Reasoning-Modell für Text und Code.",
+          "en": "Open reasoning model for text and code."
+        },
+        "preis": {
+          "de": "Gewichte zum Download; Rechenkosten beim eigenen Betrieb, API-Preis abhängig vom Betreiber.",
+          "en": "Downloadable weights; self-hosting incurs compute costs, API prices depend on the host."
+        },
+        "kontext": {
+          "de": "128K laut Modellkarte; Hosting-Angebote können abweichen.",
+          "en": "128K per model card; hosted limits may differ."
+        },
+        "lizenz": {
+          "de": "Open-Weight (MIT); abgeleitete Varianten separat prüfen.",
+          "en": "Open weights (MIT); check distilled variants separately."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Offenes Reasoning-Modell für Text und Code.",
+          "en": "Open reasoning model for text and code."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "github.com",
+            "url": "https://github.com/deepseek-ai/DeepSeek-R1"
+          }
+        ]
       },
       {
-        name: "Janus-Pro-7B", type: "image", status: "ga",
-        note: { de: "Text-zu-Bild / multimodale Generierung", en: "Text-to-image / multimodal generation" },
-        preis: { de: "Open-Weight — kostenlos selbst hostbar", en: "Open-Weight — free to self-host" }, kontext: "—", lizenz: { de: "Open-Weight (MIT)", en: "Open-Weight (MIT)" },
-        staerken: { de: ["Text-zu-Bild", "Kompakt (7B)", "Frei herunterladbar"], en: ["Text-to-image", "Compact (7B)", "Freely downloadable"] },
-        einsatz: { de: "Bilderzeugung und multimodale Generierung im Self-Hosting.", en: "Image generation and multimodal generation in self-hosting." },
-        detail: { de: "Janus-Pro-7B ist DeepSeeks kompaktes, offen lizenziertes Modell für Text-zu-Bild und multimodale Generierung. Frei herunterladbar; es fallen nur eigene Infrastrukturkosten an.", en: "Janus-Pro-7B is DeepSeek's compact, openly licensed model for text-to-image and multimodal generation. Freely downloadable; only your own infrastructure costs apply." },
+        "name": "Janus-Pro-7B",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Bildverständnis und Bilderzeugung.",
+          "en": "Image understanding and generation."
+        },
+        "preis": {
+          "de": "Gewichte zum Download; Rechenkosten beim eigenen Betrieb, API-Preis abhängig vom Betreiber.",
+          "en": "Downloadable weights; self-hosting incurs compute costs, API prices depend on the host."
+        },
+        "kontext": {
+          "de": "Multimodales Modell; Details in der Modellkarte.",
+          "en": "Multimodal model; see model-card limits."
+        },
+        "lizenz": {
+          "de": "Offene Gewichte; Modelllizenz im Repository.",
+          "en": "Open weights; model licence in the repository."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Bildverständnis und Bilderzeugung.",
+          "en": "Image understanding and generation."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "github.com",
+            "url": "https://github.com/deepseek-ai/Janus"
+          }
+        ]
       },
       {
-        name: "DeepSeek VL2", type: "image", status: "ga",
-        note: { de: "OCR & Dokumentenverständnis (Vision)", en: "OCR & document understanding (vision)" },
-        preis: { de: "Open-Weight — kostenlos selbst hostbar", en: "Open-Weight — free to self-host" }, kontext: "—", lizenz: { de: "Open-Weight (MIT)", en: "Open-Weight (MIT)" },
-        staerken: { de: ["OCR", "Dokumenten- & Diagramm-Verständnis", "Frei herunterladbar"], en: ["OCR", "Document & chart understanding", "Freely downloadable"] },
-        einsatz: { de: "OCR, Diagramme, Dokumenten-Frage-Antwort.", en: "OCR, charts, document question answering." },
-        detail: { de: "DeepSeek VL2 ist das offen lizenzierte Vision-Modell für OCR und Dokumentenverständnis (Diagramme, Belege, Dokument-QA). Frei hostbar; keine Token-Gebühr beim Self-Hosting.", en: "DeepSeek VL2 is the openly licensed vision model for OCR and document understanding (charts, receipts, document QA). Free to host; no token fee with self-hosting." },
-      },
-    ],
+        "name": "DeepSeek VL2",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Bilder und Dokumente verstehen; keine Bilderzeugung.",
+          "en": "Understand images and documents; no image generation."
+        },
+        "preis": {
+          "de": "Gewichte zum Download; Rechenkosten beim eigenen Betrieb, API-Preis abhängig vom Betreiber.",
+          "en": "Downloadable weights; self-hosting incurs compute costs, API prices depend on the host."
+        },
+        "kontext": {
+          "de": "Grenzen abhängig von Variante und Bildaufbereitung.",
+          "en": "Limits depend on variant and image processing."
+        },
+        "lizenz": {
+          "de": "Offene Gewichte; DeepSeek-Modelllizenz beachten.",
+          "en": "Open weights; consult the DeepSeek model licence."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Bilder und Dokumente verstehen; keine Bilderzeugung.",
+          "en": "Understand images and documents; no image generation."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "github.com",
+            "url": "https://github.com/deepseek-ai/DeepSeek-VL2"
+          }
+        ]
+      }
+    ]
   },
   {
-    id: "mistral",
-    name: "Mistral AI",
-    land: "Frankreich",
-    produkt: "Le Chat / Mistral",
-    farbe: "#fa5211",
-    links: {
-      modelle: "https://docs.mistral.ai/models/overview",
-      news: "https://mistral.ai/news/",
-      web: "https://mistral.ai/",
-      preise: "https://mistral.ai/pricing",
+    "id": "mistral",
+    "name": "Mistral AI",
+    "land": "Frankreich",
+    "produkt": "Le Chat / Mistral",
+    "farbe": "#fa5211",
+    "links": {
+      "modelle": "https://docs.mistral.ai/models/overview",
+      "news": "https://mistral.ai/news/",
+      "web": "https://mistral.ai/",
+      "preise": "https://mistral.ai/pricing"
     },
-    modelle: [
+    "modelle": [
       {
-        name: "Mistral Medium 3.5", type: "multi", flagship: true, status: "preview",
-        note: { de: "Erstes zusammengeführtes Flaggschiff (Instruct+Reasoning+Code), 128B dense, Open-Weight", en: "First merged flagship (instruct+reasoning+code), 128B dense, Open-Weight" },
-        preis: { de: "$1.50 / $7.50", en: "$1.50 / $7.50" }, kontext: { de: "256K Token", en: "256K tokens" }, lizenz: { de: "Open-Weight (modifiziert MIT)", en: "Open-Weight (modified MIT)" },
-        staerken: { de: ["Instruktion, Reasoning & Code in einem Modell", "Konfigurierbare Reasoning-Tiefe", "Self-Host auf wenigen GPUs"], en: ["Instruction, reasoning & code in one model", "Configurable reasoning depth", "Self-host on a few GPUs"] },
-        einsatz: { de: "Standard-Flaggschiff für Entwicklung, Agenten und Unternehmensautomatisierung.", en: "Standard flagship for development, agents and enterprise automation." },
-        detail: { de: "Mistral Medium 3.5 ist Mistrals erstes zusammengeführtes Flaggschiff — Instruktionsbefolgung, Reasoning und Coding in einem dichten 128B-Modell (öffentliche Preview). Als Open-Weight (modifiziert MIT) auf wenigen GPUs selbst hostbar; Reasoning-Aufwand pro Anfrage konfigurierbar. Standard in Mistral Vibe und Le Chat.", en: "Mistral Medium 3.5 is Mistral's first merged flagship — instruction following, reasoning and coding in a dense 128B model (public preview). As Open-Weight (modified MIT) it can be self-hosted on a few GPUs; reasoning effort is configurable per request. Default in Mistral Vibe and Le Chat." },
+        "name": "Mistral Medium 3.5",
+        "type": "multi",
+        "status": "ga",
+        "flagship": true,
+        "note": {
+          "de": "Text, Bildverständnis und Werkzeuge; Gewichte verfügbar.",
+          "en": "Text, vision and tools; downloadable weights."
+        },
+        "preis": {
+          "de": "1,50 / 7,50 USD",
+          "en": "1.50 / 7.50 USD"
+        },
+        "kontext": {
+          "de": "256K Token",
+          "en": "256K tokens"
+        },
+        "lizenz": {
+          "de": "Open-Weight (Modified MIT); API separat abgerechnet.",
+          "en": "Open weights (Modified MIT); API billed separately."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bildverständnis und Werkzeuge; Gewichte verfügbar.",
+          "en": "Text, vision and tools; downloadable weights."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "docs.mistral.ai",
+            "url": "https://docs.mistral.ai/models/mistral-medium-3-5-26-04"
+          }
+        ]
       },
       {
-        name: "Mistral Large 3", type: "multi", status: "ga",
-        note: { de: "Großes Open-Weight-MoE (675B total / 41B aktiv), Apache 2.0", en: "Large Open-Weight MoE (675B total / 41B active), Apache 2.0" },
-        preis: { de: "Open-Weight (Apache 2.0) — API-Preis variiert je Anbieter", en: "Open-Weight (Apache 2.0) — API price varies by provider" }, kontext: { de: "256K Token", en: "256K tokens" },
-        lizenz: { de: "Open-Weight (Apache 2.0)", en: "Open-Weight (Apache 2.0)" },
-        staerken: { de: ["Großes MoE (675B/41B aktiv)", "Frei lizenziert (Apache 2.0)", "Multimodal & mehrsprachig"], en: ["Large MoE (675B/41B active)", "Freely licensed (Apache 2.0)", "Multimodal & multilingual"] },
-        einsatz: { de: "Anspruchsvolle Produktion, lange Dokumente, EU-Datenresidenz.", en: "Demanding production, long documents, EU data residency." },
-        detail: { de: "Mistral Large 3 ist Mistrals großes Open-Weight-MoE (675 Mrd. total, 41 Mrd. aktiv) unter Apache 2.0 — frei nutz- und anpassbar. Ein einheitlicher Token-Listenpreis existiert nicht: Beim Self-Hosting zahlt man Infrastruktur, über die Plattform/Cloud-Anbieter richtet sich der Preis nach diesem.", en: "Mistral Large 3 is Mistral's large Open-Weight MoE (675 billion total, 41 billion active) under Apache 2.0 — free to use and adapt. A uniform token list price does not exist: with self-hosting you pay for infrastructure, and via the platform/cloud provider the price depends on that provider." },
+        "name": "Mistral Large 3",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text, Bildverständnis und Werkzeuge; Gewichte verfügbar.",
+          "en": "Text, vision and tools; downloadable weights."
+        },
+        "preis": {
+          "de": "0,50 / 1,50 USD",
+          "en": "0.50 / 1.50 USD"
+        },
+        "kontext": {
+          "de": "256K Token",
+          "en": "256K tokens"
+        },
+        "lizenz": {
+          "de": "Open-Weight (Apache 2.0); API separat abgerechnet.",
+          "en": "Open weights (Apache 2.0); API billed separately."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bildverständnis und Werkzeuge; Gewichte verfügbar.",
+          "en": "Text, vision and tools; downloadable weights."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "docs.mistral.ai",
+            "url": "https://docs.mistral.ai/models/mistral-large-3-25-12"
+          }
+        ]
       },
       {
-        name: "Mistral Small 4", type: "multi", status: "ga",
-        note: { de: "Effizient, konfigurierbare Reasoning-Tiefe", en: "Efficient, configurable reasoning depth" },
-        preis: { de: "$0.10 / $0.30", en: "$0.10 / $0.30" }, kontext: { de: "256K Token", en: "256K tokens" }, lizenz: { de: "Open-Weight (Apache 2.0)", en: "Open-Weight (Apache 2.0)" },
-        staerken: { de: ["Sehr günstig", "Multimodal", "Reasoning ein-/ausschaltbar"], en: ["Very cheap", "Multimodal", "Reasoning can be toggled on/off"] },
-        einsatz: { de: "Kostensensible Produktion, schnelle Prototypen, hohe Volumen.", en: "Cost-sensitive production, fast prototypes, high volumes." },
-        detail: { de: "Mistral Small 4 vereint Reasoning, Multimodalität und Coding in einem effizienten Modell (119B total, ~6B aktiv) mit einstellbarer Reasoning-Tiefe. Sehr günstig und offen lizenziert (Apache 2.0) — eine der preiswertesten multimodalen Optionen.", en: "Mistral Small 4 combines reasoning, multimodality and coding in an efficient model (119B total, ~6B active) with adjustable reasoning depth. Very cheap and openly licensed (Apache 2.0) — one of the most affordable multimodal options." },
+        "name": "Mistral Small 4",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text, Bildverständnis und Werkzeuge; Gewichte verfügbar.",
+          "en": "Text, vision and tools; downloadable weights."
+        },
+        "preis": {
+          "de": "0,15 / 0,60 USD",
+          "en": "0.15 / 0.60 USD"
+        },
+        "kontext": {
+          "de": "256K Token",
+          "en": "256K tokens"
+        },
+        "lizenz": {
+          "de": "Open-Weight (Apache 2.0); API separat abgerechnet.",
+          "en": "Open weights (Apache 2.0); API billed separately."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bildverständnis und Werkzeuge; Gewichte verfügbar.",
+          "en": "Text, vision and tools; downloadable weights."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "docs.mistral.ai",
+            "url": "https://docs.mistral.ai/models/mistral-small-4-0-26-03"
+          }
+        ]
       },
       {
-        name: "Voxtral TTS", type: "audio", status: "ga",
-        note: { de: "Sprachsynthese mit Voice-Cloning", en: "Speech synthesis with voice cloning" },
-        preis: { de: "$0.016 pro 1.000 Zeichen (kein Token-Preis)", en: "$0.016 per 1,000 characters (no token price)" }, kontext: "—",
-        lizenz: { de: "Open-Weight (CC BY-NC 4.0; kommerziell separat)", en: "Open-Weight (CC BY-NC 4.0; commercial separately)" },
-        staerken: { de: ["Voice-Cloning ab wenigen Sekunden", "9 Sprachen", "Sehr niedrige Latenz"], en: ["Voice cloning from a few seconds", "9 languages", "Very low latency"] },
-        einsatz: { de: "Sprachassistenten, Vertonung, Kundendialog.", en: "Voice assistants, voice-overs, customer dialog." },
-        detail: { de: "Voxtral TTS ist Mistrals offenes Text-zu-Sprache-Modell mit Zero-Shot-Voice-Cloning (ab ~3 s Referenz) und 9 Sprachen. Abrechnung zeichenbasiert ($0.016/1.000 Zeichen). Lizenz CC BY-NC 4.0 (nicht-kommerziell); kommerzielle Nutzung erfordert eine separate Vereinbarung.", en: "Voxtral TTS is Mistral's open text-to-speech model with zero-shot voice cloning (from ~3 s reference) and 9 languages. Character-based billing ($0.016/1,000 characters). License CC BY-NC 4.0 (non-commercial); commercial use requires a separate agreement." },
+        "name": "Voxtral TTS",
+        "type": "audio",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Sprachausgabe aus Text, mit Stimmvorlagen.",
+          "en": "Text-to-speech with voice references."
+        },
+        "preis": {
+          "de": "16 USD je 1 Mio. Zeichen (= 0,016 USD je 1.000).",
+          "en": "USD 16 per 1M characters (= USD 0.016 per 1,000)."
+        },
+        "kontext": {
+          "de": "Text-zu-Sprache; kein Text-Kontextvergleich.",
+          "en": "Text-to-speech; no comparable text context."
+        },
+        "lizenz": {
+          "de": "Gewichte: CC BY-NC 4.0 (nicht kommerziell); API nach Anbieterbedingungen.",
+          "en": "Weights: CC BY-NC 4.0 (non-commercial); API under provider terms."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Sprachausgabe aus Text, mit Stimmvorlagen.",
+          "en": "Text-to-speech with voice references."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "voxtral-mini-tts-2603",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "docs.mistral.ai",
+            "url": "https://docs.mistral.ai/models/voxtral-tts-26-03"
+          }
+        ]
       },
       {
-        name: "OCR 4", type: "image", status: "ga",
-        note: { de: "Dokumenten-OCR (Document AI)", en: "Document OCR (Document AI)" },
-        preis: { de: "seitenbasierte Abrechnung (kein Token-Preis)", en: "page-based billing (no token price)" }, kontext: "—",
-        lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["OCR mit Absatz-Boxen", "Strukturierte Blocklabels"], en: ["OCR with paragraph boxes", "Structured block labels"] },
-        einsatz: { de: "Dokumentenverarbeitung, strukturierte Extraktion.", en: "Document processing, structured extraction." },
-        detail: { de: "OCR 4 ist Mistrals aktueller OCR-Dienst (Document-AI-Stack) mit Absatz-Bounding-Boxen und strukturierten Blocklabels. Abgerechnet wird pro Seite/Dokument, nicht pro Token.", en: "OCR 4 is Mistral's current OCR service (Document AI stack) with paragraph bounding boxes and structured block labels. Billing is per page/document, not per token." },
+        "name": "OCR 4.1",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Dokumente in Text und strukturierte Blöcke umwandeln.",
+          "en": "Convert documents into text and structured blocks."
+        },
+        "preis": {
+          "de": "4 USD je 1.000 Seiten; 5 USD je 1.000 annotierte Seiten.",
+          "en": "USD 4 per 1,000 pages; USD 5 per 1,000 annotated pages."
+        },
+        "kontext": {
+          "de": "Dokumentdienst; Abrechnung nach Seiten.",
+          "en": "Document service; billed per page."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Dokumente in Text und strukturierte Blöcke umwandeln.",
+          "en": "Convert documents into text and structured blocks."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "mistral-ocr-4-1",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "docs.mistral.ai",
+            "url": "https://docs.mistral.ai/models/ocr-4-1"
+          }
+        ]
       },
-    ],
+      {
+        "name": "OCR 4.0",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Dokumente in Text und strukturierte Blöcke umwandeln.",
+          "en": "Convert documents into text and structured blocks."
+        },
+        "preis": {
+          "de": "4 USD je 1.000 Seiten; 5 USD je 1.000 annotierte Seiten.",
+          "en": "USD 4 per 1,000 pages; USD 5 per 1,000 annotated pages."
+        },
+        "kontext": {
+          "de": "Dokumentdienst; Abrechnung nach Seiten.",
+          "en": "Document service; billed per page."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Dokumente in Text und strukturierte Blöcke umwandeln.",
+          "en": "Convert documents into text and structured blocks."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "mistral-ocr-4-0",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "docs.mistral.ai",
+            "url": "https://docs.mistral.ai/models/ocr-4-0"
+          }
+        ]
+      }
+    ]
   },
   {
-    id: "qwen",
-    name: "Alibaba (Qwen)",
-    land: "China",
-    produkt: "Qwen",
-    farbe: "#d946ef",
-    links: {
-      modelle: "https://www.alibabacloud.com/help/en/model-studio/models",
-      news: "https://qwen.ai/research",
-      web: "https://qwen.ai/",
-      preise: "https://www.alibabacloud.com/help/en/model-studio/models",
+    "id": "qwen",
+    "name": "Alibaba (Qwen)",
+    "land": "China",
+    "produkt": "Qwen",
+    "farbe": "#d946ef",
+    "links": {
+      "modelle": "https://www.alibabacloud.com/help/en/model-studio/models",
+      "news": "https://qwen.ai/research",
+      "web": "https://qwen.ai/",
+      "preise": "https://www.alibabacloud.com/help/en/model-studio/models"
     },
-    modelle: [
+    "modelle": [
       {
-        name: "Qwen3.7-Max", type: "text", flagship: true, status: "ga",
-        note: { de: "Neues proprietäres Flaggschiff, 1M-Kontext, API-only", en: "New proprietary flagship, 1M context, API-only" },
-        preis: { de: "$2.50 / $7.50 · Cache-Input $0.25", en: "$2.50 / $7.50 · cache input $0.25" }, kontext: { de: "1 Mio. Token", en: "1M tokens" }, lizenz: { de: "proprietär (API-only)", en: "proprietary (API-only)" },
-        staerken: { de: ["Frontier-nahe Leistung günstig", "1M-Kontext", "Sehr lange autonome Läufe"], en: ["Near-frontier performance at low cost", "1M context", "Very long autonomous runs"] },
-        einsatz: { de: "Langlaufende Agenten, Repository-Analyse, günstiges Frontier-Reasoning.", en: "Long-running agents, repository analysis, cheap frontier reasoning." },
-        detail: { de: "Qwen3.7-Max ist Alibabas neuestes proprietäres Flaggschiff (Mai 2026), API-only mit 1M-Kontext. Deutlich günstiger als GPT- oder Claude-Alternativen bei frontier-naher Leistung; demonstriert wurden sehr lange autonome Agentenläufe. Spricht auch das Anthropic-API-Protokoll (nutzbar mit Claude-Tools).", en: "Qwen3.7-Max is Alibaba's newest proprietary flagship (May 2026), API-only with 1M context. Considerably cheaper than GPT or Claude alternatives at near-frontier performance; very long autonomous agent runs have been demonstrated. Also speaks the Anthropic API protocol (usable with Claude tools)." },
+        "name": "Qwen3.8-Max",
+        "type": "multi",
+        "status": "ga",
+        "flagship": true,
+        "note": {
+          "de": "Text, Bildverständnis und Werkzeugnutzung.",
+          "en": "Text, vision and tool use."
+        },
+        "preis": {
+          "de": "Abhängig von Modellvariante, Region und Eingabe/Ausgabe. Siehe verlinkte Preistabelle.",
+          "en": "Depends on variant, region and input/output. See the linked pricing table."
+        },
+        "kontext": {
+          "de": "1 Mio. Token; Grenzen des konkreten Endpunkts beachten.",
+          "en": "1M tokens; check specific endpoint limits."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bildverständnis und Werkzeugnutzung.",
+          "en": "Text, vision and tool use."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "qwen3.8-max",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/text-generation-model"
+          },
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/vision-model"
+          },
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+          }
+        ]
       },
       {
-        name: "Qwen3.7-Plus", type: "multi", status: "ga",
-        note: { de: "Multimodale Agent-Variante", en: "Multimodal agent variant" },
-        preis: { de: "≈ 1/6 der Max-Kosten (multimodal)", en: "≈ 1/6 of the Max cost (multimodal)" }, kontext: { de: "1 Mio. Token", en: "1M tokens" }, lizenz: { de: "proprietär (API)", en: "proprietary (API)" },
-        staerken: { de: ["Multimodal", "Deutlich günstiger als Max", "Agentisch"], en: ["Multimodal", "Considerably cheaper than Max", "Agentic"] },
-        einsatz: { de: "Multimodale Agenten zu niedrigem Preis.", en: "Multimodal agents at a low price." },
-        detail: { de: "Qwen3.7-Plus ist die multimodale Agent-Variante der 3.7-Familie zu rund einem Sechstel der Max-Token-Kosten. Für multimodale, agentische Aufgaben, bei denen Preis wichtiger ist als die absolute Spitzenleistung.", en: "Qwen3.7-Plus is the multimodal agent variant of the 3.7 family at around one sixth of the Max token cost. For multimodal, agentic tasks where price matters more than absolute peak performance." },
+        "name": "Qwen3.7-Max (2026-06-08)",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text, Bildverständnis und Werkzeugnutzung.",
+          "en": "Text, vision and tool use."
+        },
+        "preis": {
+          "de": "Abhängig von Modellvariante, Region und Eingabe/Ausgabe. Siehe verlinkte Preistabelle.",
+          "en": "Depends on variant, region and input/output. See the linked pricing table."
+        },
+        "kontext": {
+          "de": "1 Mio. Token; Grenzen des konkreten Endpunkts beachten.",
+          "en": "1M tokens; check specific endpoint limits."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bildverständnis und Werkzeugnutzung.",
+          "en": "Text, vision and tool use."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "qwen3.7-max-2026-06-08",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/text-generation-model"
+          },
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/vision-model"
+          },
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+          }
+        ]
       },
       {
-        name: "Qwen3.5 (397B-A17B)", type: "multi", status: "ga",
-        note: { de: "Open-Weight (Apache 2.0), 201 Sprachen", en: "Open-Weight (Apache 2.0), 201 languages" },
-        preis: { de: "Open-Weight — kostenlos selbst hostbar (API-Preis je Anbieter)", en: "Open-Weight — free to self-host (API price depends on provider)" }, kontext: { de: "großer Kontext", en: "large context" },
-        lizenz: { de: "Open-Weight (Apache 2.0)", en: "Open-Weight (Apache 2.0)" },
-        staerken: { de: ["Frei lizenziert (Apache 2.0)", "201 Sprachen", "Nativ multimodal"], en: ["Freely licensed (Apache 2.0)", "201 languages", "Natively multimodal"] },
-        einsatz: { de: "Self-Hosting, Mehrsprachigkeit, datensouveräne Umgebungen.", en: "Self-hosting, multilingualism, data-sovereign environments." },
-        detail: { de: "Qwen3.5 (397 Mrd. Parameter MoE, 17 Mrd. aktiv) ist das offen lizenzierte Flaggschiff (Apache 2.0, Februar 2026) mit Unterstützung für 201 Sprachen und nativer Multimodalität. Frei herunterladbar und selbst hostbar; der Token-Preis entsteht nur bei Nutzung über einen Cloud-Anbieter.", en: "Qwen3.5 (397 billion parameters MoE, 17 billion active) is the openly licensed flagship (Apache 2.0, February 2026) with support for 201 languages and native multimodality. Freely downloadable and self-hostable; the token price only arises when used via a cloud provider." },
+        "name": "Qwen3.7-Plus",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text, Bildverständnis und Werkzeugnutzung.",
+          "en": "Text, vision and tool use."
+        },
+        "preis": {
+          "de": "Abhängig von Modellvariante, Region und Eingabe/Ausgabe. Siehe verlinkte Preistabelle.",
+          "en": "Depends on variant, region and input/output. See the linked pricing table."
+        },
+        "kontext": {
+          "de": "1 Mio. Token; Grenzen des konkreten Endpunkts beachten.",
+          "en": "1M tokens; check specific endpoint limits."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bildverständnis und Werkzeugnutzung.",
+          "en": "Text, vision and tool use."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "qwen3.7-plus",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/text-generation-model"
+          },
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/vision-model"
+          },
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+          }
+        ]
       },
       {
-        name: "Qwen3.5-Omni", type: "multi", status: "ga",
-        note: { de: "Text, Bild, Audio & Video in einem Modell", en: "Text, image, audio & video in one model" },
-        preis: { de: "Open-Weight — kostenlos selbst hostbar (je nach Variante)", en: "Open-Weight — free to self-host (depending on variant)" }, kontext: { de: "großer Kontext", en: "large context" },
-        lizenz: { de: "Open-Weight", en: "Open-Weight" },
-        staerken: { de: ["Alle vier Modalitäten in einem Modell", "Sprach- und Videoeingabe"], en: ["All four modalities in one model", "Speech and video input"] },
-        einsatz: { de: "Multimodale Anwendungen (z. B. Sprache + Bildschirm) im Self-Hosting.", en: "Multimodal applications (e.g. voice + screen) in self-hosting." },
-        detail: { de: "Qwen3.5-Omni versteht Text, Bild, Audio und Video nativ in einem Modell und ermöglicht Szenarien wie „per Sprache beschreiben und per Video zeigen“. Offen verfügbar; keine Token-Gebühr beim Self-Hosting.", en: "Qwen3.5-Omni understands text, image, audio and video natively in one model and enables scenarios like \"describe by voice and show by video\". Openly available; no token fee with self-hosting." },
+        "name": "Qwen3.5 (397B-A17B)",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Offenes Modell für Text und Bildverständnis.",
+          "en": "Open model for text and vision."
+        },
+        "preis": {
+          "de": "Gewichte zum Download; Rechenkosten beim eigenen Betrieb, API-Preis abhängig vom Betreiber.",
+          "en": "Downloadable weights; self-hosting incurs compute costs, API prices depend on the host."
+        },
+        "kontext": {
+          "de": "262.144 Token nativ; bis 1.010.000 mit Erweiterung laut Modellkarte.",
+          "en": "262,144 tokens natively; up to 1,010,000 with extension per model card."
+        },
+        "lizenz": {
+          "de": "Open-Weight; Apache 2.0 laut Modellkarte.",
+          "en": "Open weights; Apache 2.0 per model card."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Offenes Modell für Text und Bildverständnis.",
+          "en": "Open model for text and vision."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "huggingface.co",
+            "url": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B"
+          }
+        ]
       },
       {
-        name: "Wan / Qwen-Image 2.0", type: "image", status: "ga",
-        note: { de: "Bildgenerierung mit Textrendering", en: "Image generation with text rendering" },
-        preis: { de: "Bild — separate Abrechnung (kein Token-Preis)", en: "Image — separate billing (no token price)" }, kontext: "—",
-        lizenz: { de: "proprietär / je nach Variante", en: "proprietary / depending on variant" },
-        staerken: { de: ["Fotorealistische Bilder", "Präzises mehrzeiliges Textrendering"], en: ["Photorealistic images", "Precise multi-line text rendering"] },
-        einsatz: { de: "Bilderzeugung mit exaktem Text (Überschriften, Branding).", en: "Image generation with exact text (headlines, branding)." },
-        detail: { de: "Wan bzw. Qwen-Image 2.0 erzeugt fotorealistische Bilder mit besonders präzisem, mehrzeiligem Textrendering. Als Bildmodell erfolgt die Abrechnung pro Bild, nicht pro Token.", en: "Wan or Qwen-Image 2.0 generates photorealistic images with especially precise, multi-line text rendering. As an image model, billing is per image, not per token." },
+        "name": "Qwen3.5-Omni Plus",
+        "type": "multi",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Text, Bild, Audio und Video verstehen; Sprache ausgeben.",
+          "en": "Understand text, image, audio and video; generate speech."
+        },
+        "preis": {
+          "de": "Abhängig von Modellvariante, Region und Eingabe/Ausgabe. Siehe verlinkte Preistabelle.",
+          "en": "Depends on variant, region and input/output. See the linked pricing table."
+        },
+        "kontext": {
+          "de": "Grenzen nach Modalität und Endpunkt.",
+          "en": "Limits depend on modality and endpoint."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Text, Bild, Audio und Video verstehen; Sprache ausgeben.",
+          "en": "Understand text, image, audio and video; generate speech."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "qwen3.5-omni-plus",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/omni"
+          },
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/newly-released-models"
+          },
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+          }
+        ]
       },
       {
-        name: "Qwen3-TTS", type: "audio", status: "ga",
-        note: { de: "Sprachsynthese mit Voice-Cloning", en: "Speech synthesis with voice cloning" },
-        preis: { de: "Audio — separate Abrechnung (kein Token-Preis)", en: "Audio — separate billing (no token price)" }, kontext: "—",
-        lizenz: { de: "offene Lizenz / je nach Variante", en: "open license / depending on variant" },
-        staerken: { de: ["Voice-Cloning", "Streaming-Generierung"], en: ["Voice cloning", "Streaming generation"] },
-        einsatz: { de: "Vertonung, Sprachassistenten.", en: "Voice-overs, voice assistants." },
-        detail: { de: "Qwen3-TTS ist Alibabas Sprachsynthese mit Voice-Cloning und Streaming-Ausgabe für Vorlesen und Sprachassistenten. Abrechnung audio-/zeichenbasiert, nicht pro Token.", en: "Qwen3-TTS is Alibaba's speech synthesis with voice cloning and streaming output for read-aloud and voice assistants. Audio-/character-based billing, not per token." },
+        "name": "Qwen Image 3.0 Pro",
+        "type": "image",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Bilder erzeugen und bearbeiten.",
+          "en": "Generate and edit images."
+        },
+        "preis": {
+          "de": "Abhängig von Modellvariante, Region und Eingabe/Ausgabe. Siehe verlinkte Preistabelle.",
+          "en": "Depends on variant, region and input/output. See the linked pricing table."
+        },
+        "kontext": {
+          "de": "Bildmodell; Auflösung und Modus beachten.",
+          "en": "Image model; check resolution and mode."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Bilder erzeugen und bearbeiten.",
+          "en": "Generate and edit images."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "qwen-image-3.0-pro",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/image-model"
+          },
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+          }
+        ]
       },
-    ],
-  },
+      {
+        "name": "Qwen Image 2.0",
+        "type": "image",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Ältere Bildmodellfamilie aus dem bisherigen Katalog.",
+          "en": "Older image family from the existing catalogue."
+        },
+        "preis": {
+          "de": "Abhängig von Modellvariante, Region und Eingabe/Ausgabe. Siehe verlinkte Preistabelle.",
+          "en": "Depends on variant, region and input/output. See the linked pricing table."
+        },
+        "kontext": {
+          "de": "Bildmodell; Details je Variante.",
+          "en": "Image model; details vary by variant."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Ältere Bildmodellfamilie aus dem bisherigen Katalog.",
+          "en": "Older image family from the existing catalogue."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/image-model"
+          },
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+          }
+        ]
+      },
+      {
+        "name": "Wan",
+        "type": "video",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Eigenständige Modellfamilie zur Videoerzeugung.",
+          "en": "Separate model family for video generation."
+        },
+        "preis": {
+          "de": "Abhängig von Modellvariante, Region und Eingabe/Ausgabe. Siehe verlinkte Preistabelle.",
+          "en": "Depends on variant, region and input/output. See the linked pricing table."
+        },
+        "kontext": {
+          "de": "Dauer und Auflösung nach Modellvariante.",
+          "en": "Duration and resolution depend on variant."
+        },
+        "lizenz": {
+          "de": "Proprietärer Dienst (API); Anbieterbedingungen gelten.",
+          "en": "Proprietary API service; provider terms apply."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Eigenständige Modellfamilie zur Videoerzeugung.",
+          "en": "Separate model family for video generation."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/models"
+          },
+          {
+            "name": "www.alibabacloud.com",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+          }
+        ]
+      },
+      {
+        "name": "Qwen3-TTS",
+        "type": "audio",
+        "status": "ga",
+        "flagship": false,
+        "note": {
+          "de": "Offene Sprachmodelle mit Sprach- und Stimmsteuerung.",
+          "en": "Open speech models with language and voice control."
+        },
+        "preis": {
+          "de": "Gewichte zum Download; Rechenkosten beim eigenen Betrieb, API-Preis abhängig vom Betreiber.",
+          "en": "Downloadable weights; self-hosting incurs compute costs, API prices depend on the host."
+        },
+        "kontext": {
+          "de": "Sprachausgabe; Grenzen je Variante.",
+          "en": "Speech output; limits vary by variant."
+        },
+        "lizenz": {
+          "de": "Open-Weight; Lizenz der jeweiligen Variante im Repository.",
+          "en": "Open weights; consult the variant licence in the repository."
+        },
+        "staerken": {
+          "de": [],
+          "en": []
+        },
+        "einsatz": {
+          "de": "Offene Sprachmodelle mit Sprach- und Stimmsteuerung.",
+          "en": "Open speech models with language and voice control."
+        },
+        "detail": {
+          "de": "Die verlinkten Anbieterquellen belegen den angegebenen Stand. Fähigkeiten sind Herstellerangaben; dieser Katalog enthält keinen eigenen Leistungstest.",
+          "en": "Linked provider sources document this snapshot. Capabilities are provider claims; this catalogue is not an independent benchmark."
+        },
+        "modellId": "",
+        "geprueftAm": "2026-09-14",
+        "quellen": [
+          {
+            "name": "github.com",
+            "url": "https://github.com/QwenLM/Qwen3-TTS"
+          }
+        ]
+      }
+    ]
+  }
 ];
 
-/* Weitere Anbieter — bewusst nur eine Kurzliste (Anbieter + bekannte
-   Modellfamilien), ohne Preis-/Detailprüfung. Ehrlicher Hinweis dazu
-   steht auf der Seite. Reihenfolge: grob nach Bedeutung/Bekanntheit. */
 window.KI_ATLAS_WEITERE = [
-  { name: "Microsoft",          land: "USA",         modelle: { de: "MAI-Familie · Phi-4 (offen) · Copilot-Integrationen", en: "MAI family · Phi-4 (open) · Copilot integrations" },
-    web: "https://microsoft.ai/",
-    info: { de: "Microsoft entwickelt unter der Marke Microsoft AI die eigene MAI-Modellfamilie sowie die offenen Phi-Modelle und den KI-Assistenten Copilot.", en: "Under the Microsoft AI brand, Microsoft develops its own MAI model family as well as the open Phi models and the AI assistant Copilot." } },
-  { name: "Amazon (AWS)",       land: "USA",         modelle: { de: "Nova-Familie (Micro / Lite / Pro / Premier)", en: "Nova family (Micro / Lite / Pro / Premier)" },
-    web: "https://aws.amazon.com/ai/generative-ai/nova/",
-    info: { de: "Amazon bietet über AWS die Nova-Modellfamilie an, schnelle multimodale Basismodelle für Text und Bild in mehreren Größen (Micro, Lite, Pro, Premier).", en: "Through AWS, Amazon offers the Nova model family, fast multimodal foundation models for text and image in several sizes (Micro, Lite, Pro, Premier)." } },
-  { name: "NVIDIA",             land: "USA",         modelle: { de: "Nemotron-Familie (offen)", en: "Nemotron family (open)" },
-    web: "https://www.nvidia.com/en-us/ai-data-science/foundation-models/nemotron/",
-    info: { de: "NVIDIA veröffentlicht die offene Nemotron-Modellfamilie mit Trainingsdaten und Gewichten, ausgelegt auf effiziente, agentische KI-Anwendungen.", en: "NVIDIA releases the open Nemotron model family with training data and weights, designed for efficient, agentic AI applications." } },
-  { name: "IBM",                land: "USA",         modelle: { de: "Granite-Familie (offen)", en: "Granite family (open)" },
-    web: "https://www.ibm.com/granite",
-    info: { de: "IBM entwickelt die offene Granite-Modellfamilie für Unternehmen: Sprach-, Code-, Vision- und Guardrail-Modelle unter Apache-2.0-Lizenz.", en: "IBM develops the open Granite model family for enterprises: language, code, vision and guardrail models under the Apache 2.0 license." } },
-  { name: "Apple",              land: "USA",         modelle: { de: "Apple Foundation Models (auf dem Gerät, in iOS/macOS)", en: "Apple Foundation Models (on-device, in iOS/macOS)" },
-    web: "https://www.apple.com/apple-intelligence/",
-    info: { de: "Apple integriert unter Apple Intelligence eigene Foundation Models direkt in iPhone, iPad und Mac, mit Schwerpunkt auf datenschutzfreundlicher Verarbeitung auf dem Gerät.", en: "Under Apple Intelligence, Apple integrates its own foundation models directly into iPhone, iPad and Mac, with a focus on privacy-friendly on-device processing." } },
-  { name: "Cohere",             land: "Kanada",      modelle: { de: "Command-Familie (A / R)", en: "Command family (A / R)" },
-    web: "https://cohere.com/command",
-    info: { de: "Cohere richtet sich an Unternehmen und bietet die Command-Modellfamilie (u. a. Command A und R) für agentische, mehrsprachige KI-Anwendungen.", en: "Cohere targets enterprises and offers the Command model family (including Command A and R) for agentic, multilingual AI applications." } },
-  { name: "AI21 Labs",          land: "Israel",      modelle: { de: "Jamba-Familie", en: "Jamba family" },
-    web: "https://www.ai21.com/jamba/",
-    info: { de: "AI21 Labs entwickelt die offene Jamba-Modellfamilie, die eine hybride Mamba-Transformer-Architektur für lange Kontexte nutzt.", en: "AI21 Labs develops the open Jamba model family, which uses a hybrid Mamba-Transformer architecture for long contexts." } },
-  { name: "Perplexity",         land: "USA",         modelle: { de: "Sonar-Familie (Suche/Antworten)", en: "Sonar family (search/answers)" },
-    web: "https://www.perplexity.ai/api-platform/",
-    info: { de: "Perplexity betreibt eine KI-Antwortmaschine und entwickelt die Sonar-Modelle, die Websuche mit generierten, quellengestützten Antworten verbinden.", en: "Perplexity operates an AI answer engine and develops the Sonar models, which combine web search with generated, source-backed answers." } },
-  { name: "Reka",               land: "USA",         modelle: { de: "Reka Core / Flash", en: "Reka Core / Flash" },
-    web: "https://www.reka.ai/",
-    info: { de: "Reka entwickelt nativ multimodale Modelle wie Reka Core und Flash, die Text, Bild, Audio und Video verarbeiten.", en: "Reka develops natively multimodal models such as Reka Core and Flash, which process text, image, audio and video." } },
-  { name: "Moonshot AI",        land: "China",       modelle: { de: "Kimi-Familie (K2)", en: "Kimi family (K2)" },
-    web: "https://www.moonshot.ai/",
-    info: { de: "Moonshot AI aus China entwickelt die Kimi-Modellfamilie, darunter das offene Modell Kimi K2 mit langem Kontext.", en: "Moonshot AI from China develops the Kimi model family, including the open model Kimi K2 with long context." } },
-  { name: "Zhipu AI / Z.ai",    land: "China",       modelle: { de: "GLM-Familie", en: "GLM family" },
-    web: "https://z.ai/model-api",
-    info: { de: "Z.ai (früher Zhipu AI) aus China entwickelt die GLM-Modellfamilie für Reasoning, Programmieren und agentische Aufgaben, teils als Open-Weight.", en: "Z.ai (formerly Zhipu AI) from China develops the GLM model family for reasoning, programming and agentic tasks, partly as open-weight." } },
-  { name: "MiniMax",            land: "China",       modelle: { de: "MiniMax-M-Familie", en: "MiniMax-M family" },
-    web: "https://www.minimax.io/",
-    info: { de: "MiniMax aus China entwickelt multimodale KI-Modelle, darunter die Sprachmodellreihe MiniMax-M sowie Modelle für Sprache, Video und Musik.", en: "MiniMax from China develops multimodal AI models, including the MiniMax-M language model series as well as models for speech, video and music." } },
-  { name: "ByteDance",          land: "China",       modelle: { de: "Doubao / Seed-Familie", en: "Doubao / Seed family" },
-    web: "https://seed.bytedance.com/",
-    info: { de: "ByteDance entwickelt über sein Seed-Forschungsteam die Doubao- und Seed-Modellfamilien, die den KI-Assistenten Doubao und die Volcano-Engine-Plattform antreiben.", en: "Through its Seed research team, ByteDance develops the Doubao and Seed model families, which power the AI assistant Doubao and the Volcano Engine platform." } },
-  { name: "Baidu",              land: "China",       modelle: { de: "ERNIE-Familie", en: "ERNIE family" },
-    web: "https://ernie.baidu.com/",
-    info: { de: "Baidu entwickelt die ERNIE-Modellfamilie, multimodale Basismodelle, die den chinesischen KI-Chatbot ERNIE Bot (früher Wenxin Yiyan) antreiben.", en: "Baidu develops the ERNIE model family, multimodal foundation models that power the Chinese AI chatbot ERNIE Bot (formerly Wenxin Yiyan)." } },
-  { name: "Tencent",            land: "China",       modelle: { de: "Hunyuan-Familie", en: "Hunyuan family" },
-    web: "https://hunyuan.tencent.com/",
-    info: { de: "Tencent entwickelt die Hunyuan-Modellfamilie mit Modellen für Text, Bild und 3D, teils als Open-Weight veröffentlicht.", en: "Tencent develops the Hunyuan model family with models for text, image and 3D, partly released as open-weight." } },
-  { name: "Black Forest Labs",  land: "Deutschland", modelle: { de: "FLUX-Familie (Bild)", en: "FLUX family (image)" },
-    web: "https://bfl.ai/",
-    info: { de: "Black Forest Labs aus Deutschland entwickelt die FLUX-Modellfamilie zur KI-Bildgenerierung, verfügbar per API und teils als Open-Weight.", en: "Black Forest Labs from Germany develops the FLUX model family for AI image generation, available via API and partly as open-weight." } },
-  { name: "Stability AI",       land: "UK",          modelle: { de: "Stable Diffusion (Bild)", en: "Stable Diffusion (image)" },
-    web: "https://stability.ai/",
-    info: { de: "Stability AI entwickelt offene generative Modelle, darunter die bekannte Bildgenerator-Familie Stable Diffusion sowie Modelle für Video, Audio und 3D.", en: "Stability AI develops open generative models, including the well-known image generator family Stable Diffusion as well as models for video, audio and 3D." } },
-  { name: "Midjourney",         land: "USA",         modelle: { de: "Midjourney (Bild)", en: "Midjourney (image)" },
-    web: "https://www.midjourney.com/",
-    info: { de: "Midjourney betreibt einen bekannten KI-Bildgenerator, der aus Textbeschreibungen hochwertige, stilisierte Bilder erzeugt.", en: "Midjourney operates a well-known AI image generator that produces high-quality, stylized images from text descriptions." } },
-  { name: "Runway",             land: "USA",         modelle: { de: "Gen-Familie (Video)", en: "Gen family (video)" },
-    web: "https://runwayml.com/",
-    info: { de: "Runway entwickelt die Gen-Modellfamilie zur KI-Videogenerierung, die aus Text und Bildern kurze, realistische Videosequenzen erzeugt.", en: "Runway develops the Gen model family for AI video generation, which produces short, realistic video sequences from text and images." } },
-  { name: "Luma AI",            land: "USA",         modelle: { de: "Dream Machine / Ray (Video)", en: "Dream Machine / Ray (video)" },
-    web: "https://lumalabs.ai/",
-    info: { de: "Luma AI entwickelt KI-Videomodelle, darunter Dream Machine und die Ray-Modellreihe, die aus Text und Bildern Videos erzeugen.", en: "Luma AI develops AI video models, including Dream Machine and the Ray model series, which generate videos from text and images." } },
-  { name: "ElevenLabs",         land: "USA",         modelle: { de: "Sprach-/Stimm-Modelle (Audio)", en: "Speech/Voice models (audio)" },
-    web: "https://elevenlabs.io/",
-    info: { de: "ElevenLabs entwickelt KI-Modelle für Sprachsynthese, Stimmklonen, Transkription und Musik und unterstützt dabei über 70 Sprachen.", en: "ElevenLabs develops AI models for speech synthesis, voice cloning, transcription and music, supporting over 70 languages." } },
+  {
+    "name": "Microsoft",
+    "land": "USA",
+    "modelle": {
+      "de": "MAI-Familie · Phi-4 (offen) · Copilot-Integrationen",
+      "en": "MAI family · Phi-4 (open) · Copilot integrations"
+    },
+    "web": "https://microsoft.ai/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://microsoft.ai/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Amazon (AWS)",
+    "land": "USA",
+    "modelle": {
+      "de": "Nova-Familie · Nova 2 Sonic · Nova Act",
+      "en": "Nova family · Nova 2 Sonic · Nova Act"
+    },
+    "web": "https://aws.amazon.com/ai/generative-ai/nova/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://aws.amazon.com/ai/generative-ai/nova/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "NVIDIA",
+    "land": "USA",
+    "modelle": {
+      "de": "Nemotron-Familie (offen)",
+      "en": "Nemotron family (open)"
+    },
+    "web": "https://www.nvidia.com/en-us/ai-data-science/foundation-models/nemotron/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://www.nvidia.com/en-us/ai-data-science/foundation-models/nemotron/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "IBM",
+    "land": "USA",
+    "modelle": {
+      "de": "Granite-Familie · Granite 4.2",
+      "en": "Granite family · Granite 4.2"
+    },
+    "web": "https://www.ibm.com/granite",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://www.ibm.com/granite"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Apple",
+    "land": "USA",
+    "modelle": {
+      "de": "Apple Foundation Models (auf dem Gerät, in iOS/macOS)",
+      "en": "Apple Foundation Models (on-device, in iOS/macOS)"
+    },
+    "web": "https://www.apple.com/apple-intelligence/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://www.apple.com/apple-intelligence/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Cohere",
+    "land": "Kanada",
+    "modelle": {
+      "de": "Command-Familie (A / R)",
+      "en": "Command family (A / R)"
+    },
+    "web": "https://cohere.com/command",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://cohere.com/command"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "AI21 Labs",
+    "land": "Israel",
+    "modelle": {
+      "de": "Jamba-Familie",
+      "en": "Jamba family"
+    },
+    "web": "https://www.ai21.com/jamba/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://www.ai21.com/jamba/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Perplexity",
+    "land": "USA",
+    "modelle": {
+      "de": "Sonar-Familie (Suche/Antworten)",
+      "en": "Sonar family (search/answers)"
+    },
+    "web": "https://www.perplexity.ai/api-platform/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://www.perplexity.ai/api-platform/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Reka",
+    "land": "USA",
+    "modelle": {
+      "de": "Reka Edge 2 · Videowerkzeuge",
+      "en": "Reka Edge 2 · video tools"
+    },
+    "web": "https://www.reka.ai/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://www.reka.ai/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Moonshot AI",
+    "land": "China",
+    "modelle": {
+      "de": "Kimi-Familie · Kimi K3 · K2.6",
+      "en": "Kimi family · Kimi K3 · K2.6"
+    },
+    "web": "https://www.moonshot.ai/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://www.moonshot.ai/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Zhipu AI / Z.ai",
+    "land": "China",
+    "modelle": {
+      "de": "GLM-Familie · GLM-5.3",
+      "en": "GLM family · GLM-5.3"
+    },
+    "web": "https://z.ai/model-api",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://z.ai/model-api"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "MiniMax",
+    "land": "China",
+    "modelle": {
+      "de": "MiniMax M3 · H3 · Speech 2.8 · Music 3.0",
+      "en": "MiniMax M3 · H3 · Speech 2.8 · Music 3.0"
+    },
+    "web": "https://www.minimax.io/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://www.minimax.io/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "ByteDance",
+    "land": "China",
+    "modelle": {
+      "de": "Doubao / Seed-Familie",
+      "en": "Doubao / Seed family"
+    },
+    "web": "https://seed.bytedance.com/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://seed.bytedance.com/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Baidu",
+    "land": "China",
+    "modelle": {
+      "de": "ERNIE-Familie · ERNIE 5.1",
+      "en": "ERNIE family · ERNIE 5.1"
+    },
+    "web": "https://ernie.baidu.com/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://ernie.baidu.com/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Tencent",
+    "land": "China",
+    "modelle": {
+      "de": "Hunyuan-Familie",
+      "en": "Hunyuan family"
+    },
+    "web": "https://hunyuan.tencent.com/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://hunyuan.tencent.com/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Black Forest Labs",
+    "land": "Deutschland",
+    "modelle": {
+      "de": "FLUX 3 · Bild, Video und Audio",
+      "en": "FLUX 3 · image, video and audio"
+    },
+    "web": "https://bfl.ai/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://bfl.ai/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Stability AI",
+    "land": "UK",
+    "modelle": {
+      "de": "Stable Diffusion (Bild)",
+      "en": "Stable Diffusion (image)"
+    },
+    "web": "https://stability.ai/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://stability.ai/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Midjourney",
+    "land": "USA",
+    "modelle": {
+      "de": "Midjourney (Bild)",
+      "en": "Midjourney (image)"
+    },
+    "web": "https://www.midjourney.com/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://www.midjourney.com/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Runway",
+    "land": "USA",
+    "modelle": {
+      "de": "Gen-Familie (Video)",
+      "en": "Gen family (video)"
+    },
+    "web": "https://runwayml.com/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://runwayml.com/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "Luma AI",
+    "land": "USA",
+    "modelle": {
+      "de": "Dream Machine · Ray 3.2",
+      "en": "Dream Machine · Ray 3.2"
+    },
+    "web": "https://lumalabs.ai/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://lumalabs.ai/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  },
+  {
+    "name": "ElevenLabs",
+    "land": "USA",
+    "modelle": {
+      "de": "Sprach-/Stimm-Modelle (Audio)",
+      "en": "Speech/Voice models (audio)"
+    },
+    "web": "https://elevenlabs.io/",
+    "info": {
+      "de": "Anbieterprofil und Modellfamilien. Die offizielle Website führt verfügbare Varianten und Zugangsmöglichkeiten auf. Preise und Leistungswerte sind hier nicht einzeln geprüft.",
+      "en": "Provider profile and model families. The official website lists variants and access. Prices and performance figures are not individually verified here."
+    },
+    "quellen": [
+      {
+        "name": "Offizielle Anbieterwebsite",
+        "url": "https://elevenlabs.io/"
+      }
+    ],
+    "pruefstand": {
+      "de": "Kurzprofil; keine vollständige Detailprüfung.",
+      "en": "Short profile; not a complete detail audit."
+    }
+  }
 ];
 
-// Gesamtliste (Marktzahlen): Nutzer, Umsatz, Bewertung, Gründung — 29 Anbieter.
-// Nutzer-/Umsatzzahlen sind Schätzungen bzw. Run-Rate (ARR) und nicht direkt
-// vergleichbar (WAU vs. MAU). Bewertungen/Gründungsjahre am 6. Juli 2026 recherchiert.
-// Leere Felder ("") bedeuten: keine belastbare, vergleichbare Zahl.
-// Felder: name, land, produkt, kategorie, nutzer, metrik, umsatz, bewertung, gruendung, quelle
 window.KI_ATLAS_MARKT = [
-  { name: "OpenAI", land: "USA", produkt: "ChatGPT", kategorie: { de: "Chatbot", en: "Chatbot" },
-    nutzer: { de: "über 1 Mrd. / 900 Mio. WAU", en: "over 1 bn / 900 M WAU" }, metrik: { de: "MAU (App) / wöchentl.", en: "MAU (App) / weekly" },
-    umsatz: { de: "ca. 25 Mrd. $", en: "approx. 25 bn $" }, bewertung: { de: "ca. 852 Mrd. $ (2026)", en: "approx. 852 bn $ (2026)" }, gruendung: "2015",
-    quelle: "Sensor Tower/Reuters, OpenAI (Feb. 2026); The Information", quelleName: "Reuters", quelleUrl: "https://www.reuters.com/" },
-  { name: "Anthropic", land: "USA", produkt: "Claude", kategorie: { de: "Chatbot", en: "Chatbot" },
-    nutzer: { de: "ca. 8–19 Mio.", en: "approx. 8–19 M" }, metrik: { de: "MAU (Web)", en: "MAU (Web)" },
-    umsatz: { de: "ca. 30–47 Mrd. $", en: "approx. 30–47 bn $" }, bewertung: { de: "ca. 965 Mrd. $ (2026)", en: "approx. 965 bn $ (2026)" }, gruendung: "2021",
-    quelle: "Anthropic (April 2026); Sacra (Mai 2026)", quelleName: "Anthropic", quelleUrl: "https://www.anthropic.com/news" },
-  { name: "Meta", land: "USA", produkt: "Meta AI (Llama / Muse Spark)", kategorie: { de: "Chatbot (eingebettet)", en: "Chatbot (embedded)" },
-    nutzer: { de: "ca. 1,2 Mrd.", en: "approx. 1.2 bn" }, metrik: { de: "MAU", en: "MAU" },
-    umsatz: { de: "— (kein separater KI-Umsatz)", en: "— (no separate AI revenue)" }, bewertung: { de: "Teil von Meta", en: "Part of Meta" }, gruendung: "2004",
-    quelle: "Meta Q1-2026-Bericht", quelleName: "Meta IR", quelleUrl: "https://investor.atmeta.com/" },
-  { name: "Google DeepMind", land: "USA", produkt: "Gemini", kategorie: { de: "Chatbot", en: "Chatbot" },
-    nutzer: { de: "über 900 Mio.", en: "over 900 M" }, metrik: "MAU (App)",
-    umsatz: { de: "— (in Google-Umsatz enthalten)", en: "— (included in Google revenue)" }, bewertung: { de: "Teil von Alphabet", en: "Part of Alphabet" }, gruendung: "2010",
-    quelle: "Google I/O (Mai 2026)", quelleName: "Google Blog", quelleUrl: "https://blog.google/" },
-  { name: "Microsoft", land: "USA", produkt: "Copilot (MAI / Phi-4)", kategorie: { de: "Chatbot (eingebettet)", en: "Chatbot (embedded)" },
-    nutzer: { de: "ca. 420 Mio.", en: "approx. 420 M" }, metrik: { de: "MAU (alle Oberflächen)", en: "MAU (all surfaces)" },
-    umsatz: { de: "— (in Microsoft-Umsatz enthalten)", en: "— (included in Microsoft revenue)" }, bewertung: { de: "Teil von Microsoft", en: "Part of Microsoft" }, gruendung: "1975",
-    quelle: "Business of Apps / Microsoft (2026)", quelleName: "Business of Apps", quelleUrl: "https://www.businessofapps.com/data/microsoft-copilot-statistics/" },
-  { name: "ByteDance", land: "China", produkt: "Doubao / Seed", kategorie: { de: "Chatbot", en: "Chatbot" },
-    nutzer: { de: "ca. 345 Mio.", en: "approx. 345 M" }, metrik: { de: "MAU", en: "MAU" },
-    umsatz: "", bewertung: { de: "ca. 550 Mrd. $ (2026, privat)", en: "approx. 550 bn $ (2026, private)" }, gruendung: "2012",
-    quelle: "QuestMobile (März 2026)", quelleName: "QuestMobile", quelleUrl: "https://www.questmobile.com.cn/" },
-  { name: "Baidu", land: "China", produkt: "ERNIE (Ernie Bot)", kategorie: { de: "Chatbot + Modelle", en: "Chatbot + models" },
-    nutzer: { de: "ca. 220 Mio.", en: "approx. 220 M" }, metrik: { de: "MAU", en: "MAU" },
-    umsatz: "", bewertung: { de: "Teil von Baidu", en: "Part of Baidu" }, gruendung: "2000",
-    quelle: "The Capital Review / Medium (Mai 2026)", quelleName: "The Capital Review", quelleUrl: "https://medium.com/@TheCapitalReview" },
-  { name: "Alibaba", land: "China", produkt: "Qwen / Tongyi", kategorie: { de: "Chatbot + offene Modelle", en: "Chatbot + open models" },
-    nutzer: { de: "ca. 200 Mio.", en: "approx. 200 M" }, metrik: "MAU (App)",
-    umsatz: "", bewertung: { de: "Teil von Alibaba", en: "Part of Alibaba" }, gruendung: "1999",
-    quelle: "AICPB (Jan. 2026), via France24", quelleName: "France24", quelleUrl: "https://www.france24.com/" },
-  { name: "Tencent", land: "China", produkt: "Hunyuan / Yuanbao", kategorie: { de: "Chatbot + Modelle", en: "Chatbot + models" },
-    nutzer: { de: "ca. 150 Mio.", en: "approx. 150 M" }, metrik: { de: "MAU (Yuanbao)", en: "MAU (Yuanbao)" },
-    umsatz: "", bewertung: { de: "Teil von Tencent", en: "Part of Tencent" }, gruendung: "1998",
-    quelle: "The Capital Review / Medium (Mai 2026)", quelleName: "The Capital Review", quelleUrl: "https://medium.com/@TheCapitalReview" },
-  { name: "Perplexity", land: "USA", produkt: "Perplexity (Sonar)", kategorie: { de: "KI-Suche", en: "AI search" },
-    nutzer: { de: "ca. 34 Mio. / über 100 Mio.", en: "approx. 34 M / over 100 M" }, metrik: { de: "MAU (Kern / alle Produkte)", en: "MAU (core / all products)" },
-    umsatz: { de: "ca. 0,5 Mrd. $", en: "approx. 0.5 bn $" }, bewertung: { de: "ca. 20 Mrd. $ (2025)", en: "approx. 20 bn $ (2025)" }, gruendung: "2022",
-    quelle: "gradually.ai, Sacra/FT (April 2026)", quelleName: "gradually.ai", quelleUrl: "https://gradually.ai/" },
-  { name: "DeepSeek", land: "China", produkt: "DeepSeek", kategorie: { de: "Chatbot + offene Modelle", en: "Chatbot + open models" },
-    nutzer: { de: "ca. 97 Mio.", en: "approx. 97 M" }, metrik: { de: "MAU", en: "MAU" },
-    umsatz: "", bewertung: { de: "ca. 50–59 Mrd. $ (2026)", en: "approx. 50–59 bn $ (2026)" }, gruendung: "2023",
-    quelle: "AICPB (April 2026); ElectroIQ", quelleName: "ElectroIQ", quelleUrl: "https://electroiq.com/" },
-  { name: "xAI", land: "USA", produkt: "Grok", kategorie: { de: "Chatbot", en: "Chatbot" },
-    nutzer: { de: "ca. 64 Mio.", en: "approx. 64 M" }, metrik: { de: "MAU", en: "MAU" },
-    umsatz: { de: "— (nicht offengelegt)", en: "— (not disclosed)" }, bewertung: { de: "ca. 230 Mrd. $ (2026)", en: "approx. 230 bn $ (2026)" }, gruendung: "2023",
-    quelle: "DemandSage (2026)", quelleName: "DemandSage", quelleUrl: "https://www.demandsage.com/" },
-  { name: "Mistral AI", land: "Frankreich", produkt: "Le Chat / Mistral", kategorie: { de: "Chatbot + offene Modelle", en: "Chatbot + open models" },
-    nutzer: { de: "unter 45 Mio.", en: "under 45 M" }, metrik: { de: "monatl. aktiv (EU-Empfänger)", en: "monthly active (EU recipients)" },
-    umsatz: { de: "über 0,4 Mrd. $ (Ziel: über 1 Mrd.)", en: "over 0.4 bn $ (target: over 1 bn)" }, bewertung: { de: "ca. 11,7 Mrd. € (2025)", en: "approx. 11.7 bn € (2025)" }, gruendung: "2023",
-    quelle: "Mistral-Angabe (2026), via getpanto.ai", quelleName: "getpanto.ai", quelleUrl: "https://getpanto.ai/" },
-  { name: "Moonshot AI", land: "China", produkt: "Kimi (K2)", kategorie: { de: "Chatbot + offene Modelle", en: "Chatbot + open models" },
-    nutzer: { de: "ca. 10–15 Mio. (Höchst. 36 Mio.)", en: "approx. 10–15 M (peak 36 M)" }, metrik: { de: "MAU (Kimi-App)", en: "MAU (Kimi app)" },
-    umsatz: { de: "über 0,2 Mrd. $ (ARR)", en: "over 0.2 bn $ (ARR)" }, bewertung: { de: "ca. 20 Mrd. $ (2026)", en: "approx. 20 bn $ (2026)" }, gruendung: "2023",
-    quelle: "QuestMobile/Statista; TechCrunch (Mai 2026)", quelleName: "TechCrunch", quelleUrl: "https://techcrunch.com/" },
-  { name: "Zhipu AI / Z.ai", land: "China", produkt: "GLM / Qingyan", kategorie: { de: "Chatbot + offene Modelle", en: "Chatbot + open models" },
-    nutzer: { de: "ca. 3–9 Mio.", en: "approx. 3–9 M" }, metrik: { de: "MAU (Consumer-App)", en: "MAU (consumer app)" },
-    umsatz: "", bewertung: { de: "börsennotiert (HKEX); ~6,6 Mrd. $ (2025, privat)", en: "publicly listed (HKEX); ~6.6 bn $ (2025, private)" }, gruendung: "2019",
-    quelle: "36kr (Nov. 2025); Bamboo Works/AICPB (2025)", quelleName: "36Kr", quelleUrl: "https://36kr.com/" },
-  { name: "MiniMax", land: "China", produkt: "MiniMax-M / Xingye / Talkie", kategorie: { de: "Chatbot + Modelle (Multimedia)", en: "Chatbot + models (multimedia)" },
-    nutzer: "", metrik: "",
-    umsatz: "", bewertung: { de: "börsennotiert (HKEX); ~14 Mrd. $ (2026)", en: "publicly listed (HKEX); ~14 bn $ (2026)" }, gruendung: "2022",
-    quelle: "börsennotiert (Hongkong, Jan. 2026); keine belastbare MAU", quelleName: "HKEXnews", quelleUrl: "https://www.hkexnews.hk/" },
-  { name: "Midjourney", land: "USA", produkt: "Midjourney", kategorie: { de: "Bildgenerator", en: "Image generator" },
-    nutzer: { de: "ca. 20 Mio. (registriert, Discord)", en: "approx. 20 M (registered, Discord)" }, metrik: { de: "registrierte Nutzer", en: "registered users" },
-    umsatz: { de: "ca. 0,5 Mrd. $", en: "approx. 0.5 bn $" }, bewertung: { de: "— (gebootstrappt)", en: "— (bootstrapped)" }, gruendung: "2021",
-    quelle: "Sacra; The Information (März 2026); DemandSage", quelleName: "Sacra", quelleUrl: "https://sacra.com/" },
-  { name: "ElevenLabs", land: "USA", produkt: "Sprach-/Stimm-Modelle", kategorie: { de: "Audiogenerator", en: "Audio generator" },
-    nutzer: "", metrik: "",
-    umsatz: { de: "über 0,33 Mrd. $", en: "over 0.33 bn $" }, bewertung: { de: "11 Mrd. $ (2026)", en: "11 bn $ (2026)" }, gruendung: "2022",
-    quelle: "TechCrunch / Bloomberg (Jan. 2026)", quelleName: "TechCrunch", quelleUrl: "https://techcrunch.com/" },
-  { name: "Runway", land: "USA", produkt: "Gen-Familie", kategorie: { de: "Videogenerator", en: "Video generator" },
-    nutzer: "", metrik: "",
-    umsatz: { de: "— (nicht offengelegt)", en: "— (not disclosed)" }, bewertung: { de: "5,3 Mrd. $ (2026)", en: "5.3 bn $ (2026)" }, gruendung: "2018",
-    quelle: "Sacra (Feb. 2026)", quelleName: "Sacra", quelleUrl: "https://sacra.com/" },
-  { name: "Luma AI", land: "USA", produkt: "Dream Machine / Ray", kategorie: { de: "Videogenerator", en: "Video generator" },
-    nutzer: "", metrik: "",
-    umsatz: "", bewertung: { de: "ca. 4 Mrd. $ (2025)", en: "approx. 4 bn $ (2025)" }, gruendung: "2021",
-    quelle: "CNBC (Nov. 2025)", quelleName: "CNBC", quelleUrl: "https://www.cnbc.com/" },
-  { name: "Black Forest Labs", land: "Deutschland", produkt: "FLUX-Familie", kategorie: { de: "Bildgenerator (Modelle)", en: "Image generator (models)" },
-    nutzer: "", metrik: "",
-    umsatz: "", bewertung: { de: "3,25 Mrd. $ (2025)", en: "3.25 bn $ (2025)" }, gruendung: "2024",
-    quelle: "TechCrunch (Dez. 2025)", quelleName: "TechCrunch", quelleUrl: "https://techcrunch.com/" },
-  { name: "Stability AI", land: "UK", produkt: "Stable Diffusion", kategorie: { de: "Bildgenerator", en: "Image generator" },
-    nutzer: "", metrik: "",
-    umsatz: { de: "— (nicht durchgängig offengelegt)", en: "— (not consistently disclosed)" }, bewertung: { de: "ca. 1 Mrd. $ (2024)", en: "approx. 1 bn $ (2024)" }, gruendung: "2019",
-    quelle: "Primärrunde (Juni 2024)" },
-  { name: "Cohere", land: "Kanada", produkt: "Command-Familie (A / R)", kategorie: { de: "Modelle (Enterprise/API)", en: "Models (Enterprise/API)" },
-    nutzer: "", metrik: "",
-    umsatz: { de: "— (nicht durchgängig offengelegt)", en: "— (not consistently disclosed)" }, bewertung: { de: "ca. 7 Mrd. $ (2025)", en: "approx. 7 bn $ (2025)" }, gruendung: "2019",
-    quelle: "TechCrunch/Bloomberg (Sept. 2025)", quelleName: "TechCrunch", quelleUrl: "https://techcrunch.com/" },
-  { name: "AI21 Labs", land: "Israel", produkt: "Jamba-Familie", kategorie: { de: "Modelle (Enterprise/API)", en: "Models (Enterprise/API)" },
-    nutzer: "", metrik: "",
-    umsatz: "", bewertung: { de: "ca. 1,4 Mrd. $ (2025)", en: "approx. 1.4 bn $ (2025)" }, gruendung: "2017",
-    quelle: "Calcalist/Tracxn (Mai 2025)", quelleName: "Calcalist", quelleUrl: "https://www.calcalist.co.il/" },
-  { name: "Reka", land: "USA", produkt: "Reka Core / Flash", kategorie: { de: "Modelle (Enterprise/API)", en: "Models (Enterprise/API)" },
-    nutzer: "", metrik: "",
-    umsatz: "", bewertung: { de: "ca. 1 Mrd. $ (2025)", en: "approx. 1 bn $ (2025)" }, gruendung: "2022",
-    quelle: "SiliconAngle (Juli 2025)", quelleName: "SiliconAngle", quelleUrl: "https://siliconangle.com/" },
-  { name: "NVIDIA", land: "USA", produkt: "Nemotron-Familie (offen)", kategorie: { de: "Offene Modelle", en: "Open models" },
-    nutzer: "", metrik: "",
-    umsatz: { de: "— (kein separater Modell-Umsatz)", en: "— (no separate model revenue)" }, bewertung: { de: "Teil von NVIDIA", en: "Part of NVIDIA" }, gruendung: "1993",
-    quelle: "" },
-  { name: "Amazon (AWS)", land: "USA", produkt: "Nova-Familie (Micro / Lite / Pro / Premier)", kategorie: { de: "Modelle (Cloud/API)", en: "Models (Cloud/API)" },
-    nutzer: "", metrik: "",
-    umsatz: { de: "— (in AWS-Umsatz enthalten)", en: "— (included in AWS revenue)" }, bewertung: { de: "Teil von Amazon", en: "Part of Amazon" }, gruendung: "1994",
-    quelle: "" },
-  { name: "IBM", land: "USA", produkt: "Granite-Familie (offen)", kategorie: { de: "Offene Modelle (Enterprise/API)", en: "Open models (Enterprise/API)" },
-    nutzer: "", metrik: "",
-    umsatz: "", bewertung: { de: "Teil von IBM", en: "Part of IBM" }, gruendung: "1911",
-    quelle: "" },
-  { name: "Apple", land: "USA", produkt: "Apple Foundation Models (on-device)", kategorie: { de: "Eingebettete Modelle (iOS/macOS)", en: "Embedded models (iOS/macOS)" },
-    nutzer: "", metrik: "",
-    umsatz: "", bewertung: { de: "Teil von Apple", en: "Part of Apple" }, gruendung: "1976",
-    quelle: "" },
+  {
+    "name": "OpenAI",
+    "land": "USA",
+    "produkt": "ChatGPT",
+    "kategorie": {
+      "de": "Chatbot",
+      "en": "Chatbot"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2015",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://openai.com/"
+  },
+  {
+    "name": "Anthropic",
+    "land": "USA",
+    "produkt": "Claude",
+    "kategorie": {
+      "de": "Chatbot",
+      "en": "Chatbot"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2021",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://www.anthropic.com/"
+  },
+  {
+    "name": "Meta",
+    "land": "USA",
+    "produkt": "Llama / Meta AI",
+    "kategorie": {
+      "de": "Chatbot (eingebettet)",
+      "en": "Chatbot (embedded)"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2004",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://ai.meta.com/"
+  },
+  {
+    "name": "Google DeepMind",
+    "land": "USA",
+    "produkt": "Gemini",
+    "kategorie": {
+      "de": "Chatbot",
+      "en": "Chatbot"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2010",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://deepmind.google/"
+  },
+  {
+    "name": "Microsoft",
+    "land": "USA",
+    "produkt": {
+      "de": "MAI-Familie · Phi-4 (offen) · Copilot-Integrationen",
+      "en": "MAI family · Phi-4 (open) · Copilot integrations"
+    },
+    "kategorie": {
+      "de": "Chatbot (eingebettet)",
+      "en": "Chatbot (embedded)"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "1975",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://microsoft.ai/"
+  },
+  {
+    "name": "ByteDance",
+    "land": "China",
+    "produkt": {
+      "de": "Doubao / Seed-Familie",
+      "en": "Doubao / Seed family"
+    },
+    "kategorie": {
+      "de": "Chatbot",
+      "en": "Chatbot"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2012",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://seed.bytedance.com/"
+  },
+  {
+    "name": "Baidu",
+    "land": "China",
+    "produkt": {
+      "de": "ERNIE-Familie · ERNIE 5.1",
+      "en": "ERNIE family · ERNIE 5.1"
+    },
+    "kategorie": {
+      "de": "Chatbot + Modelle",
+      "en": "Chatbot + models"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2000",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://ernie.baidu.com/"
+  },
+  {
+    "name": "Alibaba",
+    "land": "China",
+    "produkt": "Qwen",
+    "kategorie": {
+      "de": "Chatbot + offene Modelle",
+      "en": "Chatbot + open models"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "1999",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://qwen.ai/"
+  },
+  {
+    "name": "Tencent",
+    "land": "China",
+    "produkt": {
+      "de": "Hunyuan-Familie",
+      "en": "Hunyuan family"
+    },
+    "kategorie": {
+      "de": "Chatbot + Modelle",
+      "en": "Chatbot + models"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "1998",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://hunyuan.tencent.com/"
+  },
+  {
+    "name": "Perplexity",
+    "land": "USA",
+    "produkt": {
+      "de": "Sonar-Familie (Suche/Antworten)",
+      "en": "Sonar family (search/answers)"
+    },
+    "kategorie": {
+      "de": "KI-Suche",
+      "en": "AI search"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2022",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://www.perplexity.ai/api-platform/"
+  },
+  {
+    "name": "DeepSeek",
+    "land": "China",
+    "produkt": "DeepSeek",
+    "kategorie": {
+      "de": "Chatbot + offene Modelle",
+      "en": "Chatbot + open models"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2023",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://www.deepseek.com/"
+  },
+  {
+    "name": "xAI",
+    "land": "USA",
+    "produkt": "Grok",
+    "kategorie": {
+      "de": "Chatbot",
+      "en": "Chatbot"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2023",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://x.ai/"
+  },
+  {
+    "name": "Mistral AI",
+    "land": "Frankreich",
+    "produkt": "Le Chat / Mistral",
+    "kategorie": {
+      "de": "Chatbot + offene Modelle",
+      "en": "Chatbot + open models"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2023",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://mistral.ai/"
+  },
+  {
+    "name": "Moonshot AI",
+    "land": "China",
+    "produkt": {
+      "de": "Kimi-Familie · Kimi K3 · K2.6",
+      "en": "Kimi family · Kimi K3 · K2.6"
+    },
+    "kategorie": {
+      "de": "Chatbot + offene Modelle",
+      "en": "Chatbot + open models"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2023",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://www.moonshot.ai/"
+  },
+  {
+    "name": "Zhipu AI / Z.ai",
+    "land": "China",
+    "produkt": {
+      "de": "GLM-Familie · GLM-5.3",
+      "en": "GLM family · GLM-5.3"
+    },
+    "kategorie": {
+      "de": "Chatbot + offene Modelle",
+      "en": "Chatbot + open models"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2019",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://z.ai/model-api"
+  },
+  {
+    "name": "MiniMax",
+    "land": "China",
+    "produkt": {
+      "de": "MiniMax M3 · H3 · Speech 2.8 · Music 3.0",
+      "en": "MiniMax M3 · H3 · Speech 2.8 · Music 3.0"
+    },
+    "kategorie": {
+      "de": "Chatbot + Modelle (Multimedia)",
+      "en": "Chatbot + models (multimedia)"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2022",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://www.minimax.io/"
+  },
+  {
+    "name": "Midjourney",
+    "land": "USA",
+    "produkt": {
+      "de": "Midjourney (Bild)",
+      "en": "Midjourney (image)"
+    },
+    "kategorie": {
+      "de": "Bildgenerator",
+      "en": "Image generator"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2021",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://www.midjourney.com/"
+  },
+  {
+    "name": "ElevenLabs",
+    "land": "USA",
+    "produkt": {
+      "de": "Sprach-/Stimm-Modelle (Audio)",
+      "en": "Speech/Voice models (audio)"
+    },
+    "kategorie": {
+      "de": "Audiogenerator",
+      "en": "Audio generator"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2022",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://elevenlabs.io/"
+  },
+  {
+    "name": "Runway",
+    "land": "USA",
+    "produkt": {
+      "de": "Gen-Familie (Video)",
+      "en": "Gen family (video)"
+    },
+    "kategorie": {
+      "de": "Videogenerator",
+      "en": "Video generator"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2018",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://runwayml.com/"
+  },
+  {
+    "name": "Luma AI",
+    "land": "USA",
+    "produkt": {
+      "de": "Dream Machine · Ray 3.2",
+      "en": "Dream Machine · Ray 3.2"
+    },
+    "kategorie": {
+      "de": "Videogenerator",
+      "en": "Video generator"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2021",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://lumalabs.ai/"
+  },
+  {
+    "name": "Black Forest Labs",
+    "land": "Deutschland",
+    "produkt": {
+      "de": "FLUX 3 · Bild, Video und Audio",
+      "en": "FLUX 3 · image, video and audio"
+    },
+    "kategorie": {
+      "de": "Bildgenerator (Modelle)",
+      "en": "Image generator (models)"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2024",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://bfl.ai/"
+  },
+  {
+    "name": "Stability AI",
+    "land": "UK",
+    "produkt": {
+      "de": "Stable Diffusion (Bild)",
+      "en": "Stable Diffusion (image)"
+    },
+    "kategorie": {
+      "de": "Bildgenerator",
+      "en": "Image generator"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2019",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleUrl": "https://stability.ai/",
+    "quelleName": "Anbieterprofil"
+  },
+  {
+    "name": "Cohere",
+    "land": "Kanada",
+    "produkt": {
+      "de": "Command-Familie (A / R)",
+      "en": "Command family (A / R)"
+    },
+    "kategorie": {
+      "de": "Modelle (Enterprise/API)",
+      "en": "Models (Enterprise/API)"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2019",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://cohere.com/command"
+  },
+  {
+    "name": "AI21 Labs",
+    "land": "Israel",
+    "produkt": {
+      "de": "Jamba-Familie",
+      "en": "Jamba family"
+    },
+    "kategorie": {
+      "de": "Modelle (Enterprise/API)",
+      "en": "Models (Enterprise/API)"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2017",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://www.ai21.com/jamba/"
+  },
+  {
+    "name": "Reka",
+    "land": "USA",
+    "produkt": {
+      "de": "Reka Edge 2 · Videowerkzeuge",
+      "en": "Reka Edge 2 · video tools"
+    },
+    "kategorie": {
+      "de": "Modelle (Enterprise/API)",
+      "en": "Models (Enterprise/API)"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "2022",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleName": "Anbieterprofil",
+    "quelleUrl": "https://www.reka.ai/"
+  },
+  {
+    "name": "NVIDIA",
+    "land": "USA",
+    "produkt": {
+      "de": "Nemotron-Familie (offen)",
+      "en": "Nemotron family (open)"
+    },
+    "kategorie": {
+      "de": "Offene Modelle",
+      "en": "Open models"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "1993",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleUrl": "https://www.nvidia.com/en-us/ai-data-science/foundation-models/nemotron/",
+    "quelleName": "Anbieterprofil"
+  },
+  {
+    "name": "Amazon (AWS)",
+    "land": "USA",
+    "produkt": {
+      "de": "Nova-Familie · Nova 2 Sonic · Nova Act",
+      "en": "Nova family · Nova 2 Sonic · Nova Act"
+    },
+    "kategorie": {
+      "de": "Modelle (Cloud/API)",
+      "en": "Models (Cloud/API)"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "1994",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleUrl": "https://aws.amazon.com/ai/generative-ai/nova/",
+    "quelleName": "Anbieterprofil"
+  },
+  {
+    "name": "IBM",
+    "land": "USA",
+    "produkt": {
+      "de": "Granite-Familie · Granite 4.2",
+      "en": "Granite family · Granite 4.2"
+    },
+    "kategorie": {
+      "de": "Offene Modelle (Enterprise/API)",
+      "en": "Open models (Enterprise/API)"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "1911",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleUrl": "https://www.ibm.com/granite",
+    "quelleName": "Anbieterprofil"
+  },
+  {
+    "name": "Apple",
+    "land": "USA",
+    "produkt": {
+      "de": "Apple Foundation Models (auf dem Gerät, in iOS/macOS)",
+      "en": "Apple Foundation Models (on-device, in iOS/macOS)"
+    },
+    "kategorie": {
+      "de": "Eingebettete Modelle (iOS/macOS)",
+      "en": "Embedded models (iOS/macOS)"
+    },
+    "nutzer": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "metrik": {
+      "de": "Kein belastbarer Einzelbeleg im geprüften Katalog.",
+      "en": "No reliable individual evidence in the reviewed catalogue."
+    },
+    "umsatz": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "bewertung": {
+      "de": "Nicht belegt",
+      "en": "Not substantiated"
+    },
+    "gruendung": "1976",
+    "quelle": {
+      "de": "Die verlinkte Quelle ist ein Anbieterprofil, kein Beleg für Nutzer-, Umsatz- oder Bewertungszahlen.",
+      "en": "The linked source is a provider profile, not evidence for users, revenue or valuation."
+    },
+    "quelleUrl": "https://www.apple.com/apple-intelligence/",
+    "quelleName": "Anbieterprofil"
+  }
 ];
-
