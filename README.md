@@ -12,7 +12,7 @@
 
 Eine redaktionelle Übersicht der großen KI-Anbieter und ihrer Modelle — sortiert
 nach Anbieter und Modelltyp, mit Quellen und gekennzeichnetem Prüfstand, **zweisprachig
-(Deutsch / Englisch)**. Ein Projekt von **Mika-Tec** (Hasan Tepegöz).
+(Deutsch / Englisch)**. Ein Projekt von **MikaTec** (Hasan Tepegöz).
 
 > Statische, **abhängigkeitsfreie Einzelseite** in Vanilla HTML/CSS/JavaScript —
 > kein Build, kein Framework, kein Server-Backend. Läuft offline durch Doppelklick
@@ -186,4 +186,4 @@ Hasans Auftrag veröffentlicht; anschließend den tatsächlich ausgelieferten St
 
 ---
 
-Konzept & Umsetzung: **Hasan Tepegöz** · © Mika-Tec · [www.mika-tec.com](https://www.mika-tec.com)
+Konzept & Umsetzung: **Hasan Tepegöz** · © MikaTec · [www.mika-tec.com](https://www.mika-tec.com)
