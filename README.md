@@ -12,7 +12,7 @@
 
 Eine redaktionelle Übersicht der großen KI-Anbieter und ihrer Modelle — sortiert
 nach Anbieter und Modelltyp, mit Quellen und gekennzeichnetem Prüfstand, **zweisprachig
-(Deutsch / Englisch)**. Ein Projekt von **MikaTec** (Hasan Tepegöz).
+(Deutsch / Englisch)**. Ein Projekt von **MikaTec**.
 
 > Statische, **abhängigkeitsfreie Einzelseite** in Vanilla HTML/CSS/JavaScript —
 > kein Build, kein Framework, kein Server-Backend. Läuft offline durch Doppelklick
@@ -111,8 +111,8 @@ Eintrag. Nicht belegte Marktkennzahlen sind ausdrücklich gekennzeichnet.
 Am 14.09.2026 wurden 653 technische Bedingungen mit Node.js und einer vereinfachten
 Nachbildung der Seitenelemente geprüft. Zusätzlich wurden alle 33 benötigten Website-Dateien
 über einen lokalen Webserver unter einem Projekt-Unterpfad ausgeliefert und verglichen.
-Die technische Prüfung ist keine automatisierte visuelle Browserprüfung. Hasan hatte
-den zugrunde liegenden Entwurf praktisch geprüft und hat den übertragenen Stand
+Die technische Prüfung ist keine automatisierte visuelle Browserprüfung. Der Projektinhaber
+hatte den zugrunde liegenden Entwurf praktisch geprüft und hat den übertragenen Stand
 am 14.09.2026 akzeptiert und zur Veröffentlichung freigegeben.
 
 ## Tech-Stack
@@ -182,8 +182,8 @@ Auslieferung über **GitHub Pages** aus dem Repo-Root (`main`). Ein `.nojekyll` 
 dass die statischen Dateien direkt ausgeliefert werden. Die Seite ist unter
 [cehha79.github.io/ki-ai-netz](https://cehha79.github.io/ki-ai-netz/) erreichbar.
 Bei Veröffentlichungen wird `assets/` mit übertragen. Änderungen werden erst nach
-Hasans Auftrag veröffentlicht; anschließend den tatsächlich ausgelieferten Stand prüfen.
+Auftrag des Projektinhabers veröffentlicht; anschließend den tatsächlich ausgelieferten Stand prüfen.
 
 ---
 
-Konzept & Umsetzung: **Hasan Tepegöz** · © MikaTec · [www.mika-tec.com](https://www.mika-tec.com)
+Konzept & Umsetzung: © **MikaTec** · [www.mika-tec.com](https://www.mika-tec.com)
