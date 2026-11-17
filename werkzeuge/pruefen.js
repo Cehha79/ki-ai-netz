@@ -80,7 +80,7 @@ for (const bereich of alleSeiten) {
   }
   const seite = lies(bereich.datei);
   if (!seite.includes('data-bereich="' + bereich.id + '"')) melden(bereich.datei + ": data-bereich ist nicht „" + bereich.id + "“");
-  for (const kennung of ["leiste", "kopf", "inhalt", "seitentitel", "seitentext", "uebersicht", "fuss"]) {
+  for (const kennung of ["leiste", "kopf", "inhalt", "seitentitel", "seitentext", "fuss"]) {
     if (!seite.includes('id="' + kennung + '"')) melden(bereich.datei + ": Element mit id „" + kennung + "“ fehlt");
   }
   const titel = seite.match(/<h1 id="seitentitel">(.*?) <span>(.*?)<\/span><\/h1>/);

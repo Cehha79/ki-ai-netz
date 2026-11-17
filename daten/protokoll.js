@@ -2,6 +2,15 @@
 // version: Nummer der Seitenversion, soweit sie für diesen Stand belegt ist, sonst null.
 window.KI_PROTOKOLL = [
   {
+    datum: "2026-11-17", version: "18",
+    titel: { de: "Übersichtstafeln entfernt", en: "Overview panels removed", tr: "Genel bakış panoları kaldırıldı" },
+    text: {
+      de: "Die Tafeln „Module“ und „Bausteine“ am Ende jeder Seite entfallen. Sie wiederholten, was die Leiste links und die Reiter schon zeigen.",
+      en: "The panels “Modules” and “Building blocks” at the end of every page have been removed. They repeated what the bar on the left and the tabs already show.",
+      tr: "Her sayfanın sonundaki “Modüller” ve “Yapı taşları” panoları kaldırıldı. Bunlar, soldaki çubuğun ve sekmelerin zaten gösterdiğini yineliyordu."
+    }
+  },
+  {
     datum: "2026-11-17", version: "17",
     titel: { de: "Neuaufbau", en: "Rebuild", tr: "Yeniden yapım" },
     text: {

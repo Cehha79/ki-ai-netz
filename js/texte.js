@@ -14,11 +14,8 @@ window.KI_TEXTE = {
   "kopf.bewegungAn": { de: "Bewegung an", en: "Motion on", tr: "Hareket açık" },
   "kopf.bewegungAus": { de: "Bewegung aus", en: "Motion off", tr: "Hareket kapalı" },
 
-  "tafel.module": { de: "Module", en: "Modules", tr: "Modüller" },
-  "tafel.bausteine": { de: "Bausteine", en: "Building blocks", tr: "Yapı taşları" },
 
   "stand.geplant": { de: "Geplant", en: "Planned", tr: "Planlandı" },
-  "stand.fertig": { de: "Fertig", en: "Ready", tr: "Hazır" },
   "stand.von": { de: "von", en: "of", tr: "/" },
 
 

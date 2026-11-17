@@ -324,69 +324,7 @@ h1 span {
   color: var(--matt);
 }
 
-/* ---------- 7. Zellenraster: gleich große Felder mit Trennlinien ---------- */
-
-.zellen {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  overflow: hidden;
-}
-
-.zelle {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 104px;
-  padding: 10px 12px 11px;
-  box-shadow: 1px 0 0 0 var(--linie), 0 1px 0 0 var(--linie);
-  text-decoration: none;
-  animation: einschalten 0.25s steps(3) both;
-  animation-delay: calc(var(--nummer, 0) * 45ms);
-}
-
-a.zelle:hover {
-  background: var(--raster);
-}
-
-a.zelle:hover b {
-  color: var(--bernstein);
-}
-
-.zelle b {
-  display: block;
-  font-size: 13px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.zelle b span {
-  margin-right: 9px;
-  font-weight: 400;
-  color: var(--bernstein);
-}
-
-.zelle small {
-  display: block;
-  margin: 4px 0 8px;
-  font-size: 12px;
-  line-height: 1.4;
-  color: var(--matt);
-}
-
-.zelle em {
-  margin-top: auto;
-  font-size: 11px;
-  font-style: normal;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--matt);
-}
-
-.zelle em.fertig {
-  color: var(--gruen);
-}
-
-/* ---------- 8. Fußzeile ---------- */
+/* ---------- 7. Fußzeile ---------- */
 
 .fuss {
   display: flex;
@@ -415,7 +353,7 @@ a.zelle:hover b {
   color: var(--text);
 }
 
-/* ---------- 9. Bewegung ---------- */
+/* ---------- 8. Bewegung ---------- */
 
 @keyframes blinken {
   50% {
@@ -429,25 +367,17 @@ a.zelle:hover b {
   }
 }
 
-.ruhig .zeiger,
-.ruhig .zelle {
+.ruhig .zeiger {
   animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .zeiger,
-  .zelle {
+  .zeiger {
     animation: none;
   }
 }
 
-/* ---------- 10. Schmale Ansichten ---------- */
-
-@media (max-width: 1180px) {
-  .zellen {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
+/* ---------- 9. Schmale Ansichten ---------- */
 
 @media (max-width: 900px) {
   :root {
@@ -504,17 +434,7 @@ a.zelle:hover b {
   }
 }
 
-@media (max-width: 560px) {
-  .zellen {
-    grid-template-columns: 1fr;
-  }
-
-  .zelle {
-    min-height: 0;
-  }
-}
-
-/* ---------- 11. Startseite: Suchzeile ---------- */
+/* ---------- 10. Startseite: Suchzeile ---------- */
 
 .werkzeugzeile {
   display: flex;
@@ -700,7 +620,7 @@ a.zelle:hover b {
   }
 }
 
-/* ---------- 12. Startseite: Schichtenplan ---------- */
+/* ---------- 11. Startseite: Schichtenplan ---------- */
 
 .umschalter {
   display: flex;
@@ -934,7 +854,7 @@ a.zelle:hover b {
   margin-left: auto;
 }
 
-/* ---------- 13. Startseite: Auswahl und Lage ---------- */
+/* ---------- 12. Startseite: Auswahl und Lage ---------- */
 
 .reihe {
   display: grid;
@@ -1207,7 +1127,7 @@ a.zelle:hover b {
   }
 }
 
-/* ---------- 14. Anbieterseite: Verzeichnis und Profil ---------- */
+/* ---------- 13. Anbieterseite: Verzeichnis und Profil ---------- */
 
 .zweispalter {
   display: grid;
@@ -1511,7 +1431,7 @@ td > .merkmal:first-child {
   }
 }
 
-/* ---------- 15. Modellseite: Katalog, Vergleich, Schaubilder ---------- */
+/* ---------- 14. Modellseite: Katalog, Vergleich, Schaubilder ---------- */
 
 .filterzeile {
   display: flex;
@@ -1690,7 +1610,7 @@ td > .merkmal:first-child {
   opacity: 1;
 }
 
-/* ---------- 16. Technikseite: Reiter und Schaubild „Token“ ---------- */
+/* ---------- 15. Technikseite: Reiter und Schaubild „Token“ ---------- */
 
 .reiter {
   display: flex;
@@ -1863,7 +1783,7 @@ td > .merkmal:first-child {
   }
 }
 
-/* ---------- 17. Technikseite: Schaubild „Kontextfenster“ ---------- */
+/* ---------- 16. Technikseite: Schaubild „Kontextfenster“ ---------- */
 
 .regler {
   display: block;
@@ -1954,7 +1874,7 @@ td > .merkmal:first-child {
   }
 }
 
-/* ---------- 18. Technikseite: Schaubild „Attention“ ---------- */
+/* ---------- 17. Technikseite: Schaubild „Attention“ ---------- */
 
 .att-zeile {
   display: flex;
@@ -2023,7 +1943,7 @@ td > .merkmal:first-child {
   grid-template-columns: max-content minmax(36px, 1fr) 5ch;
 }
 
-/* ---------- 19. Technikseite: Schaubild „Agenten und Werkzeuge“ ---------- */
+/* ---------- 18. Technikseite: Schaubild „Agenten und Werkzeuge“ ---------- */
 
 .kreislauf {
   display: grid;
@@ -2122,7 +2042,7 @@ td > .merkmal:first-child {
   animation: none;
 }
 
-/* ---------- 20. Technikseite: Schaubild „RAG“ ---------- */
+/* ---------- 19. Technikseite: Schaubild „RAG“ ---------- */
 
 .frage {
   display: block;
@@ -2215,7 +2135,7 @@ td > .merkmal:first-child {
   overflow: auto;
 }
 
-/* ---------- 21. Technikseite: Schaubild „MCP“ ---------- */
+/* ---------- 20. Technikseite: Schaubild „MCP“ ---------- */
 
 .ablauf li code.block {
   display: block;
@@ -2223,7 +2143,7 @@ td > .merkmal:first-child {
   font-size: 11.5px;
 }
 
-/* ---------- 22. Technikseite: Schaubilder „Diffusion“ und „Embeddings“ ---------- */
+/* ---------- 21. Technikseite: Schaubilder „Diffusion“ und „Embeddings“ ---------- */
 
 .diffusionsbild {
   display: block;
@@ -2259,7 +2179,7 @@ td > .merkmal:first-child {
   outline: 1px solid var(--text);
 }
 
-/* ---------- 23. Wissensseite: Baustein „Limits“ ---------- */
+/* ---------- 22. Wissensseite: Baustein „Limits“ ---------- */
 
 .behaelter {
   display: grid;
@@ -2417,7 +2337,7 @@ td > .merkmal:first-child {
   }
 }
 
-/* ---------- 24. Wissensseite: Abrechnung, API, Kostenrechner, Glossar ---------- */
+/* ---------- 23. Wissensseite: Abrechnung, API, Kostenrechner, Glossar ---------- */
 
 .balken.geld {
   grid-template-columns: max-content minmax(36px, 1fr) max-content;
@@ -2579,7 +2499,7 @@ td > .merkmal:first-child {
   }
 }
 
-/* ---------- 25. Finanzseite ---------- */
+/* ---------- 24. Finanzseite ---------- */
 
 .finanzhinweis {
   margin: 12px 0 0;
@@ -2760,7 +2680,7 @@ button.rasterfeld.gewaehlt {
   flex-wrap: wrap;
 }
 
-/* ---------- 26. Neuigkeiten und Methodik ---------- */
+/* ---------- 25. Neuigkeiten und Methodik ---------- */
 
 /* Auf schmalen Bildschirmen behält die Zeitachse ihre Breite und rollt waagerecht. */
 .zeitkarte {
@@ -2868,7 +2788,7 @@ button.rasterfeld.gewaehlt {
   white-space: nowrap;
 }
 
-/* ---------- 27. Datenschutzseite ---------- */
+/* ---------- 26. Datenschutzseite ---------- */
 
 .rechtstext .erklaerung {
   max-width: 96ch;

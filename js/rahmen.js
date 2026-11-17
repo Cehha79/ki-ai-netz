@@ -67,11 +67,6 @@
     return kasten;
   }
 
-  function fortschritt(bausteine) {
-    const fertig = bausteine.filter(baustein => baustein.stand === "fertig").length;
-    return { fertig, gesamt: bausteine.length, text: fertig + " " + T("stand.von") + " " + bausteine.length + " " + T("stand.fertig") };
-  }
-
   function leisteBauen() {
     const leiste = $("leiste");
     leiste.setAttribute("aria-label", T("nav.seitennavigation"));
@@ -162,50 +157,6 @@
     $("seitentext").textContent = L(bereich.text);
   }
 
-  // Übersicht: auf der Startseite alle acht Bereiche als Verweise, auf jeder Seite die Bausteine des Bereichs.
-  function uebersichtBauen() {
-    // Nebenseiten haben keine Bausteine und deshalb keine Übersicht.
-    if (!bereich.bausteine.length) {
-      $("uebersicht").replaceChildren();
-      return;
-    }
-    const teile = [];
-    if (bereich.id === "start") {
-      const alleBausteine = bereiche.flatMap(eintrag => eintrag.bausteine);
-      const module = tafel(T("tafel.module"), T("tafel.bausteine") + ": " + fortschritt(alleBausteine).text);
-      const raster = el("div", "zellen");
-      bereiche.forEach((eintrag, nummer) => {
-        const stand = fortschritt(eintrag.bausteine);
-        const zelle = el("a", "zelle");
-        zelle.href = eintrag.datei;
-        zelle.style.setProperty("--nummer", nummer);
-        const kopf = el("b");
-        kopf.append(el("span", "", eintrag.nr), document.createTextNode(L(eintrag.name)));
-        zelle.append(kopf, el("small", "", L(eintrag.kurz)), el("em", stand.fertig === stand.gesamt ? "fertig" : "", stand.text));
-        zelle.addEventListener("mouseenter", () => Klang.ton(660, 0.2, 0.04));
-        raster.append(zelle);
-      });
-      module.append(raster);
-      teile.push(module);
-    }
-
-    const stand = fortschritt(bereich.bausteine);
-    const bausteine = tafel(T("tafel.bausteine"), stand.text);
-    const raster = el("div", "zellen");
-    bereich.bausteine.forEach((baustein, nummer) => {
-      const zelle = el("div", "zelle");
-      zelle.style.setProperty("--nummer", nummer);
-      const kopf = el("b");
-      kopf.append(el("span", "", bereich.nr + "." + (nummer + 1)), document.createTextNode(L(baustein.name)));
-      const fertig = baustein.stand === "fertig";
-      zelle.append(kopf, el("small", "", L(baustein.text)), el("em", fertig ? "fertig" : "", (fertig ? "■ " : "□ ") + T(fertig ? "stand.fertig" : "stand.geplant")));
-      raster.append(zelle);
-    });
-    bausteine.append(raster);
-    teile.push(bausteine);
-    $("uebersicht").replaceChildren(...teile);
-  }
-
   function fussBauen() {
     const angabe = el("span", "", "KI/AI-Netz · " + T("fuss.version") + " " + seitenversion);
     const nav = el("nav");
@@ -242,7 +193,6 @@
     leisteBauen();
     kopfBauen();
     titelBauen();
-    uebersichtBauen();
     fussBauen();
   }
 

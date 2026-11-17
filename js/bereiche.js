@@ -14,7 +14,6 @@ window.KI_BEREICHE = [
       en: "Providers, models, money and technology as one connected picture. Every figure with source and date.",
       tr: "Sağlayıcılar, modeller, para ve teknoloji tek bir bütün resimde. Her bilgi kaynağı ve tarihiyle."
     },
-    kurz: { de: "Das Lagebild aller Anbieter", en: "The overall picture of all providers", tr: "Tüm sağlayıcıların genel görünümü" },
     bausteine: [
       {
         name: { de: "Schichtenplan", en: "Layer plan", tr: "Katman planı" },
@@ -50,7 +49,6 @@ window.KI_BEREICHE = [
       en: "Who builds the models, who supplies chips and data centres, and how the companies are connected.",
       tr: "Modelleri kim geliştiriyor, çipleri ve veri merkezlerini kim sağlıyor, şirketler birbirine nasıl bağlı."
     },
-    kurz: { de: "Profil, Modelle und Verbindungen je Anbieter", en: "Profile, models and connections per provider", tr: "Her sağlayıcı için profil, modeller ve bağlantılar" },
     bausteine: [
       {
         name: { de: "Verzeichnis", en: "Directory", tr: "Dizin" },
@@ -86,7 +84,6 @@ window.KI_BEREICHE = [
       en: "Which models exist, what they cost and what they can do.",
       tr: "Hangi modeller var, ne kadar tutuyor ve neler yapabiliyor."
     },
-    kurz: { de: "Katalog, Vergleich, Preise, Zeitachse", en: "Catalogue, comparison, prices, timeline", tr: "Katalog, karşılaştırma, fiyatlar, zaman çizelgesi" },
     bausteine: [
       {
         name: { de: "Katalog", en: "Catalogue", tr: "Katalog" },
@@ -122,7 +119,6 @@ window.KI_BEREICHE = [
       en: "How a language model works, shown in diagrams you operate yourself.",
       tr: "Bir dil modelinin nasıl çalıştığı, kendi kullandığın şemalarla."
     },
-    kurz: { de: "Token, Attention, Diffusion, Agenten zum Anfassen", en: "Tokens, attention, diffusion and agents, hands-on", tr: "Token, attention, difüzyon ve ajanlar, uygulamalı" },
     bausteine: [
       {
         id: "token",
@@ -186,7 +182,6 @@ window.KI_BEREICHE = [
       en: "What subscriptions and APIs cost, where the limits are and how billing works.",
       tr: "Abonelikler ve API'ler ne kadar tutar, sınırlar nerede ve faturalama nasıl işler."
     },
-    kurz: { de: "Limits, Abrechnung, API, Kostenrechner", en: "Limits, billing, API, cost calculator", tr: "Limitler, faturalama, API, maliyet hesaplayıcı" },
     bausteine: [
       {
         id: "limits",
@@ -232,7 +227,6 @@ window.KI_BEREICHE = [
       en: "IPOs, valuations and investors of AI providers. Facts only, no investment advice.",
       tr: "Yapay zekâ sağlayıcılarının halka arzları, değerlemeleri ve yatırımcıları. Yalnızca olgular, yatırım tavsiyesi değildir."
     },
-    kurz: { de: "Börsengänge, Bewertungen, Geldgeber", en: "IPOs, valuations, investors", tr: "Halka arzlar, değerlemeler, yatırımcılar" },
     bausteine: [
       {
         id: "boerse",
@@ -272,7 +266,6 @@ window.KI_BEREICHE = [
       en: "What has changed among providers and models, in chronological order.",
       tr: "Sağlayıcılarda ve modellerde neler değişti, zaman sırasıyla."
     },
-    kurz: { de: "Was sich geändert hat, mit Quelle", en: "What has changed, with sources", tr: "Neler değişti, kaynağıyla" },
     bausteine: [
       {
         id: "zeitachse",
@@ -306,7 +299,6 @@ window.KI_BEREICHE = [
       en: "Where the figures come from, how old they are and how they are maintained.",
       tr: "Bilgiler nereden geliyor, ne kadar eski ve nasıl güncelleniyor."
     },
-    kurz: { de: "Woher die Daten kommen", en: "Where the data comes from", tr: "Veriler nereden geliyor" },
     bausteine: [
       {
         id: "herkunft",
