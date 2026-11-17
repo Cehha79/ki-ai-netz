@@ -1,5 +1,6 @@
-// Seiten mit Reitern (Technik, Wissen): Reiter für die Bausteine und die Tafel, in der der gewählte Baustein steht.
-// Jeder Baustein liegt in einer eigenen Datei (js/technik-….js, js/wissen-….js) und trägt sich in KI_SCHAUBILDER ein.
+// Seiten mit Reitern (Technik, Wissen, Finanzen, Neuigkeiten, Methodik): Reiter für die Bausteine und die Tafel,
+// in der der gewählte Baustein steht. Jeder Baustein liegt in einer eigenen Datei (js/<seite>-<name>.js) und
+// trägt sich in KI_SCHAUBILDER ein.
 // Der Platz auf der Seite trägt als id die Kennung des Bereichs.
 // Braucht js/rahmen.js; diese Datei wird nach den Bausteinen geladen.
 (() => {

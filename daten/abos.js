@@ -30,7 +30,7 @@ window.KI_ABOS = [
     hinweis: { de: "zusätzlich ein eigenes Wochenlimit für Fable; enthält monatliches Guthaben für die API", en: "plus a separate weekly limit for Fable; includes monthly credits for the API", tr: "ayrıca Fable için ayrı bir haftalık sınır; aylık API kredisi içerir" }
   },
   {
-    anbieter: "openai", id: "plus", name: "Plus", preis: null, fenster: null, woche: null,
+    anbieter: "openai", id: "plus", name: "Plus", preis: 20, fenster: null, woche: null,
     fensterText: { de: "ja; für Codex schätzt OpenAI je nach Modell 5 bis 3.000 lokale Nachrichten", en: "yes; for Codex, OpenAI estimates 5 to 3,000 local messages depending on the model", tr: "var; Codex için OpenAI modele göre 5 ila 3.000 yerel mesaj tahmin ediyor" },
     wocheText: { de: "kann zusätzlich gelten", en: "may apply in addition", tr: "ek olarak geçerli olabilir" }
   },

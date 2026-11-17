@@ -17,6 +17,39 @@ Ein Projekt von **MikaTec**.
 > Statische, **abhängigkeitsfreie Website** in Vanilla HTML, CSS und JavaScript: kein Build,
 > kein Framework, kein Server. Jede Seite läuft offline per Doppelklick.
 
+## Ansichten
+
+![Startseite: Schichtenplan der Anbieter mit ihren Beziehungen als Leitungen](assets/ansichten/01-start.jpg)
+
+<table>
+  <tr>
+    <td width="50%" valign="top"><img src="assets/ansichten/02-anbieter.jpg" alt="Anbieter: Verzeichnis links, Profil mit Stammdaten, Modellen und Quellen rechts"><br><sub>Anbieter: Verzeichnis links, Profil mit Stammdaten, Modellen und Quellen rechts</sub></td>
+    <td width="50%" valign="top"><img src="assets/ansichten/03-modelle.jpg" alt="Modelle: Katalog mit Filtern und Direktvergleich von bis zu vier Modellen"><br><sub>Modelle: Katalog mit Filtern und Direktvergleich von bis zu vier Modellen</sub></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><img src="assets/ansichten/04-technik-token.jpg" alt="Technik: wie Text in Token zerlegt wird und was eine Eingabe kostet"><br><sub>Technik: wie Text in Token zerlegt wird und was eine Eingabe kostet</sub></td>
+    <td width="50%" valign="top"><img src="assets/ansichten/05-technik-kontextfenster.jpg" alt="Technik: das Kontextfenster mit Reglern füllen"><br><sub>Technik: das Kontextfenster mit Reglern füllen</sub></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><img src="assets/ansichten/06-technik-attention.jpg" alt="Technik: worauf ein Wort im Satz achtet"><br><sub>Technik: worauf ein Wort im Satz achtet</sub></td>
+    <td width="50%" valign="top"><img src="assets/ansichten/07-technik-embeddings.jpg" alt="Technik: Bedeutung als Zahlen, mit Karte der Wörter"><br><sub>Technik: Bedeutung als Zahlen, mit Karte der Wörter</sub></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><img src="assets/ansichten/08-technik-rag.jpg" alt="Technik: nachschlagen vor der Antwort (RAG)"><br><sub>Technik: nachschlagen vor der Antwort (RAG)</sub></td>
+    <td width="50%" valign="top"><img src="assets/ansichten/09-wissen-kostenrechner.jpg" alt="Wissen: Kosten einer Aufgabe je Modell"><br><sub>Wissen: Kosten einer Aufgabe je Modell</sub></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><img src="assets/ansichten/10-finanzen-bewertungen.jpg" alt="Finanzen: Runden und Bewertungen mit Quelle und Datum"><br><sub>Finanzen: Runden und Bewertungen mit Quelle und Datum</sub></td>
+    <td width="50%" valign="top"><img src="assets/ansichten/11-finanzen-geldgeber.jpg" alt="Finanzen: wer in wen investiert"><br><sub>Finanzen: wer in wen investiert</sub></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><img src="assets/ansichten/12-neuigkeiten-zeitachse.jpg" alt="Neuigkeiten: Meldungen auf einer Zeitachse"><br><sub>Neuigkeiten: Meldungen auf einer Zeitachse</sub></td>
+    <td width="50%" valign="top"><img src="assets/ansichten/13-methodik-datenstand.jpg" alt="Methodik: Prüfdatum je Datenart und je Anbieter"><br><sub>Methodik: Prüfdatum je Datenart und je Anbieter</sub></td>
+  </tr>
+</table>
+
+Die Bilder zeigen den Stand vom 17.11.2026.
+
 ## Die acht Bereiche
 
 | Nr. | Bereich | Inhalt |
@@ -77,6 +110,7 @@ ki-ai-netz/
 ├── daten/               ← die Datendateien
 ├── werkzeuge/           ← Prüf- und Pflegeskripte für Node
 ├── assets/anbieter/     ← Logos der Anbieter
+├── assets/ansichten/    ← Bildschirmfotos für dieses README
 ├── LICENSE              ← MIT-Lizenz
 └── .nojekyll            ← GitHub Pages liefert die Dateien unverändert aus
 ```
